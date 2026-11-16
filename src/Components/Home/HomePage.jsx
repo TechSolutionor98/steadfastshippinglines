@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Ship,
   Plane,
@@ -13,6 +14,7 @@ import {
   FileCheck,
   Building2,
   Clock,
+  Compass,
   ShieldCheck,
   Globe,
   ArrowRight,
@@ -25,450 +27,846 @@ import {
   MapPin,
   TrendingUp,
   Award,
-  Search
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  Star,
+  Quote
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
 
-const iconMap = {
-  Ship: Ship,
-  Plane: Plane,
-  Truck: Truck,
-  Warehouse: Warehouse,
-  Package: Package,
-  Boxes: Boxes,
-  Anchor: Anchor,
-  FileCheck: FileCheck,
-  Building2: Building2,
-};
-
 export default function HomePage({ cmsContent }) {
-  const [openFaq, setOpenFaq] = useState(0);
-  const [trackingNumber, setTrackingNumber] = useState("");
-  const [trackingResult, setTrackingResult] = useState("");
+  // Hero Slider state
+  const heroSlides = [
+    {
+      title: "RELIABLE FREIGHT SOLUTIONS",
+      subtitle: "Welcome to Steadfast Shipping (Pvt) LTD",
+      description: "Providing innovative and reliable transportation solutions worldwide with seamless air, sea, and road freight management.",
+      bgImage: "/images/home/hero-slide.jpg",
+    },
+    {
+      title: "Tailored Logistics Services for Every Need",
+      subtitle: "Global Cargo & Transportation",
+      description: "From warehousing and packaging to air, sea, and road freight, we provide a full spectrum of logistics services to streamline your supply chain.",
+      bgImage: "/images/home/ocean.jpg",
+    },
+    {
+      title: "Reach Your Destination 100% Safe & Secure",
+      subtitle: "Worldwide Network Across 120+ Ports",
+      description: "Optimized route planning, real-time GPS tracking, and comprehensive customs clearance to ensure punctual arrival strictly on schedule.",
+      bgImage: "/images/home/air.jpg",
+    },
+  ];
 
-  const handleTrack = (e) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
+
+  // Quote Form State in Section 10
+  const [quoteFreight, setQuoteFreight] = useState("Air Freight");
+  const [quoteOrigin, setQuoteOrigin] = useState("");
+  const [quoteDestination, setQuoteDestination] = useState("");
+  const [quoteName, setQuoteName] = useState("");
+  const [quoteEmail, setQuoteEmail] = useState("");
+  const [quotePhone, setQuotePhone] = useState("");
+  const [quoteSubmitting, setQuoteSubmitting] = useState(false);
+  const [quoteSuccess, setQuoteSuccess] = useState(false);
+
+  const handleQuoteSubmit = async (e) => {
     e.preventDefault();
-    if (!trackingNumber.trim()) return;
-    setTrackingResult(
-      `Shipment ${trackingNumber.toUpperCase()}: In transit. Scheduled for on-time clearance and delivery. Please contact our 24/7 dispatch desk for detailed milestone telemetry.`
-    );
+    setQuoteSubmitting(true);
+    try {
+      await fetch("/api/contact-submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: quoteName,
+          email: quoteEmail,
+          phone: quotePhone,
+          subject: `Quote Request for ${quoteFreight} (${quoteOrigin} -> ${quoteDestination})`,
+          service: quoteFreight,
+          comments: `Origin: ${quoteOrigin}, Destination: ${quoteDestination}, Requested via Home Quote Banner`,
+        }),
+      });
+      setQuoteSuccess(true);
+      setQuoteName("");
+      setQuoteEmail("");
+      setQuotePhone("");
+      setQuoteOrigin("");
+      setQuoteDestination("");
+    } catch (err) {
+      setQuoteSuccess(true);
+    } finally {
+      setQuoteSubmitting(false);
+      setTimeout(() => setQuoteSuccess(false), 6000);
+    }
   };
 
+  // FAQ Accordion State (Section 13)
+  const [openFaq, setOpenFaq] = useState(0);
+
+  // Map service image
+  const serviceImages = {
+    "air-freight": "/images/home/air.jpg",
+    "road-freight": "/images/home/road.jpg",
+    "ocean-freight": "/images/home/ocean.jpg",
+    "warehousing-service": "/images/home/warehouse.jpg",
+    "cargo-services": "/images/home/cargo.jpg",
+    "cross-stuffing-service": "/images/home/cross-stuffing.jpg",
+    "break-bulk-cargo-service": "/images/home/how-we-help.jpg",
+    "door-to-door-delievery": "/images/home/door.jpg",
+    "transportation-service": "/images/home/road.jpg",
+    "customs-clearance-service": "/images/home/ocean.jpg",
+  };
+
+  // Major ports list
+  const majorPorts = [
+    "CHAINA", "JAPAN", "KOREA", "VIETNAM", "MALAYSIA", "HONG KONG",
+    "SINGAPORE", "GERMANY", "FRANCE", "ITALY", "NETHERLAND", "SPAIN",
+    "BRAZIL", "GEORGIA", "YAMEN", "SYRIA", "IRAN", "TURKEY",
+    "INDIA", "PAKISTAN", "USA", "AUSTRALIA", "BAHRAIN", "KUWAIT",
+    "OMAN", "IRAQ EGYPT", "SUDAN", "KSA", "SRI LANKA", "BANGLADESH",
+    "NEPAL", "MALDIVES", "QATAR"
+  ];
+
   return (
-    <div className="bg-slate-50 text-slate-800 overflow-hidden">
-      {/* 1. HERO SECTION */}
-      <section className="relative bg-gradient-to-br from-[#050f1d] via-[#0b1b33] to-[#132c52] text-white py-20 lg:py-28 px-4 overflow-hidden">
-        {/* Subtle decorative grid */}
-        <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
-        
-        {/* Glowing orb accent */}
-        <div className="absolute -top-32 -right-32 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 -left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-bold tracking-wide">
-                <Ship className="w-4 h-4 text-cyan-400 animate-pulse" />
-                <span>Welcome to Steadfast Shipping (PVT) LTD</span>
-              </div>
-
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1]">
-                Tailored Logistics Services for Every Need
-              </h1>
-
-              <p className="text-base sm:text-lg text-sky-100/90 leading-relaxed max-w-2xl">
-                Reliable worldwide freight forwarding across ocean, air, and road. Delivering your cargo on time, within budget, and with complete 24/7 security.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <Link
-                  href="/quote"
-                  className="px-7 py-4 rounded-xl bg-gradient-to-r from-[#0284c7] to-[#0369a1] hover:from-[#0369a1] hover:to-[#075985] text-white font-bold text-sm shadow-lg shadow-sky-500/25 flex items-center gap-2.5 transition-all hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <span>Request Instant Quote</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/services"
-                  className="px-7 py-4 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm border border-white/20 flex items-center gap-2 backdrop-blur-md transition-all"
-                >
-                  <span>Explore 10 Services</span>
-                </Link>
-              </div>
-
-              {/* Quick Tracking Tool */}
-              <div className="pt-4 max-w-lg">
-                <form onSubmit={handleTrack} className="flex gap-2 p-1.5 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md">
-                  <div className="flex items-center pl-3 text-slate-400">
-                    <Search className="w-4 h-4 text-sky-400" />
-                  </div>
-                  <input
-                    type="text"
-                    value={trackingNumber}
-                    onChange={(e) => setTrackingNumber(e.target.value)}
-                    placeholder="Enter Container / Airway Bill No."
-                    className="w-full px-2 py-2 text-xs bg-transparent text-white placeholder-slate-400 focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-[#0b1b33] text-xs font-bold shrink-0 transition-colors"
-                  >
-                    Track
-                  </button>
-                </form>
-                {trackingResult && (
-                  <p className="mt-2.5 text-xs text-cyan-300 font-medium bg-white/5 p-3 rounded-xl border border-white/10 animate-in fade-in">
-                    {trackingResult}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Right Hero Visual Cards */}
-            <div className="lg:col-span-5 space-y-4">
-              <div className="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md space-y-4 shadow-xl">
-                <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                  <span className="text-xs font-bold text-sky-400 uppercase tracking-wider">Freight Network Status</span>
-                  <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-bold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                    All Ports Active
-                  </span>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-                    <Ship className="w-5 h-5 text-cyan-400" />
-                    <div className="text-xs">
-                      <div className="font-bold text-white">Ocean Freight (FCL & LCL)</div>
-                      <div className="text-slate-400">Weekly sailings to 120+ international ports</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-                    <Plane className="w-5 h-5 text-sky-400" />
-                    <div className="text-xs">
-                      <div className="font-bold text-white">Express Air Cargo</div>
-                      <div className="text-slate-400">Priority tarmac handling & express customs</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-                    <Truck className="w-5 h-5 text-emerald-400" />
-                    <div className="text-xs">
-                      <div className="font-bold text-white">Road & Cross-Border Freight</div>
-                      <div className="text-slate-400">Dedicated fleets & bonded intermodal transport</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-slate-300">
-                  <span>Need rate estimation?</span>
-                  <Link href="/quote" className="text-cyan-400 font-bold hover:underline flex items-center gap-1">
-                    Calculate Now <ArrowRight className="w-3 h-3" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+    <div className="bg-slate-50 text-slate-800">
+      {/* =========================================================================
+          SECTION 1: HERO BANNER SLIDER (Matching Osum Hero Banner)
+      ========================================================================== */}
+      <section className="relative min-h-[580px] sm:min-h-[660px] flex items-center justify-center text-white overflow-hidden bg-slate-950">
+        {heroSlides.map((slide, idx) => (
+          <div
+            key={idx}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+            }`}
+          >
+            {/* Background Image with Dark Blue Gradient Overlay */}
+            <div
+              className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-10000"
+              style={{ backgroundImage: `url(${slide.bgImage})` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-slate-900/80 to-blue-950/60" />
           </div>
-        </div>
-      </section>
+        ))}
 
-      {/* 2. HOW WE CAN HELP YOU (Three Core Pillars) */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">How We Can Help You</span>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#0b1b33] mt-2">
-            Tailored Freight Management Designed for Your Growth
-          </h2>
-          <p className="text-slate-600 text-sm mt-3">
-            At Steadfast Shipping (PVT) LTD, we provide comprehensive logistics solutions tailored to meet your business needs:
+        <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-8 text-center space-y-6 py-20">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs sm:text-sm font-bold tracking-wider uppercase animate-in fade-in duration-500">
+            <Ship className="w-4 h-4 text-cyan-400" />
+            <span>{heroSlides[currentSlide].subtitle}</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.1] max-w-4xl mx-auto drop-shadow-md">
+            {heroSlides[currentSlide].title}
+          </h1>
+
+          <p className="text-sm sm:text-lg text-slate-200 max-w-2xl mx-auto leading-relaxed drop-shadow">
+            {heroSlides[currentSlide].description}
           </p>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-sky-300 transition-all duration-300 group">
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 text-[#0284c7] group-hover:bg-[#0284c7] group-hover:text-white flex items-center justify-center mb-6 transition-colors shadow-sm">
-              <TrendingUp className="w-7 h-7" />
-            </div>
-            <h3 className="text-xl font-bold text-[#0b1b33] mb-3">Innovative Technology</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Leveraging cutting-edge technology, we optimize routes and track shipments in real-time for maximum efficiency and total shipment visibility.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-sky-300 transition-all duration-300 group">
-            <div className="w-14 h-14 rounded-2xl bg-cyan-50 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white flex items-center justify-center mb-6 transition-colors shadow-sm">
-              <Globe className="w-7 h-7" />
-            </div>
-            <h3 className="text-xl font-bold text-[#0b1b33] mb-3">Worldwide Reach</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              With a vast network of global partners, we provide reliable logistics solutions across international borders, ports, and continents.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-sky-300 transition-all duration-300 group">
-            <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white flex items-center justify-center mb-6 transition-colors shadow-sm">
-              <ShieldCheck className="w-7 h-7" />
-            </div>
-            <h3 className="text-xl font-bold text-[#0b1b33] mb-3">Comprehensive Services</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              From warehousing and packaging to air, sea, and road freight, we provide a full spectrum of logistics services to streamline your supply chain.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. CORE SERVICES SHOWCASE (10 Services Grid) */}
-      <section className="bg-slate-100/60 py-20 px-4 border-y border-slate-200/80">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">What We Provide</span>
-              <h2 className="text-3xl sm:text-4xl font-black text-[#0b1b33] mt-1">
-                Our Full Logistics Spectrum
-              </h2>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <Link
               href="/services"
-              className="text-xs sm:text-sm font-bold text-[#0284c7] hover:underline flex items-center gap-1.5"
+              className="px-8 py-3.5 rounded-md bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-sky-500/30 transition-all hover:scale-105"
             >
-              <span>Explore All 10 Services</span>
-              <ArrowRight className="w-4 h-4" />
+              SEE SERVICES
+            </Link>
+            <Link
+              href="/contact"
+              className="px-8 py-3.5 rounded-md bg-transparent hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider border-2 border-white transition-all"
+            >
+              CONTACT US
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {servicesData.map((svc) => {
-              const IconComp = iconMap[svc.icon] || Ship;
-              return (
-                <div
-                  key={svc.slug}
-                  className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-lg hover:border-sky-300 transition-all duration-200 flex flex-col justify-between group"
-                >
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-sky-50 text-[#0284c7] group-hover:bg-[#0284c7] group-hover:text-white flex items-center justify-center mb-4 transition-colors">
-                      <IconComp className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-lg font-bold text-[#0b1b33] mb-1 group-hover:text-[#0284c7] transition-colors">
+          {/* Slider Controls */}
+          <div className="flex items-center justify-center gap-3 pt-6">
+            {heroSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentSlide(i)}
+                className={`h-2.5 rounded-full transition-all ${
+                  i === currentSlide ? "w-8 bg-cyan-400" : "w-2.5 bg-white/40 hover:bg-white/70"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 2: "HOW WE CAN HELP YOU" (Left text with 3 items + Right image)
+      ========================================================================== */}
+      <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Text */}
+          <div className="lg:col-span-7 space-y-6">
+            <div>
+              <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">SUPPORT & EFFICIENCY</span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
+                How We Can Help You
+              </h2>
+            </div>
+
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+              At Steadfast Shipping (PVT) LTD, we are dedicated to providing comprehensive logistics solutions tailored to meet your business needs. Here’s how we can support you:
+            </p>
+
+            <div className="space-y-5 pt-2">
+              {/* Item 1 */}
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0 border border-cyan-200 mt-1">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#0b1b33]">Innovative Technology</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                    Leveraging cutting-edge technology, we optimize routes and track shipments in real-time for maximum efficiency.
+                  </p>
+                </div>
+              </div>
+
+              {/* Item 2 */}
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-blue-50 text-[#0284c7] flex items-center justify-center shrink-0 border border-blue-200 mt-1">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#0b1b33]">Worldwide Reach</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                    With a vast network of global partners, we provide reliable logistics solutions across international borders.
+                  </p>
+                </div>
+              </div>
+
+              {/* Item 3 */}
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200 mt-1">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#0b1b33]">Comprehensive Services</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                    From warehousing and packaging to air, sea, and road freight, we provide a full spectrum of logistics services to streamline your supply chain.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Image */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+              <Image
+                src="/images/home/how-we-help.jpg"
+                alt="Steadfast Logistics Cargo Yard"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 3: "OUR SERVICES" / "WHAT WE PROVIDE" (3x3 Cards with Images)
+      ========================================================================== */}
+      <section className="bg-slate-100/70 py-20 px-4 sm:px-8 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">OUR SERVICES</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
+              WHAT WE PROVIDE
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {servicesData.map((svc) => (
+              <div
+                key={svc.slug}
+                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition-all duration-300 flex flex-col justify-between group"
+              >
+                <div>
+                  {/* Service Image Banner on Top */}
+                  <div className="relative h-48 w-full overflow-hidden bg-slate-900">
+                    <Image
+                      src={serviceImages[svc.slug] || "/images/home/ocean.jpg"}
+                      alt={svc.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <span className="absolute bottom-3 left-4 text-xs font-bold text-white uppercase tracking-wider drop-shadow">
+                      {svc.shortTitle}
+                    </span>
+                  </div>
+
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold text-[#0b1b33] mb-2 group-hover:text-[#0284c7] transition-colors">
                       {svc.title}
                     </h3>
-                    <p className="text-xs font-medium text-sky-600 mb-2">
-                      {svc.tagline}
-                    </p>
                     <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
                       {svc.shortDescription}
                     </p>
                   </div>
-
-                  <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <Link
-                      href={`/${svc.slug}`}
-                      className="text-xs font-bold text-[#0284c7] hover:text-[#0369a1] flex items-center gap-1 group-hover:translate-x-1 transition-transform"
-                    >
-                      <span>Read More</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                    <Link
-                      href="/quote"
-                      className="text-[11px] font-semibold text-slate-400 hover:text-slate-700"
-                    >
-                      Get Quote
-                    </Link>
-                  </div>
                 </div>
-              );
-            })}
+
+                <div className="px-6 pb-6 pt-0">
+                  <Link
+                    href={`/${svc.slug}`}
+                    className="inline-block px-5 py-2.5 rounded-md bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
+                  >
+                    READ MORE
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 4. ABOUT US SECTION PREVIEW */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-6 space-y-6">
-            <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">About Us</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#0b1b33] leading-tight">
-              We Are Steadfast Shipping (PVT) LTD
+      {/* =========================================================================
+          SECTION 4: SPLIT BLUE BOX - "WE ARE Steadfast Shipping" (About Us Preview)
+      ========================================================================== */}
+      <section className="bg-gradient-to-r from-[#0b1b33] via-[#0f2342] to-[#122e54] text-white py-20 px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          {/* Left Column */}
+          <div className="lg:col-span-6 space-y-5">
+            <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">ABOUT US</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight">
+              WE ARE Steadfast Shipping (PVT) LTD
             </h2>
 
-            <p className="text-slate-600 text-base leading-relaxed">
+            <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
               Steadfast Shipping (PVT) LTD is your trusted partner in logistics, providing innovative and reliable transportation solutions worldwide. Our expert team and advanced technology ensure seamless, efficient, and secure delivery of your goods.
             </p>
 
-            <p className="text-slate-600 text-sm leading-relaxed">
-              We are dedicated to exceeding expectations with personalized service, strict adherence to timelines, and a steadfast commitment to excellence.
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+              We are dedicated to exceeding expectations with personalized service and a commitment to excellence.
             </p>
 
-            <div className="grid grid-cols-2 gap-4 pt-2">
-              <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-100">
-                <h4 className="font-bold text-sm text-[#0b1b33]">Our Mission</h4>
-                <p className="text-xs text-slate-600 mt-1">To deliver reliable, cost-effective global logistics that empower businesses.</p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-100 border border-slate-200">
-                <h4 className="font-bold text-sm text-[#0b1b33]">Our Vision</h4>
-                <p className="text-xs text-slate-600 mt-1">To be the most trusted global logistics brand known for punctuality and security.</p>
-              </div>
+            <div className="pt-2">
+              <div className="text-base font-bold text-white">Executive Management</div>
+              <div className="text-xs text-cyan-400">Founder & CEO</div>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-3">
               <Link
                 href="/about-us"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#0b1b33] hover:bg-[#132c52] text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-sm"
+                className="inline-block px-8 py-3.5 rounded-md bg-cyan-500 hover:bg-cyan-400 text-[#0b1b33] font-bold text-xs uppercase tracking-wider shadow-md transition-colors"
               >
-                <span>Read Full Company Profile</span>
-                <ArrowRight className="w-4 h-4" />
+                ABOUT US
               </Link>
             </div>
           </div>
 
-          <div className="lg:col-span-6 grid grid-cols-2 gap-4">
-            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm space-y-2">
-              <div className="text-3xl font-black text-[#0284c7]">18k+</div>
-              <div className="text-xs font-bold text-[#0b1b33]">Successful Shipments</div>
-              <p className="text-xs text-slate-500">Delivered safely across all trade routes</p>
+          {/* Right Column: 3 Strategic Solution Cards */}
+          <div className="lg:col-span-6 space-y-4">
+            <div className="p-6 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md space-y-2 hover:bg-white/15 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
+                  <TrendingUp className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-white">Advanced Technology</h3>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed pl-12">
+                We use AI-powered route optimization and real-time tracking to enhance delivery efficiency and accuracy, ensuring your shipments are handled with the latest innovations in logistics.
+              </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm space-y-2">
-              <div className="text-3xl font-black text-emerald-600">99%</div>
-              <div className="text-xs font-bold text-[#0b1b33]">On-Time Arrival</div>
-              <p className="text-xs text-slate-500">Precision maritime & flight schedule matching</p>
+            <div className="p-6 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md space-y-2 hover:bg-white/15 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-white">Sustainable Practices</h3>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed pl-12">
+                We implement eco-friendly practices across our operations, reducing our carbon footprint through optimized routes, energy-efficient vehicles, and green warehousing solutions.
+              </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm space-y-2">
-              <div className="text-3xl font-black text-cyan-600">120+</div>
-              <div className="text-xs font-bold text-[#0b1b33]">Global Seaports</div>
-              <p className="text-xs text-slate-500">Direct connections across Asia, Europe & Americas</p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm space-y-2">
-              <div className="text-3xl font-black text-indigo-600">24/7</div>
-              <div className="text-xs font-bold text-[#0b1b33]">Operations Desk</div>
-              <p className="text-xs text-slate-500">Live human coordinators monitoring cargo</p>
+            <div className="p-6 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md space-y-2 hover:bg-white/15 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
+                  <Award className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-white">Industry-Specific Solutions</h3>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed pl-12">
+                Our tailored logistics services cater to the unique needs of various industries, including healthcare, retail, automotive, and technology, providing specialized solutions for each sector.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. OUR PROCESS (6 Operational Steps) */}
-      <section className="bg-gradient-to-br from-[#0c1f3d] to-[#122e54] text-white py-20 px-4">
+      {/* =========================================================================
+          SECTION 5: OUR MISSION & OUR VISION (2 Clean Cards)
+      ========================================================================== */}
+      <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="p-8 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#0284c7] flex items-center justify-center font-bold">
+              <Compass className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-black text-[#0b1b33]">OUR MISSION</h3>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              At Steadfast Shipping (PVT) LTD, our mission is to provide innovative, reliable, and efficient logistics and transportation solutions that exceed our clients&apos; expectations. We strive to simplify global trade, ensuring seamless movement of goods with unparalleled service and support.
+            </p>
+          </div>
+
+          <div className="p-8 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold">
+              <Globe className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-black text-[#0b1b33]">OUR VISION</h3>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              Our vision is to be a leading global logistics provider, recognized for our commitment to excellence, customer satisfaction, and sustainable practices. We aim to set new standards in the industry, driving growth and success for our clients and partners worldwide.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 6: "WHY CHOOSE Steadfast Shipping (PVT) LTD" (3 Round Icon Highlights)
+      ========================================================================== */}
+      <section className="bg-slate-100/70 py-20 px-4 sm:px-8 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="mb-14">
+            <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">WHY CHOOSE US</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
+              WHY CHOOSE Steadfast Shipping (PVT) LTD
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-200 flex items-center justify-center mx-auto">
+                <Clock className="w-7 h-7" />
+              </div>
+              <h3 className="text-xl font-bold text-[#0b1b33]">24/7 support</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Our customer service team is available 24/7 to assist with any questions or issues, ensuring peace of mind and continuous support.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-blue-50 text-[#0284c7] border border-blue-200 flex items-center justify-center mx-auto">
+                <CheckCircle2 className="w-7 h-7" />
+              </div>
+              <h3 className="text-xl font-bold text-[#0b1b33]">On time delivery</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                We pride ourselves on our reliability, ensuring your shipments are delivered on schedule, every time, to keep your operations running smoothly.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto">
+                <Globe className="w-7 h-7" />
+              </div>
+              <h3 className="text-xl font-bold text-[#0b1b33]">Global service</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                We customize our logistics services to meet the specific needs of your business, ensuring efficient and cost-effective results.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 7: WORKING HIGHLIGHTS GALLERY (Visual operational gallery)
+      ========================================================================== */}
+      <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-14">
+          <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">Reach your destination 100% safe & secure</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
+            Working Highlights at Steadfast Shipping (PVT) LTD
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[
+            { img: "/images/home/ocean.jpg", label: "Ocean Maritime" },
+            { img: "/images/home/air.jpg", label: "Air Cargo Flights" },
+            { img: "/images/home/road.jpg", label: "Fleet Highway Logistics" },
+            { img: "/images/home/warehouse.jpg", label: "Secure Warehousing" },
+            { img: "/images/home/how-we-help.jpg", label: "Container Terminals" },
+            { img: "/images/home/door.jpg", label: "Doorstep Delivery" },
+          ].map((item, idx) => (
+            <div key={idx} className="relative h-56 rounded-xl overflow-hidden shadow-sm group">
+              <Image
+                src={item.img}
+                alt={item.label}
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
+              <span className="absolute bottom-3 left-3 right-3 text-center text-xs font-bold text-white drop-shadow">
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 8: BLUE CTA BAR ("Reach your destination 100% safe & secure")
+      ========================================================================== */}
+      <section className="bg-gradient-to-r from-[#0284c7] to-[#0369a1] text-white py-12 px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div>
+            <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight">
+              Reach your destination 100% safe & secure
+            </h3>
+            <p className="text-xs sm:text-sm text-sky-100 mt-1">
+              Contact our dispatch team for real-time rates and space allocation.
+            </p>
+          </div>
+          <Link
+            href="/quote"
+            className="px-8 py-3.5 rounded-md bg-white hover:bg-slate-100 text-[#0b1b33] font-bold text-xs uppercase tracking-wider shadow-md transition-colors shrink-0"
+          >
+            REQUEST A QUOTE
+          </Link>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 9: "WHAT THEY SAY" (Testimonials)
+      ========================================================================== */}
+      <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-14">
+          <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">TESTIMONIALS</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
+            WHAT THEY SAY
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Review 1 */}
+          <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+            <div className="flex items-center gap-1 text-amber-400">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-amber-400" />
+              ))}
+            </div>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
+              &ldquo;Steadfast Shipping (PVT) LTD has been a game-changer for our supply chain operations. Their efficient air freight services and real-time tracking have significantly reduced our transit times. Highly recommend their professional and reliable team!&rdquo;
+            </p>
+            <div className="pt-2 border-t border-slate-100">
+              <h4 className="text-sm font-bold text-[#0b1b33]">Jonathon Doe</h4>
+              <span className="text-xs text-slate-400">Supply Chain Director</span>
+            </div>
+          </div>
+
+          {/* Review 2 */}
+          <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+            <div className="flex items-center gap-1 text-amber-400">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-amber-400" />
+              ))}
+            </div>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
+              &ldquo;Steadfast Shipping (PVT) LTD&apos;s road freight services are top-notch. Their timely deliveries and expert handling of our cargo have helped us maintain a smooth supply chain. Their dedication to customer satisfaction is evident in every interaction.&rdquo;
+            </p>
+            <div className="pt-2 border-t border-slate-100">
+              <h4 className="text-sm font-bold text-[#0b1b33]">Maria Carrol</h4>
+              <span className="text-xs text-slate-400">Operations Manager</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 10: "REQUEST A QUOTE" WITH FORM OVERLAY (Matching Osum Quote Banner)
+      ========================================================================== */}
+      <section className="relative py-20 px-4 sm:px-8 bg-slate-900 text-white overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{ backgroundImage: `url('/images/home/quote-bg.jpg')` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/80 to-blue-950/80" />
+
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">REQUEST A FREE QUOTE</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1">
+              Request a quote
+            </h2>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-md p-8 sm:p-10 rounded-2xl border border-white/20 shadow-2xl">
+            {quoteSuccess ? (
+              <div className="p-6 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-center text-emerald-300">
+                <CheckCircle2 className="w-10 h-10 mx-auto mb-2 text-emerald-400" />
+                <h4 className="font-bold text-lg">Thank You! Quote Request Submitted</h4>
+                <p className="text-xs mt-1">Our freight desk is preparing your estimation.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleQuoteSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="sm:col-span-3">
+                    <label className="text-xs font-bold text-slate-200 block mb-1">Select a Freight Service</label>
+                    <select
+                      value={quoteFreight}
+                      onChange={(e) => setQuoteFreight(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs focus:outline-none focus:border-cyan-400"
+                    >
+                      <option value="Air Freight">Air Freight</option>
+                      <option value="Ocean Freight">Ocean Freight</option>
+                      <option value="Road Freight">Road Freight</option>
+                      <option value="Warehousing">Warehousing</option>
+                      <option value="Cargo Services">Cargo Services</option>
+                      <option value="Door to door delivery">Door to door delivery</option>
+                      <option value="Cross Stuffing">Cross Stuffing</option>
+                      <option value="Break Bulk Cargo">Break Bulk Cargo</option>
+                      <option value="Transportation">Transportation</option>
+                      <option value="Customs Clearance">Customs Clearance</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Departure City / Port"
+                      value={quoteOrigin}
+                      onChange={(e) => setQuoteOrigin(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                    />
+                  </div>
+
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Delivery City / Port"
+                      value={quoteDestination}
+                      onChange={(e) => setQuoteDestination(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                    />
+                  </div>
+
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your Name"
+                      value={quoteName}
+                      onChange={(e) => setQuoteName(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                    />
+                  </div>
+
+                  <div>
+                    <input
+                      type="email"
+                      required
+                      placeholder="Email Address"
+                      value={quoteEmail}
+                      onChange={(e) => setQuoteEmail(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                    />
+                  </div>
+
+                  <div>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="Phone Number"
+                      value={quotePhone}
+                      onChange={(e) => setQuotePhone(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                    />
+                  </div>
+
+                  <div>
+                    <button
+                      type="submit"
+                      disabled={quoteSubmitting}
+                      className="w-full py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-[#0b1b33] font-black text-xs uppercase tracking-wider transition-colors shadow-md"
+                    >
+                      {quoteSubmitting ? "SENDING..." : "SUBMIT"}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 11: OUR SERVICE AREAS / REGULAR SERVICES FROM ALL MAJOR PORTS
+      ========================================================================== */}
+      <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-8 space-y-6">
+            <div>
+              <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">Our Service Areas</span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0b1b33] mt-1">
+                We run regular services from all major ports:
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5">
+              {majorPorts.map((port) => (
+                <div
+                  key={port}
+                  className="px-3 py-2 text-center rounded-lg bg-sky-50 text-[#0369a1] border border-sky-200 text-xs font-black tracking-wider shadow-sm"
+                >
+                  {port}
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-2">
+              We extend our services to CIS countries, including Afghanistan, Georgia, Azerbaijan, Turkmenistan, and other CIS destinations.
+            </p>
+          </div>
+
+          <div className="lg:col-span-4 relative">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-white aspect-[4/3]">
+              <Image
+                src="/images/home/service-areas.jpg"
+                alt="Major Global Ports"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 12: OUR PROCESS AT STEADFAST SHIPPING (PVT) LTD (6 Steps)
+      ========================================================================== */}
+      <section className="bg-slate-100/70 py-20 px-4 sm:px-8 border-y border-slate-200">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">How We Work</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-white mt-2">
+          <div className="text-center mb-14">
+            <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">STEP BY STEP LOGISTICS</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
               Our Process at Steadfast Shipping (PVT) LTD
             </h2>
-            <p className="text-slate-300 text-sm mt-3">
-              A transparent, step-by-step workflow designed to eliminate delays and maximize safety.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {companyDetails.processSteps.map((st) => (
               <div
                 key={st.step}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-3 hover:bg-white/10 transition-colors"
+                className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-2 hover:shadow-md transition-shadow"
               >
-                <div className="text-2xl font-black text-cyan-400">{st.step}</div>
-                <h4 className="text-lg font-bold text-white">{st.title}</h4>
-                <p className="text-xs text-slate-300 leading-relaxed">{st.description}</p>
+                <div className="text-xl font-black text-[#0284c7]">
+                  {st.step}. {st.title}
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {st.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 6. SERVICE AREAS & GLOBAL TRADE LANES */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">Service Areas</span>
-          <h2 className="text-3xl font-black text-[#0b1b33] mt-2">
-            Regular Services from All Major Ports
-          </h2>
-          <p className="text-slate-600 text-sm mt-3">
-            We run regular weekly services and direct air consolidations across all principal global commerce hubs:
-          </p>
-        </div>
+      {/* =========================================================================
+          SECTION 13: FREQUENTLY ASKED QUESTIONS (Left FAQs + Right Ship Image)
+      ========================================================================== */}
+      <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          {/* Left Column: Accordion */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="mb-6">
+              <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">FAQS</span>
+              <h2 className="text-3xl font-extrabold text-[#0b1b33] mt-1">
+                FREQUENTLY ASKED QUESTIONS
+              </h2>
+            </div>
 
-        <div className="flex flex-wrap justify-center gap-2.5 max-w-5xl mx-auto">
-          {companyDetails.serviceAreas.map((c) => (
-            <span
-              key={c}
-              className="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200/80 text-xs font-bold text-slate-700 shadow-sm hover:border-[#0284c7] hover:text-[#0284c7] transition-colors"
-            >
-              {c}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-8 text-center text-xs text-slate-500 max-w-3xl mx-auto">
-          We extend our dedicated services to CIS countries including Afghanistan, Georgia, Azerbaijan, Turkmenistan, and other CIS destinations.
-        </div>
-      </section>
-
-      {/* 7. FREQUENTLY ASKED QUESTIONS */}
-      <section className="bg-slate-100/70 py-20 px-4 border-t border-slate-200/80">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">FAQS</span>
-            <h2 className="text-3xl font-black text-[#0b1b33] mt-1">
-              Frequently Asked Questions
-            </h2>
-          </div>
-
-          <div className="space-y-4">
-            {companyDetails.faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm transition-all"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? -1 : idx)}
-                  className="w-full text-left p-5 flex items-center justify-between gap-4 font-bold text-sm text-[#0b1b33]"
+            <div className="space-y-3">
+              {companyDetails.faqs.map((faq, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm"
                 >
-                  <span>{faq.q}</span>
-                  {openFaq === idx ? (
-                    <ChevronUp className="w-5 h-5 text-[#0284c7] shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
+                  <button
+                    onClick={() => setOpenFaq(openFaq === idx ? -1 : idx)}
+                    className="w-full text-left p-4 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-[#0b1b33]"
+                  >
+                    <span>{faq.q}</span>
+                    {openFaq === idx ? (
+                      <ChevronUp className="w-4 h-4 text-[#0284c7] shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                    )}
+                  </button>
+                  {openFaq === idx && (
+                    <div className="px-4 pb-4 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-2.5">
+                      {faq.a}
+                    </div>
                   )}
-                </button>
-                {openFaq === idx && (
-                  <div className="px-5 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column: Ship Image */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+              <Image
+                src="/images/home/faq-ship.jpg"
+                alt="Container Ship FAQ"
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 8. INSTANT QUOTE CTA BANNER */}
-      <section className="bg-gradient-to-r from-[#0284c7] to-[#0369a1] text-white py-16 px-4">
-        <div className="max-w-5xl mx-auto text-center space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-black text-white">
-            Ready to Move Your Goods Without Delays?
-          </h2>
-          <p className="text-sky-100 text-sm max-w-2xl mx-auto leading-relaxed">
-            Submit your freight specifications today and receive competitive, transparent quotations backed by 24/7 dedicated dispatch.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/quote"
-              className="px-8 py-3.5 bg-white hover:bg-slate-100 text-[#0b1b33] font-bold text-sm rounded-xl shadow-md transition-colors"
-            >
-              Get a Free Freight Quote
-            </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-3.5 bg-[#0b1b33] hover:bg-[#132c52] text-white font-bold text-sm rounded-xl shadow-md transition-colors"
-            >
-              Contact Nearest Office
-            </Link>
+      {/* =========================================================================
+          SECTION 14: STATS COUNTER BAR ("Our Commitment, Your Success")
+      ========================================================================== */}
+      <section className="bg-gradient-to-r from-[#071325] via-[#0b1b33] to-[#132c52] text-white py-14 px-4 sm:px-8 border-t border-[#1b2b46]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8">
+            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
+              Our Commitment, Your Success
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center">
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+              <div className="text-2xl sm:text-3xl font-black text-cyan-400">2,500+</div>
+              <div className="text-xs text-slate-300 font-bold uppercase mt-1">Happy Customers</div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+              <div className="text-2xl sm:text-3xl font-black text-cyan-400">18,000+</div>
+              <div className="text-xs text-slate-300 font-bold uppercase mt-1">Project Complete</div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+              <div className="text-2xl sm:text-3xl font-black text-cyan-400">99%</div>
+              <div className="text-xs text-slate-300 font-bold uppercase mt-1">5-Star Reviews</div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+              <div className="text-2xl sm:text-3xl font-black text-cyan-400">24/7</div>
+              <div className="text-xs text-slate-300 font-bold uppercase mt-1">Customer Support</div>
+            </div>
+
+            <div className="col-span-2 sm:col-span-1 p-4 rounded-xl bg-white/5 border border-white/10">
+              <div className="text-2xl sm:text-3xl font-black text-cyan-400">100%</div>
+              <div className="text-xs text-slate-300 font-bold uppercase mt-1">Satisfaction Rate</div>
+            </div>
           </div>
         </div>
       </section>
