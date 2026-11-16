@@ -63,19 +63,18 @@ export async function POST(request) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400, headers: CORS_HEADERS });
     }
 
-    // Verify that OTP was verified for this email
     const db = await getDb();
-    const otpRecord = await db.collection('otps').findOne({ email, verified: true });
-    if (!otpRecord) {
-      return NextResponse.json({ error: 'Email not verified. Please verify OTP first.' }, { status: 403, headers: CORS_HEADERS });
+    // Optional OTP check (if configured in env)
+    if (process.env.REQUIRE_CONTACT_OTP === 'true') {
+      const otpRecord = await db.collection('otps').findOne({ email, verified: true });
+      if (!otpRecord) {
+        return NextResponse.json({ error: 'Email not verified. Please verify OTP first.' }, { status: 403, headers: CORS_HEADERS });
+      }
+      await db.collection('otps').deleteMany({ email });
     }
 
     const entry = await saveSubmission({ name, email, phone, subject, service, comments, productName, productBarcode });
-
     await logActivity(request, 'contact_submission', name, { email, subject, service, productName, productBarcode });
-
-    // Clean up used OTP
-    await db.collection('otps').deleteMany({ email });
 
     return NextResponse.json({ ok: true, entry }, { status: 201, headers: CORS_HEADERS });
   } catch (err) {
