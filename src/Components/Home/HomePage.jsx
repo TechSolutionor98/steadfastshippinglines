@@ -31,7 +31,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Star,
-  Quote
+  Quote,
+  Calculator,
+  Navigation,
+  User
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
 
@@ -647,118 +650,153 @@ export default function HomePage({ cmsContent }) {
       </section>
 
       {/* =========================================================================
-          SECTION 10: "REQUEST A QUOTE" WITH FORM OVERLAY (Steadfast Quote Banner)
-          Theme Colors: Navy #141E36 with Gold #C59B24 Button & Accents
+          SECTION 10: "REQUEST A FREE QUOTE" - CLEAN CENTERED SIMPLE FORM
+          Theme Colors: Navy #141E36 backdrop with Gold #C59B24 & Clean White Card
       ========================================================================== */}
-      <section className="relative py-20 px-4 sm:px-8 bg-[#141E36] text-white overflow-hidden">
+      <section className="relative py-20 px-4 sm:px-8 bg-[#141E36] text-white overflow-hidden border-y border-[#D7DCE0]/15">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-25"
+          className="absolute inset-0 bg-cover bg-center opacity-15"
           style={{ backgroundImage: `url('/images/home/quote-bg.jpg')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#141E36]/95 via-[#1D2A4C]/90 to-[#141E36]/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#141E36]/90 via-[#1D2A4C]/85 to-[#141E36]/90" />
 
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest">REQUEST A FREE QUOTE</span>
+        <div className="relative z-10 max-w-3xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center mb-8">
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest">
+              REQUEST A FREE QUOTE
+            </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1">
               Request a quote
             </h2>
           </div>
 
-          <div className="bg-[#1D2A4C]/85 backdrop-blur-md p-8 sm:p-10 rounded-2xl border border-[#D7DCE0]/30 shadow-2xl">
+          {/* Clean Centered Form Card */}
+          <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-10 border border-[#D7DCE0] text-slate-800">
             {quoteSuccess ? (
-              <div className="p-6 rounded-xl bg-[#C59B24]/20 border border-[#C59B24]/40 text-center text-[#C59B24]">
-                <CheckCircle2 className="w-10 h-10 mx-auto mb-2 text-[#C59B24]" />
-                <h4 className="font-bold text-lg text-white">Thank You! Quote Request Submitted</h4>
-                <p className="text-xs mt-1 text-[#D7DCE0]">Our freight desk is preparing your estimation.</p>
+              <div className="p-8 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
+                <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h4 className="font-extrabold text-xl text-[#1D2A4C]">Quote Request Received!</h4>
+                <p className="text-sm text-slate-600 max-w-md mx-auto">
+                  Thank you for contacting Steadfast Shipping Lines. Our freight desk has logged your route details and will return an estimation shortly.
+                </p>
               </div>
             ) : (
-              <form onSubmit={handleQuoteSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="sm:col-span-3">
-                    <label className="text-xs font-bold text-white block mb-1">Select a Freight Service</label>
+              <form onSubmit={handleQuoteSubmit} className="space-y-5">
+                {/* Select Freight */}
+                <div>
+                  <label className="text-xs font-bold text-[#1D2A4C] uppercase tracking-wider block mb-1.5">
+                    Select a Freight Service
+                  </label>
+                  <div className="relative">
                     <select
                       value={quoteFreight}
                       onChange={(e) => setQuoteFreight(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs focus:outline-none focus:border-[#C59B24]"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-50 hover:bg-slate-100/70 text-[#1D2A4C] border border-[#D7DCE0] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:border-transparent transition-all appearance-none cursor-pointer"
                     >
                       <option value="Air Freight">Air Freight</option>
                       <option value="Ocean Freight">Ocean Freight</option>
-                      <option value="Road Freight">Road Freight</option>
+                      <option value="Customs Clearance">Custom Clearance</option>
                       <option value="Warehousing">Warehousing</option>
                       <option value="Cargo Services">Cargo Services</option>
+                      <option value="Break Bulk Cargo">Break Bulk Cargo</option>
                       <option value="Door to door delivery">Door to door delivery</option>
                       <option value="Cross Stuffing">Cross Stuffing</option>
-                      <option value="Break Bulk Cargo">Break Bulk Cargo</option>
                       <option value="Transportation">Transportation</option>
-                      <option value="Customs Clearance">Customs Clearance</option>
                     </select>
+                    <ChevronDown className="w-4 h-4 text-slate-500 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
+                </div>
 
+                {/* 2-Column Inputs */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Origin */}
                   <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Departure City / Port
+                    </label>
                     <input
                       type="text"
                       required
                       placeholder="Departure City / Port"
                       value={quoteOrigin}
                       onChange={(e) => setQuoteOrigin(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
                     />
                   </div>
 
+                  {/* Destination */}
                   <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Delivery City / Port
+                    </label>
                     <input
                       type="text"
                       required
                       placeholder="Delivery City / Port"
                       value={quoteDestination}
                       onChange={(e) => setQuoteDestination(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
                     />
                   </div>
 
+                  {/* Name */}
                   <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Your Name
+                    </label>
                     <input
                       type="text"
                       required
                       placeholder="Your Name"
                       value={quoteName}
                       onChange={(e) => setQuoteName(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
                     />
                   </div>
 
+                  {/* Phone */}
                   <div>
-                    <input
-                      type="email"
-                      required
-                      placeholder="Email Address"
-                      value={quoteEmail}
-                      onChange={(e) => setQuoteEmail(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
-                    />
-                  </div>
-
-                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Phone Number
+                    </label>
                     <input
                       type="tel"
                       required
                       placeholder="Phone Number"
                       value={quotePhone}
                       onChange={(e) => setQuotePhone(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
                     />
                   </div>
 
-                  <div>
-                    <button
-                      type="submit"
-                      disabled={quoteSubmitting}
-                      className="w-full py-2.5 rounded-lg bg-[#C59B24] hover:bg-[#B0891E] text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#C59B24]/20"
-                    >
-                      {quoteSubmitting ? "SENDING..." : "SUBMIT"}
-                    </button>
+                  {/* Email */}
+                  <div className="sm:col-span-2">
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="Email Address"
+                      value={quoteEmail}
+                      onChange={(e) => setQuoteEmail(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
+                    />
                   </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={quoteSubmitting}
+                    className="w-full py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#C59B24]/30 hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+                  >
+                    <span>{quoteSubmitting ? "SENDING..." : "SUBMIT"}</span>
+                  </button>
                 </div>
               </form>
             )}
