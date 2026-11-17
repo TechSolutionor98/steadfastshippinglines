@@ -32,21 +32,21 @@ export async function POST(request) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.SMTP_EMAIL || 'crownexcelllc@gmail.com',
-        pass: process.env.SMTP_PASSWORD || 'ssaj rcql kigj vqth',
+        user: process.env.SMTP_EMAIL || 'info@steadfastshippinglines.com',
+        pass: process.env.SMTP_PASSWORD || '',
       },
     });
 
     await transporter.sendMail({
-      from: `"Crown Excel" <${process.env.SMTP_EMAIL || 'craboratory@gmail.com'}>`,
+      from: `"Steadfast Shipping Lines" <${process.env.SMTP_EMAIL || 'info@steadfastshippinglines.com'}>`,
       to: email,
-      subject: 'Your OTP Verification Code - Crown Excel',
+      subject: 'Your OTP Verification Code - Steadfast Shipping Lines',
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #084032; text-align: center;">Crown Excel</h2>
-          <p style="text-align: center; font-size: 16px;">Your OTP verification code is:</p>
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #D7DCE0; border-radius: 12px;">
+          <h2 style="color: #1D2A4C; text-align: center;">Steadfast Shipping Lines</h2>
+          <p style="text-align: center; font-size: 16px; color: #333;">Your verification code is:</p>
           <div style="text-align: center; margin: 20px 0;">
-            <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #084032; background: #f0f0f0; padding: 15px 30px; border-radius: 10px;">${otp}</span>
+            <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #C59B24; background: #1D2A4C; padding: 15px 30px; border-radius: 10px;">${otp}</span>
           </div>
           <p style="text-align: center; color: #666; font-size: 14px;">This code expires in 5 minutes.</p>
           <p style="text-align: center; color: #999; font-size: 12px;">If you didn't request this, please ignore this email.</p>

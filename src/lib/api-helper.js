@@ -13,7 +13,7 @@ export function getApiBase() {
 
   // Server-side
   if (process.env.NODE_ENV === 'development') {
-    const port = process.env.PORT || '2999';
+    const port = process.env.PORT || '3000';
     return `http://localhost:${port}`;
   }
 

@@ -37,13 +37,13 @@ const anton = Anton({
 });
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://steadfastshipping.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.steadfastshippinglines.com"),
   title: {
-    default: "Steadfast Shipping | Reliable Freight & Logistics Solutions",
-    template: "%s | Steadfast Shipping",
+    default: "Steadfast Shipping Lines | Reliable Freight & Logistics Solutions",
+    template: "%s | Steadfast Shipping Lines",
   },
   description:
-    "Steadfast Shipping provides comprehensive global logistics solutions including Ocean Freight, Air Freight, Road Freight, Warehousing, Cargo Services, Customs Clearance, and Door-to-Door Delivery.",
+    "Steadfast Shipping Lines (Pvt) Ltd provides comprehensive global logistics solutions including Ocean Freight, Air Freight, Road Freight, Warehousing, Cargo Services, Customs Clearance, and Door-to-Door Delivery.",
 };
 
 const getCachedWebsiteData = unstable_cache(
