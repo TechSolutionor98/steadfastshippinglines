@@ -864,7 +864,7 @@ export default function HomePage({ cmsContent }) {
       <section className="bg-[#F4F6F8] py-20 px-4 sm:px-8 border-y border-[#D7DCE0]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
-            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">STEP BY STEP LOGISTICS</span>
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">OUR PROCESS</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1D2A4C] mt-1">
               Our Process at Steadfast Shipping Lines (Pvt) Ltd
             </h2>

@@ -57,32 +57,32 @@ export const companyDetails = {
     {
       step: "01",
       title: "Initial Consultation",
-      description: "We analyze your freight volume, timeline, cargo classification, and budget requirements to tailor the best strategy.",
+      description: "We begin by thoroughly understanding your logistics needs, allowing us to create a tailored plan that fits your business objectives.",
     },
     {
       step: "02",
       title: "Strategic Planning",
-      description: "Customized route selection, carrier negotiation, and multimodal coordination to maximize speed and cost efficiency.",
+      description: "Our team optimizes routes and allocates resources efficiently, ensuring cost-effective and timely logistics operations.",
     },
     {
       step: "03",
       title: "Seamless Coordination",
-      description: "Careful packaging, container stuffing, loading, and documentation prep handled by freight specialists.",
+      description: "We handle every detail of your shipment, from pickup to delivery, ensuring all documentation and regulatory requirements are met.",
     },
     {
       step: "04",
       title: "Real Time Tracking",
-      description: "Continuous visibility and GPS milestone updates throughout land, air, and ocean transit legs.",
+      description: "We provide real-time tracking and continuous shipment monitoring, keeping you informed and promptly addressing any issues.",
     },
     {
       step: "05",
       title: "On-Time Delivery",
-      description: "Swift customs clearance and dedicated local delivery vehicles guarantee arrival at the recipient's doorstep.",
+      description: "We ensure your goods are delivered safely and on schedule, with confirmation and all necessary documentation provided.",
     },
     {
       step: "06",
       title: "Post Delivery Support",
-      description: "Complete delivery confirmation, digital proof of delivery (POD), and comprehensive account reviews.",
+      description: "After delivery, we ensure your satisfaction and offer ongoing support, improving our services based on your feedback.",
     },
   ],
   serviceAreas: [
