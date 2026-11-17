@@ -78,7 +78,7 @@ export default function Footer() {
           {/* Column 1: Brand, Tagline, Socials & Newsletter (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <Link href="/" className="inline-block">
-              <div className="relative h-14 w-44">
+              <div className="relative h-20 sm:h-24 w-48 sm:w-56">
                 <Image
                   src="/images/logo-white.png"
                   alt="Steadfast Shipping Lines"
@@ -130,11 +130,11 @@ export default function Footer() {
             </div>
 
             {/* Newsletter Input */}
-            <div className="space-y-1.5 pt-2 max-w-sm">
+            <div className="space-y-1.5 pt-2 max-w-[270px]">
               <p className="text-xs text-slate-300">
                 Stay updated with our latest news and offers
               </p>
-              <form onSubmit={handleSubscribe} className="flex items-center">
+              <form onSubmit={handleSubscribe} className="flex items-center w-full">
                 <input
                   type="email"
                   value={emailInput}
