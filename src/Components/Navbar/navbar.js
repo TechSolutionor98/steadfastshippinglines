@@ -158,41 +158,19 @@ export default function Navbar() {
                 />
               </Link>
 
-              {/* Mega Dropdown Panel */}
+              {/* Simple Clean Dropdown Menu */}
               {servicesDropdownOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] bg-white rounded-2xl shadow-2xl border border-[#D7DCE0] p-6 grid grid-cols-2 gap-3 transition-all animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                  <div className="col-span-2 pb-2 mb-1 border-b border-[#D7DCE0]/80 flex items-center justify-between">
-                    <div>
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-[#C59B24]">Global Freight & Logistics</h4>
-                      <p className="text-xs text-slate-500">Comprehensive end-to-end cargo and transportation services</p>
-                    </div>
-                    <Link
-                      href="/services"
-                      className="text-xs font-bold text-[#1D2A4C] hover:text-[#C59B24] flex items-center gap-1"
-                    >
-                      View All Services <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  </div>
-
+                <div className="absolute top-full left-0 mt-1 w-72 bg-white rounded-xl shadow-xl border border-[#D7DCE0] py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   {servicesData.map((svc) => {
                     const IconComp = iconMap[svc.icon] || Ship;
                     return (
                       <Link
                         key={svc.slug}
                         href={`/${svc.slug}`}
-                        className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-[#F4F6F8] transition-colors group/item"
+                        className="flex items-center gap-3 px-4 py-2.5 text-xs sm:text-sm font-semibold text-[#1D2A4C] hover:bg-[#FDF9EE] hover:text-[#C59B24] transition-colors group"
                       >
-                        <div className="w-9 h-9 rounded-lg bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/40 flex items-center justify-center shrink-0 group-hover/item:bg-[#C59B24] group-hover/item:text-white transition-colors">
-                          <IconComp className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-bold text-[#1D2A4C] group-hover/item:text-[#C59B24] transition-colors leading-snug">
-                            {svc.title}
-                          </div>
-                          <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
-                            {svc.shortDescription}
-                          </p>
-                        </div>
+                        <IconComp className="w-4 h-4 text-[#C59B24] group-hover:scale-110 transition-transform shrink-0" />
+                        <span className="truncate">{svc.title}</span>
                       </Link>
                     );
                   })}
