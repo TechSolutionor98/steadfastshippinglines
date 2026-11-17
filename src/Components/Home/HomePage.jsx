@@ -184,7 +184,7 @@ export default function HomePage({ cmsContent }) {
   return (
     <div className="bg-white text-slate-800">
       {/* =========================================================================
-          SECTION 1: HERO BANNER SLIDER (Matching Osum Hero Banner)
+          SECTION 1: HERO BANNER SLIDER (Steadfast Hero Banner)
           Clean & Crisp Background Images with Full Cover & No Cut / No Overflow
       ========================================================================== */}
       <section className="relative w-full min-h-[420px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[580px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
@@ -408,11 +408,6 @@ export default function HomePage({ cmsContent }) {
             </p>
 
             <div className="pt-2">
-              <div className="text-base font-bold text-white">Mr. Zohaib Shahzad</div>
-              <div className="text-xs text-[#C59B24] font-semibold">Founder & CEO</div>
-            </div>
-
-            <div className="pt-3">
               <Link
                 href="/about-us"
                 className="inline-block px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors"
@@ -646,7 +641,7 @@ export default function HomePage({ cmsContent }) {
       </section>
 
       {/* =========================================================================
-          SECTION 10: "REQUEST A QUOTE" WITH FORM OVERLAY (Matching Osum Quote Banner)
+          SECTION 10: "REQUEST A QUOTE" WITH FORM OVERLAY (Steadfast Quote Banner)
           Theme Colors: Navy #141E36 with Gold #C59B24 Button & Accents
       ========================================================================== */}
       <section className="relative py-20 px-4 sm:px-8 bg-[#141E36] text-white overflow-hidden">
