@@ -99,22 +99,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12">
           {/* Brand Column */}
           <div className="lg:col-span-4 space-y-4">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative h-12 w-12 shrink-0 group-hover:scale-105 transition-transform">
+            {/* Logo Only */}
+            <Link href="/" className="inline-block group py-1">
+              <div className="relative h-16 sm:h-20 w-32 sm:w-44 shrink-0 group-hover:scale-105 transition-transform">
                 <Image
-                  src="/images/logo-emblem-white.png"
+                  src="/images/logo-white.png"
                   alt="Steadfast Shipping Lines (Pvt) Ltd"
                   fill
-                  className="object-contain"
+                  className="object-contain object-left"
                 />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-black text-white tracking-tight leading-none">
-                  STEADFAST
-                </span>
-                <span className="text-[10px] font-bold tracking-[0.22em] text-[#C59B24] uppercase mt-0.5">
-                  SHIPPING LINES (PVT) LTD
-                </span>
               </div>
             </Link>
 

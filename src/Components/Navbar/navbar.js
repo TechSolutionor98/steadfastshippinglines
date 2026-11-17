@@ -105,24 +105,16 @@ export default function Navbar() {
       {/* Main Navigation Bar */}
       <nav className={`w-full transition-all duration-300 ${scrolled ? "py-2.5" : "py-3.5"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between">
-          {/* Logo with Emblem & Typography */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative h-12 w-12 sm:h-14 sm:w-14 shrink-0 group-hover:scale-105 transition-transform">
+          {/* Logo Only (Text removed, original logo displayed) */}
+          <Link href="/" className="flex items-center group py-1">
+            <div className="relative h-14 sm:h-16 md:h-20 w-28 sm:w-36 md:w-44 shrink-0 group-hover:scale-105 transition-transform">
               <Image
-                src="/images/logo-emblem.png"
+                src="/images/logo.png"
                 alt="Steadfast Shipping Lines (Pvt) Ltd"
                 fill
-                className="object-contain"
+                className="object-contain object-left"
                 priority
               />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-[#1D2A4C] leading-none group-hover:text-[#C59B24] transition-colors">
-                STEADFAST
-              </span>
-              <span className="text-[9px] sm:text-[11px] font-extrabold tracking-[0.22em] text-[#C59B24] uppercase mt-0.5">
-                SHIPPING LINES (PVT) LTD
-              </span>
             </div>
           </Link>
 
