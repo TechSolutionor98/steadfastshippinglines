@@ -42,19 +42,19 @@ export default function HomePage({ cmsContent }) {
       title: "RELIABLE FREIGHT SOLUTIONS",
       subtitle: "Welcome to Steadfast Shipping Lines (Pvt) Ltd",
       description: "Providing innovative and reliable transportation solutions worldwide with seamless air, sea, and road freight management.",
-      bgImage: "/images/home/hero-slide.jpg",
+      bgImage: "/images/home/banner-1.jpg",
     },
     {
       title: "Tailored Logistics Services for Every Need",
-      subtitle: "Global Cargo & Transportation",
+      subtitle: "Air, Ocean & Ground Transportation",
       description: "From warehousing and packaging to air, sea, and road freight, we provide a full spectrum of logistics services to streamline your supply chain.",
-      bgImage: "/images/home/ocean.jpg",
+      bgImage: "/images/home/banner-2.jpg",
     },
     {
       title: "Reach Your Destination 100% Safe & Secure",
       subtitle: "Worldwide Network Across 120+ Ports",
       description: "Optimized route planning, real-time GPS tracking, and comprehensive customs clearance to ensure punctual arrival strictly on schedule.",
-      bgImage: "/images/home/air.jpg",
+      bgImage: "/images/home/ocean.jpg",
     },
   ];
 
@@ -153,7 +153,7 @@ export default function HomePage({ cmsContent }) {
               className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-10000"
               style={{ backgroundImage: `url(${slide.bgImage})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#141E36]/95 via-[#1D2A4C]/85 to-[#141E36]/80" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#141E36]/80 via-[#1D2A4C]/65 to-[#141E36]/75" />
           </div>
         ))}
 
