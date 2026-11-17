@@ -657,9 +657,9 @@ export default function HomePage({ cmsContent }) {
         {/* Background Image across the entire section */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('/images/home/quote-banner.jpg')` }}
+          style={{ backgroundImage: `url('/images/home/quote-banner.webp')` }}
         />
-        <div className="absolute inset-0 bg-[#0A1224]/45" />
+        <div className="absolute inset-0 bg-[#0A1224]/20" />
 
         <div className="relative z-10 max-w-3xl mx-auto">
           {/* Section Header */}
