@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 import React, { useState } from 'react';
 import { BarChart3, Code, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
