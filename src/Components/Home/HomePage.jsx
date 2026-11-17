@@ -408,8 +408,8 @@ export default function HomePage({ cmsContent }) {
             </p>
 
             <div className="pt-2">
-              <div className="text-base font-bold text-white">Executive Management</div>
-              <div className="text-xs text-[#C59B24] font-semibold">Founder & Board of Directors</div>
+              <div className="text-base font-bold text-white">Mr. Zohaib Shahzad</div>
+              <div className="text-xs text-[#C59B24] font-semibold">Founder & CEO</div>
             </div>
 
             <div className="pt-3">
@@ -444,7 +444,7 @@ export default function HomePage({ cmsContent }) {
                 <h3 className="text-base font-bold text-white">Sustainable Practices</h3>
               </div>
               <p className="text-xs text-[#D7DCE0] leading-relaxed pl-12">
-                We implement eco-friendly practices across our operations, reducing our carbon footprint through optimized routes, energy-efficient vehicles, and green warehousing solutions.
+                Committed to reducing our environmental footprint, we implement green logistics strategies such as low-emission vehicles and carbon offset programs, promoting eco-friendly operations.
               </p>
             </div>
 
