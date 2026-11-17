@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   Ship,
@@ -38,38 +38,7 @@ const iconMap = {
 
 export default function ServiceDetailPage({ service }) {
   const IconComp = iconMap[service.icon] || Ship;
-  const otherServices = servicesData.filter((s) => s.id !== service.id).slice(0, 5);
-
-  const [inquiryName, setInquiryName] = useState("");
-  const [inquiryEmail, setInquiryEmail] = useState("");
-  const [inquiryPhone, setInquiryPhone] = useState("");
-  const [inquiryMsg, setInquiryMsg] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    try {
-      await fetch("/api/contact-submissions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: inquiryName,
-          email: inquiryEmail,
-          phone: inquiryPhone,
-          subject: `Inquiry for ${service.title}`,
-          service: service.title,
-          comments: inquiryMsg || `Customer requested quote for ${service.title}`,
-        }),
-      });
-      setSubmitted(true);
-    } catch (err) {
-      setSubmitted(true);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  const otherServices = servicesData.filter((s) => s.id !== service.id);
 
   return (
     <div className="bg-white min-h-screen text-slate-800">
@@ -109,7 +78,7 @@ export default function ServiceDetailPage({ service }) {
                   className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 flex items-center gap-2 transition-all backdrop-blur-sm"
                 >
                   <Phone className="w-4 h-4 text-[#C59B24]" />
-                  <span>Call Operations</span>
+                  <span>Call Operations Desk</span>
                 </a>
               </div>
             </div>
@@ -150,199 +119,136 @@ export default function ServiceDetailPage({ service }) {
         </div>
       </section>
 
-      {/* Main Content Body */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Main Column */}
-          <div className="lg:col-span-8 space-y-12">
-            {/* Detailed Overview */}
-            <div className="bg-white p-8 sm:p-10 rounded-2xl shadow-sm border border-[#D7DCE0]">
-              <h2 className="text-2xl font-bold text-[#1D2A4C] mb-4">
-                Comprehensive {service.title} Solutions
-              </h2>
-              <p className="text-slate-600 leading-relaxed text-base sm:text-lg">
-                {service.overview}
-              </p>
-            </div>
+      {/* Main Content Body (Full-Width Clean Layout - Sidebar Form Removed) */}
+      <section className="py-16 px-4 max-w-6xl mx-auto space-y-12">
+        {/* Detailed Overview */}
+        <div className="bg-white p-8 sm:p-12 rounded-3xl shadow-sm border border-[#D7DCE0]">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1D2A4C] mb-4">
+            Comprehensive {service.title} Solutions
+          </h2>
+          <p className="text-slate-600 leading-relaxed text-base sm:text-lg">
+            {service.overview}
+          </p>
+        </div>
 
-            {/* Key Capabilities / Features */}
-            <div>
-              <div className="mb-6">
-                <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Key Service Highlights</span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1D2A4C] mt-1">
-                  What We Provide in {service.title}
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {service.features.map((feat, idx) => (
-                  <div
-                    key={idx}
-                    className="p-6 rounded-2xl bg-white border border-[#D7DCE0] hover:border-[#C59B24] hover:shadow-md transition-all group"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/40 group-hover:bg-[#C59B24] group-hover:text-white flex items-center justify-center font-bold text-sm mb-4 transition-colors">
-                      0{idx + 1}
-                    </div>
-                    <h4 className="text-base font-bold text-[#1D2A4C] mb-2 group-hover:text-[#C59B24] transition-colors">
-                      {feat.title}
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                      {feat.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Why Choose Steadfast for this Service */}
-            <div className="bg-gradient-to-br from-[#141E36] to-[#1D2A4C] text-white p-8 sm:p-10 rounded-2xl shadow-md border border-[#D7DCE0]/15">
-              <h3 className="text-xl sm:text-2xl font-bold mb-6 text-white flex items-center gap-2.5">
-                <ShieldCheck className="w-6 h-6 text-[#C59B24]" />
-                <span>Why Choose Steadfast Shipping Lines for {service.title}?</span>
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {service.whyChoose.map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-3 bg-white/5 p-4 rounded-xl border border-[#D7DCE0]/15">
-                    <CheckCircle2 className="w-5 h-5 text-[#C59B24] shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-sm text-[#D7DCE0] font-medium leading-relaxed">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Step by Step Process */}
-            <div className="bg-[#F4F6F8] p-8 sm:p-10 rounded-2xl shadow-sm border border-[#D7DCE0]">
-              <h3 className="text-2xl font-bold text-[#1D2A4C] mb-6">
-                Our Operational Process
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                {companyDetails.processSteps.slice(0, 3).map((st) => (
-                  <div key={st.step} className="border-l-2 border-[#C59B24] pl-4">
-                    <span className="text-xs font-black text-[#C59B24] tracking-wider uppercase">Stage {st.step}</span>
-                    <h4 className="text-base font-bold text-[#1D2A4C] mt-1 mb-1">{st.title}</h4>
-                    <p className="text-xs text-slate-600 leading-relaxed">{st.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* Key Capabilities / Features */}
+        <div>
+          <div className="mb-8">
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Key Service Highlights</span>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1D2A4C] mt-1">
+              What We Provide in {service.title}
+            </h3>
           </div>
 
-          {/* Right Sidebar */}
-          <div className="lg:col-span-4 space-y-6">
-            {/* Quick Quote Form Card */}
-            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-[#D7DCE0] sticky top-24">
-              <h4 className="text-lg font-bold text-[#1D2A4C] mb-1">
-                Request a Quick Rate
-              </h4>
-              <p className="text-xs text-slate-500 mb-5">
-                Inquire about {service.title} rates and schedules
-              </p>
-
-              {submitted ? (
-                <div className="p-4 rounded-xl bg-[#FDF9EE] border border-[#E2C876] text-[#C59B24] text-sm text-center">
-                  <CheckCircle2 className="w-8 h-8 text-[#C59B24] mx-auto mb-2" />
-                  <p className="font-bold text-[#1D2A4C]">Inquiry Sent!</p>
-                  <p className="text-xs text-slate-600 mt-1">Our freight coordinator will contact you promptly.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-3.5">
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      value={inquiryName}
-                      onChange={(e) => setInquiryName(e.target.value)}
-                      placeholder="e.g. John Doe"
-                      className="w-full px-3.5 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                    />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {service.features.map((feat, idx) => (
+              <div
+                key={idx}
+                className="p-6 rounded-2xl bg-white border border-[#D7DCE0] hover:border-[#C59B24] hover:shadow-md transition-all group flex flex-col justify-between"
+              >
+                <div>
+                  <div className="w-10 h-10 rounded-xl bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/40 group-hover:bg-[#C59B24] group-hover:text-white flex items-center justify-center font-bold text-sm mb-4 transition-colors">
+                    0{idx + 1}
                   </div>
-
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      value={inquiryEmail}
-                      onChange={(e) => setInquiryEmail(e.target.value)}
-                      placeholder="e.g. john@company.com"
-                      className="w-full px-3.5 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">Phone Number</label>
-                    <input
-                      type="tel"
-                      required
-                      value={inquiryPhone}
-                      onChange={(e) => setInquiryPhone(e.target.value)}
-                      placeholder="e.g. +92 312 7777952"
-                      className="w-full px-3.5 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">Shipment Notes / Route</label>
-                    <textarea
-                      rows={3}
-                      value={inquiryMsg}
-                      onChange={(e) => setInquiryMsg(e.target.value)}
-                      placeholder="Cargo volume, origin, destination..."
-                      className="w-full px-3.5 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full py-3 bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold rounded-xl text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors"
-                  >
-                    {submitting ? "Sending..." : "Submit Inquiry"}
-                  </button>
-                </form>
-              )}
-
-              {/* Sidebar other services list */}
-              <div className="mt-8 pt-6 border-t border-[#D7DCE0]">
-                <h5 className="text-xs font-bold uppercase tracking-wider text-[#1D2A4C] mb-3">
-                  Other Logistics Services
-                </h5>
-                <ul className="space-y-1.5">
-                  {otherServices.map((os) => (
-                    <li key={os.slug}>
-                      <Link
-                        href={`/${os.slug}`}
-                        className="text-xs font-semibold text-slate-700 hover:text-[#C59B24] flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-[#F4F6F8] transition-colors"
-                      >
-                        <span>{os.title}</span>
-                        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Need direct help */}
-              <div className="mt-6 p-4 rounded-xl bg-[#FDF9EE] border border-[#E2C876]/60 text-xs">
-                <p className="font-bold text-[#1D2A4C] mb-1">Need Urgent Freight Assistance?</p>
-                <p className="text-slate-600 mb-2">Speak directly with our 24/7 operations team.</p>
-                <div className="space-y-1">
-                  <a
-                    href="tel:+923127777952"
-                    className="font-bold text-[#C59B24] hover:underline flex items-center gap-1.5 text-xs"
-                  >
-                    <Phone className="w-3.5 h-3.5" /> +92 312 7777952
-                  </a>
-                  <a
-                    href="tel:+923127777951"
-                    className="font-bold text-[#C59B24] hover:underline flex items-center gap-1.5 text-xs"
-                  >
-                    <Phone className="w-3.5 h-3.5" /> +92 312 7777951
-                  </a>
+                  <h4 className="text-base font-bold text-[#1D2A4C] mb-2 group-hover:text-[#C59B24] transition-colors">
+                    {feat.title}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {feat.description}
+                  </p>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Why Choose Steadfast for this Service */}
+        <div className="bg-gradient-to-br from-[#141E36] to-[#1D2A4C] text-white p-8 sm:p-12 rounded-3xl shadow-md border border-[#D7DCE0]/15">
+          <h3 className="text-xl sm:text-2xl font-bold mb-8 text-white flex items-center gap-2.5">
+            <ShieldCheck className="w-6 h-6 text-[#C59B24]" />
+            <span>Why Choose Steadfast Shipping Lines for {service.title}?</span>
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {service.whyChoose.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-3 bg-white/5 p-4 rounded-xl border border-[#D7DCE0]/15">
+                <CheckCircle2 className="w-5 h-5 text-[#C59B24] shrink-0 mt-0.5" />
+                <span className="text-xs sm:text-sm text-[#D7DCE0] font-medium leading-relaxed">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Step by Step Process */}
+        <div className="bg-[#F4F6F8] p-8 sm:p-12 rounded-3xl shadow-sm border border-[#D7DCE0]">
+          <div className="mb-8">
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Operational Workflow</span>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1D2A4C] mt-1">
+              Step-by-Step Logistics Coordination
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {companyDetails.processSteps.slice(0, 3).map((st) => (
+              <div key={st.step} className="bg-white p-6 rounded-2xl border border-[#D7DCE0] shadow-sm">
+                <span className="text-xs font-black text-[#C59B24] tracking-wider uppercase">Stage {st.step}</span>
+                <h4 className="text-base font-bold text-[#1D2A4C] mt-1 mb-2">{st.title}</h4>
+                <p className="text-xs text-slate-600 leading-relaxed">{st.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Explore Other Services Horizontal List */}
+        <div className="p-8 sm:p-10 rounded-3xl bg-white border border-[#D7DCE0]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[#D7DCE0]/60">
+            <div>
+              <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Explore More</span>
+              <h4 className="text-xl font-bold text-[#1D2A4C]">Other Freight & Logistics Solutions</h4>
             </div>
+            <Link
+              href="/services"
+              className="text-xs font-bold text-[#C59B24] hover:underline inline-flex items-center gap-1"
+            >
+              <span>View All 10 Services</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {otherServices.map((os) => (
+              <Link
+                key={os.slug}
+                href={`/${os.slug}`}
+                className="p-3.5 rounded-xl bg-[#F4F6F8] hover:bg-[#FDF9EE] hover:border-[#C59B24] border border-[#D7DCE0] transition-colors text-center group"
+              >
+                <div className="text-xs font-bold text-[#1D2A4C] group-hover:text-[#C59B24] transition-colors line-clamp-1">
+                  {os.shortTitle || os.title}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom CTA Card */}
+        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white border-2 border-[#C59B24]/40 text-center space-y-5 shadow-xl">
+          <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight">
+            Ready to Book Your {service.title}?
+          </h3>
+          <p className="text-sm text-[#D7DCE0] max-w-2xl mx-auto leading-relaxed">
+            Get instant, competitive freight quotes tailored to your cargo origin, destination, and transit schedule.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 pt-2">
+            <Link
+              href="/quote"
+              className="px-8 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-all hover:scale-105"
+            >
+              Get a Free Quote
+            </Link>
+            <Link
+              href="/contact"
+              className="px-8 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 transition-all"
+            >
+              Speak to a Representative
+            </Link>
           </div>
         </div>
       </section>
