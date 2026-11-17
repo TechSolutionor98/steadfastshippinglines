@@ -132,55 +132,60 @@ export default function HomePage({ cmsContent }) {
     <div className="bg-white text-slate-800">
       {/* =========================================================================
           SECTION 1: HERO BANNER SLIDER (Matching Osum Hero Banner)
-          Clean & Crisp Background Images without Dark Opacity Overlay
+          Clean & Crisp Background Images with Full Cover & No Cut / No Overflow
       ========================================================================== */}
-      <section className="relative min-h-[580px] sm:min-h-[660px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
+      <section className="relative w-full min-h-[420px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[580px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
         {heroSlides.map((slide, idx) => (
           <div
             key={idx}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            className={`absolute inset-0 w-full h-full overflow-hidden transition-opacity duration-1000 ease-in-out ${
               idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
-            {/* Background Image - Clean without dark overlay */}
+            {/* Background Image - Full Cover, No Overflow, No Cut */}
             <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-1000"
-              style={{ backgroundImage: `url(${slide.bgImage})` }}
+              className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${slide.bgImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center center",
+                backgroundRepeat: "no-repeat",
+              }}
             />
           </div>
         ))}
 
-        <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-8 text-center space-y-6 py-20">
+        <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-8 text-center space-y-4 sm:space-y-6 py-12 sm:py-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1D2A4C]/85 border border-[#C59B24] text-[#C59B24] text-xs sm:text-sm font-bold tracking-wider uppercase animate-in fade-in duration-500 shadow-lg backdrop-blur-sm">
             <Ship className="w-4 h-4 text-[#C59B24]" />
             <span>{heroSlides[currentSlide].subtitle}</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.1] max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight uppercase leading-[1.15] max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
             {heroSlides[currentSlide].title}
           </h1>
 
-          <p className="text-sm sm:text-lg text-white font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
+          <p className="text-xs sm:text-base text-white font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
             {heroSlides[currentSlide].description}
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
             <Link
               href="/services"
-              className="px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-xl shadow-black/40 transition-all hover:scale-105"
+              className="px-7 sm:px-8 py-3 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-xl shadow-black/40 transition-all hover:scale-105"
             >
               SEE SERVICES
             </Link>
             <Link
               href="/contact"
-              className="px-8 py-3.5 rounded-md bg-[#1D2A4C] hover:bg-[#15203A] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#C59B24] shadow-xl shadow-black/40 transition-all hover:scale-105"
+              className="px-7 sm:px-8 py-3 rounded-md bg-[#1D2A4C] hover:bg-[#15203A] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#C59B24] shadow-xl shadow-black/40 transition-all hover:scale-105"
             >
               CONTACT US
             </Link>
           </div>
 
           {/* Slider Controls */}
-          <div className="flex items-center justify-center gap-3 pt-6">
+          <div className="flex items-center justify-center gap-3 pt-4 sm:pt-6">
             {heroSlides.map((_, i) => (
               <button
                 key={i}
