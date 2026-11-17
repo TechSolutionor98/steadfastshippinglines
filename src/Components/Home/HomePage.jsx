@@ -104,19 +104,72 @@ export default function HomePage({ cmsContent }) {
   // FAQ Accordion State (Section 13)
   const [openFaq, setOpenFaq] = useState(0);
 
-  // Map service image
-  const serviceImages = {
-    "air-freight": "/images/home/air.jpg",
-    "road-freight": "/images/home/road.jpg",
-    "ocean-freight": "/images/home/ocean.jpg",
-    "warehousing-service": "/images/home/warehouse.jpg",
-    "cargo-services": "/images/home/cargo.jpg",
-    "cross-stuffing-service": "/images/home/cross-stuffing.jpg",
-    "break-bulk-cargo-service": "/images/home/how-we-help.jpg",
-    "door-to-door-delievery": "/images/home/door.jpg",
-    "transportation-service": "/images/home/road.jpg",
-    "customs-clearance-service": "/images/home/ocean.jpg",
-  };
+  // Section 3: "OUR SERVICES" / "WHAT WE PROVIDE" (Exact 9 Services)
+  const servicesProvided = [
+    {
+      title: "Ocean Freight",
+      shortTitle: "Ocean Freight",
+      slug: "ocean-freight",
+      image: "/images/home/ocean.jpg",
+      description: "Ocean freight is a cost-effective and reliable method of transporting large quantities of goods across long distances.",
+    },
+    {
+      title: "Air Freight",
+      shortTitle: "Air Freight",
+      slug: "air-freight",
+      image: "/images/home/air.jpg",
+      description: "Air freight is the fastest and most reliable method of transporting goods over long distances. At Steadfast Shipping Lines (Pvt) Ltd, our air freight solutions ensure time-critical delivery worldwide.",
+    },
+    {
+      title: "Custom Clearance",
+      shortTitle: "Custom Clearance",
+      slug: "customs-clearance-service",
+      image: "/images/home/customs.jpg",
+      description: "Customs clearance is a critical step in international trade, ensuring that goods comply with all regulatory requirements.",
+    },
+    {
+      title: "Warehousing",
+      shortTitle: "Warehousing",
+      slug: "warehousing-service",
+      image: "/images/home/warehouse.jpg",
+      description: "Effective warehousing is crucial for managing and optimizing your supply chain, providing secure and efficient storage.",
+    },
+    {
+      title: "Cargo Service",
+      shortTitle: "Cargo Service",
+      slug: "cargo-services",
+      image: "/images/home/cargo.jpg",
+      description: "Cargo services are essential for managing the safe and efficient transport of goods across various modes of transportation.",
+    },
+    {
+      title: "Break Bulk Cargo",
+      shortTitle: "Break Bulk Cargo",
+      slug: "break-bulk-cargo-service",
+      image: "/images/home/break-bulk.jpg",
+      description: "Break bulk cargo refers to goods that are transported in non-standardized packages from all over.",
+    },
+    {
+      title: "Door to Door",
+      shortTitle: "Door to Door",
+      slug: "door-to-door-delievery",
+      image: "/images/home/door.jpg",
+      description: "Door-to-door delivery is an essential service for businesses and individuals seeking reliable delivery solutions.",
+    },
+    {
+      title: "Cross Stuffing",
+      shortTitle: "Cross Stuffing",
+      slug: "cross-stuffing-service",
+      image: "/images/home/cross-stuffing.jpg",
+      description: "Cross-stuffing, also known as cross-docking, is a logistics process designed to optimize the handling and transfer of goods.",
+    },
+    {
+      title: "Transportation",
+      shortTitle: "Transportation",
+      slug: "transportation-service",
+      image: "/images/home/road.jpg",
+      description: "Transportation is a vital component of logistics, encompassing the movement of goods from one location to another.",
+    },
+  ];
 
   // Major ports list
   const majorPorts = [
@@ -278,6 +331,7 @@ export default function HomePage({ cmsContent }) {
       {/* =========================================================================
           SECTION 3: "OUR SERVICES" / "WHAT WE PROVIDE" (Cards with Images)
           Theme Colors: Light Silver #F4F6F8 backdrop, White Cards, Gold & Navy Accents
+          100% Clear Images - NO Opacity Overlay
       ========================================================================== */}
       <section className="bg-[#F4F6F8] py-20 px-4 sm:px-8 border-y border-[#D7DCE0]">
         <div className="max-w-7xl mx-auto">
@@ -289,22 +343,21 @@ export default function HomePage({ cmsContent }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {servicesData.map((svc) => (
+            {servicesProvided.map((svc) => (
               <div
                 key={svc.slug}
                 className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl border border-[#D7DCE0] transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
-                  {/* Service Image Banner on Top */}
-                  <div className="relative h-48 w-full overflow-hidden bg-[#141E36]">
+                  {/* Service Image Banner on Top - 100% Clear without Opacity */}
+                  <div className="relative h-48 w-full overflow-hidden bg-slate-100">
                     <Image
-                      src={serviceImages[svc.slug] || "/images/home/ocean.jpg"}
+                      src={svc.image}
                       alt={svc.title}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-100"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#141E36]/80 via-transparent to-transparent" />
-                    <span className="absolute bottom-3 left-4 text-xs font-bold text-[#C59B24] uppercase tracking-wider drop-shadow bg-[#141E36]/70 px-2.5 py-1 rounded">
+                    <span className="absolute bottom-3 left-4 text-xs font-bold text-[#C59B24] uppercase tracking-wider bg-[#1D2A4C] px-2.5 py-1 rounded shadow-md border border-[#C59B24]/30">
                       {svc.shortTitle}
                     </span>
                   </div>
@@ -314,7 +367,7 @@ export default function HomePage({ cmsContent }) {
                       {svc.title}
                     </h3>
                     <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
-                      {svc.shortDescription}
+                      {svc.description}
                     </p>
                   </div>
                 </div>

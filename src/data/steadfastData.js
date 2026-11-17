@@ -124,7 +124,7 @@ export const servicesData = [
     shortTitle: "Ocean Freight",
     tagline: "Cost-Effective & High-Capacity Maritime Solutions",
     icon: "Ship",
-    shortDescription: "Ocean freight is a cost-effective and reliable method of transporting large quantities of goods across international trade lanes with FCL and LCL options.",
+    shortDescription: "Ocean freight is a cost-effective and reliable method of transporting large quantities of goods across long distances.",
     overview: "Ocean freight is a cost-effective and reliable method of transporting large quantities of goods across long distances. At Steadfast Shipping Lines (Pvt) Ltd, we provide comprehensive ocean freight solutions designed to meet the diverse shipping requirements of modern businesses. Whether shipping Full Container Loads (FCL) or Less than Container Loads (LCL), our seasoned team ensures your cargo is safely booked, tracked, and delivered with competitive transit schedules.",
     image: "/images/ocean-freight.jpg",
     features: [
@@ -167,7 +167,7 @@ export const servicesData = [
     shortTitle: "Air Freight",
     tagline: "Fast, Reliable & Priority Worldwide Air Cargo",
     icon: "Plane",
-    shortDescription: "Air freight is the fastest method of transporting goods over long distances, ideal for urgent, high-value, and time-critical shipments.",
+    shortDescription: "Air freight is the fastest and most reliable method of transporting goods over long distances. At Steadfast Shipping Lines (Pvt) Ltd, we provide top-tier air freight solutions.",
     overview: "Air freight is the fastest and most reliable method of transporting goods over long distances. At Steadfast Shipping Lines (Pvt) Ltd, we provide top-tier air freight services engineered for businesses requiring expedited shipping and guaranteed delivery windows. Leveraging our global partnerships with premier cargo airlines, we manage your air shipments from tarmac to destination with maximum velocity and security.",
     image: "/images/air-freight.jpg",
     features: [
@@ -253,7 +253,7 @@ export const servicesData = [
     shortTitle: "Warehousing",
     tagline: "Secure Storage, Smart Inventory & Modern Distribution",
     icon: "Warehouse",
-    shortDescription: "Effective warehousing crucial for managing your supply chain, featuring climate-controlled storage and advanced WMS inventory tracking.",
+    shortDescription: "Effective warehousing is crucial for managing and optimizing your supply chain, providing secure and efficient storage.",
     overview: "Effective warehousing is crucial for managing and optimizing your supply chain, providing secure and efficient storage solutions for your commercial goods. At Steadfast Shipping Lines (Pvt) Ltd, our state-of-the-art warehousing facilities feature 24/7 digital surveillance, climate-controlled zones, automated inventory management, and integrated order fulfillment services.",
     image: "/images/warehousing.jpg",
     features: [
@@ -296,7 +296,7 @@ export const servicesData = [
     shortTitle: "Cargo Services",
     tagline: "Specialized & Multimodal Cargo Management",
     icon: "Package",
-    shortDescription: "Essential cargo management across land, sea, and air with specialized handling for standard, high-value, and sensitive shipments.",
+    shortDescription: "Cargo services are essential for managing the safe and efficient transport of goods across various modes of transportation.",
     overview: "Cargo services are essential for managing the safe and efficient transport of goods across diverse modes of transportation. At Steadfast Shipping Lines (Pvt) Ltd, our comprehensive cargo services provide end-to-end logistics coordination, secure packing, multimodal routing, and certified customs handling for both general and specialized shipments.",
     image: "/images/cargo-services.jpg",
     features: [
@@ -339,7 +339,7 @@ export const servicesData = [
     shortTitle: "Cross-Stuffing",
     tagline: "Rapid Cargo Transfer, Transshipment & Hub Optimization",
     icon: "Boxes",
-    shortDescription: "Cross-stuffing / cross-docking transfers cargo directly from inbound to outbound containers with zero warehouse delay.",
+    shortDescription: "Cross-stuffing, also known as cross-docking, is a logistics process designed to optimize the handling and transfer of goods.",
     overview: "Cross-stuffing, also known as cross-docking, is a specialized logistics process designed to optimize cargo flow by transferring goods directly from inbound containers or trucks to outbound transport vehicles with minimal handling. At Steadfast Shipping Lines (Pvt) Ltd, our dedicated transshipment hubs streamline your distribution, eliminate unnecessary demurrage, and accelerate delivery times.",
     image: "/images/cross-stuffing.jpg",
     features: [
@@ -382,7 +382,7 @@ export const servicesData = [
     shortTitle: "Break Bulk Cargo",
     tagline: "Heavy Lift, Out-of-Gauge & Non-Containerized Freight",
     icon: "Anchor",
-    shortDescription: "Expert handling and safe transport for oversized machinery, steel, project cargo, and non-standardized industrial goods.",
+    shortDescription: "Break bulk cargo refers to goods that are transported in non-standardized packages from all over.",
     overview: "Break bulk cargo refers to goods that cannot fit into standard shipping containers and must be transported as individual pieces, heavy units, or loose freight. At Steadfast Shipping Lines (Pvt) Ltd, we specialize in project cargo logistics, heavy lift maritime charters, and specialized flat rack stowage for industrial machinery, energy infrastructure, and construction cargo.",
     image: "/images/break-bulk.jpg",
     features: [
@@ -425,7 +425,7 @@ export const servicesData = [
     shortTitle: "Transportation",
     tagline: "Multimodal Fleet, Route Optimization & Intermodal Delivery",
     icon: "Truck",
-    shortDescription: "Vital transportation encompassing road, rail, and sea with modern fleets and dynamic routing algorithms for timely delivery.",
+    shortDescription: "Transportation is a vital component of logistics, encompassing the movement of goods from one location to another.",
     overview: "Transportation is a vital component of modern commerce, encompassing the coordinated movement of goods across diverse terrains and transport modes. At Steadfast Shipping Lines (Pvt) Ltd, we combine cutting-edge fleet telematics, strategic multimodal routing, and dedicated driver networks to transport your cargo safely across domestic, regional, and international borders.",
     image: "/images/transportation.jpg",
     features: [
@@ -468,7 +468,7 @@ export const servicesData = [
     shortTitle: "Customs Clearance",
     tagline: "Fast Regulatory Approval, Tariff Compliance & Documentation",
     icon: "FileCheck",
-    shortDescription: "Smooth customs clearance with expert documentation, HS code classification, duty optimization, and regulatory compliance.",
+    shortDescription: "Customs clearance is a critical step in international trade, ensuring that goods comply with all regulatory requirements.",
     overview: "Customs clearance is a critical step in international trade, ensuring that goods comply with all regulatory requirements before entering or leaving a country. At Steadfast Shipping Lines (Pvt) Ltd, our licensed customs brokers navigate the complexities of import/export regulations, HS code tariff classifications, duty calculations, and government authority coordination to prevent delays and penalties.",
     image: "/images/customs-clearance.jpg",
     features: [
@@ -511,7 +511,7 @@ export const servicesData = [
     shortTitle: "Door to Door",
     tagline: "End-to-End Seamless Logistics from Origin to Final Address",
     icon: "Building2",
-    shortDescription: "Complete door-to-door delivery managing pickup, international transit, customs, and final delivery directly to the recipient.",
+    shortDescription: "Door-to-door delivery is an essential service for businesses and individuals seeking reliable delivery solutions.",
     overview: "Door-to-door delivery is the ultimate convenience for businesses and individuals seeking a seamless shipping experience. At Steadfast Shipping Lines (Pvt) Ltd, our all-inclusive door-to-door service handles the entire logistics journey from initial pickup at the manufacturer's facility to direct delivery at the recipient's doorstep with complete visibility throughout.",
     image: "/images/door-to-door.jpg",
     features: [
