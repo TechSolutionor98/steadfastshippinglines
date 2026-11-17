@@ -45,13 +45,13 @@ export default function HomePage({ cmsContent }) {
       title: "RELIABLE FREIGHT SOLUTIONS",
       subtitle: "Welcome to Steadfast Shipping Lines (Pvt) Ltd",
       description: "Providing innovative and reliable transportation solutions worldwide with seamless air, sea, and road freight management.",
-      bgImage: "/images/home/banner-1.jpg",
+      bgImage: "/images/home/banner-1.webp",
     },
     {
       title: "Tailored Logistics Services for Every Need",
       subtitle: "Air, Ocean & Ground Transportation",
       description: "From warehousing and packaging to air, sea, and road freight, we provide a full spectrum of logistics services to streamline your supply chain.",
-      bgImage: "/images/home/banner-2.jpg",
+      bgImage: "/images/home/banner-2.webp",
     },
   ];
 
