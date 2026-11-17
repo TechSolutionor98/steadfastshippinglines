@@ -60,6 +60,9 @@ export default function Footer() {
     { title: "Cargo Service", href: "/cargo-services" },
     { title: "Break Bulk Cargo", href: "/break-bulk-cargo-service" },
     { title: "Door to Door Delivery", href: "/door-to-door-delievery" },
+    { title: "Cross Stuffing", href: "/cross-stuffing-service" },
+    { title: "Transportation", href: "/transportation-service" },
+    { title: "Road Freight", href: "/road-freight" },
   ];
 
   const companyList = [
@@ -161,7 +164,7 @@ export default function Footer() {
           {/* Column 2: Our Services (2.5 cols) */}
           <div className="lg:col-span-2 space-y-4">
             <h4 className="text-base font-bold text-white tracking-tight">Our Services</h4>
-            <ul className="space-y-2.5 text-xs text-slate-300">
+            <ul className="space-y-2 text-xs text-slate-300">
               {servicesList.map((service, idx) => (
                 <li key={idx} className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C59B24] shrink-0" />
@@ -176,7 +179,7 @@ export default function Footer() {
           {/* Column 3: Company (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
             <h4 className="text-base font-bold text-white tracking-tight">Company</h4>
-            <ul className="space-y-2.5 text-xs text-slate-300">
+            <ul className="space-y-2 text-xs text-slate-300">
               {companyList.map((item, idx) => (
                 <li key={idx} className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C59B24] shrink-0" />
