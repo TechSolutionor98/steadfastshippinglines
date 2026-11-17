@@ -650,23 +650,24 @@ export default function HomePage({ cmsContent }) {
       </section>
 
       {/* =========================================================================
-          SECTION 10: "REQUEST A FREE QUOTE" - CLEAN CENTERED SIMPLE FORM
-          Theme Colors: Navy #141E36 backdrop with Gold #C59B24 & Clean White Card
+          SECTION 10: "REQUEST A FREE QUOTE" - WITH LOGISTICS BACKGROUND IMAGE
+          Clean & Crisp Image Background with Centered Simple Form
       ========================================================================== */}
-      <section className="relative py-20 px-4 sm:px-8 bg-[#141E36] text-white overflow-hidden border-y border-[#D7DCE0]/15">
+      <section className="relative py-20 sm:py-24 px-4 sm:px-8 text-white overflow-hidden border-y border-[#D7DCE0]/20">
+        {/* Background Image across the entire section */}
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-15"
-          style={{ backgroundImage: `url('/images/home/quote-bg.jpg')` }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('/images/home/quote-banner.jpg')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#141E36]/90 via-[#1D2A4C]/85 to-[#141E36]/90" />
+        <div className="absolute inset-0 bg-[#0A1224]/45" />
 
         <div className="relative z-10 max-w-3xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-8">
-            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest">
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               REQUEST A FREE QUOTE
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               Request a quote
             </h2>
           </div>
