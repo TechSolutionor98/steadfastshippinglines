@@ -192,9 +192,9 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-4">
             <h4 className="text-base font-bold text-white tracking-tight">Get In Touch</h4>
             <div className="space-y-3.5 text-xs leading-relaxed">
-              {/* Contact Numbers */}
+              {/* Phones */}
               <div>
-                <span className="font-bold text-white block mb-1">Contact Numbers</span>
+                <span className="font-bold text-white block mb-1">Phones</span>
                 <div className="space-y-0.5">
                   <a href="tel:+923127777952" className="text-[#C59B24] hover:underline block font-medium">
                     +92 312 7777952
