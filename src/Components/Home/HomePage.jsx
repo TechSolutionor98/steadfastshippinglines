@@ -36,7 +36,7 @@ import {
 import { companyDetails, servicesData } from "@/data/steadfastData";
 
 export default function HomePage({ cmsContent }) {
-  // Hero Slider state
+  // Hero Slider state - User-uploaded banners
   const heroSlides = [
     {
       title: "RELIABLE FREIGHT SOLUTIONS",
@@ -49,12 +49,6 @@ export default function HomePage({ cmsContent }) {
       subtitle: "Air, Ocean & Ground Transportation",
       description: "From warehousing and packaging to air, sea, and road freight, we provide a full spectrum of logistics services to streamline your supply chain.",
       bgImage: "/images/home/banner-2.jpg",
-    },
-    {
-      title: "Reach Your Destination 100% Safe & Secure",
-      subtitle: "Worldwide Network Across 120+ Ports",
-      description: "Optimized route planning, real-time GPS tracking, and comprehensive customs clearance to ensure punctual arrival strictly on schedule.",
-      bgImage: "/images/home/ocean.jpg",
     },
   ];
 
@@ -138,7 +132,7 @@ export default function HomePage({ cmsContent }) {
     <div className="bg-white text-slate-800">
       {/* =========================================================================
           SECTION 1: HERO BANNER SLIDER (Matching Osum Hero Banner)
-          Theme Colors: Navy #1D2A4C backdrop with Gold #C59B24 Accents
+          Clean & Crisp Background Images without Dark Opacity Overlay
       ========================================================================== */}
       <section className="relative min-h-[580px] sm:min-h-[660px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
         {heroSlides.map((slide, idx) => (
@@ -148,39 +142,38 @@ export default function HomePage({ cmsContent }) {
               idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
-            {/* Background Image with Dark Blue & Navy Overlay */}
+            {/* Background Image - Clean without dark overlay */}
             <div
-              className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-10000"
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-1000"
               style={{ backgroundImage: `url(${slide.bgImage})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#141E36]/80 via-[#1D2A4C]/65 to-[#141E36]/75" />
           </div>
         ))}
 
         <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-8 text-center space-y-6 py-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs sm:text-sm font-bold tracking-wider uppercase animate-in fade-in duration-500">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1D2A4C]/85 border border-[#C59B24] text-[#C59B24] text-xs sm:text-sm font-bold tracking-wider uppercase animate-in fade-in duration-500 shadow-lg backdrop-blur-sm">
             <Ship className="w-4 h-4 text-[#C59B24]" />
             <span>{heroSlides[currentSlide].subtitle}</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.1] max-w-4xl mx-auto drop-shadow-md">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.1] max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
             {heroSlides[currentSlide].title}
           </h1>
 
-          <p className="text-sm sm:text-lg text-[#D7DCE0] max-w-2xl mx-auto leading-relaxed drop-shadow">
+          <p className="text-sm sm:text-lg text-white font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
             {heroSlides[currentSlide].description}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <Link
               href="/services"
-              className="px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#C59B24]/25 transition-all hover:scale-105"
+              className="px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-xl shadow-black/40 transition-all hover:scale-105"
             >
               SEE SERVICES
             </Link>
             <Link
               href="/contact"
-              className="px-8 py-3.5 rounded-md bg-transparent hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider border-2 border-[#D7DCE0] transition-all hover:border-[#C59B24]"
+              className="px-8 py-3.5 rounded-md bg-[#1D2A4C] hover:bg-[#15203A] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#C59B24] shadow-xl shadow-black/40 transition-all hover:scale-105"
             >
               CONTACT US
             </Link>
@@ -192,8 +185,8 @@ export default function HomePage({ cmsContent }) {
               <button
                 key={i}
                 onClick={() => setCurrentSlide(i)}
-                className={`h-2.5 rounded-full transition-all ${
-                  i === currentSlide ? "w-8 bg-[#C59B24]" : "w-2.5 bg-white/40 hover:bg-white/70"
+                className={`h-2.5 rounded-full transition-all shadow-md ${
+                  i === currentSlide ? "w-8 bg-[#C59B24]" : "w-2.5 bg-white/60 hover:bg-white"
                 }`}
                 aria-label={`Go to slide ${i + 1}`}
               />
