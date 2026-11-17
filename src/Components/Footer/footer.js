@@ -198,11 +198,12 @@ export default function Footer() {
               {/* Phones */}
               <div>
                 <span className="font-bold text-white block mb-1">Phones</span>
-                <div className="space-y-0.5">
-                  <a href="tel:+923127777952" className="text-[#C59B24] hover:underline block font-medium">
+                <div className="flex items-center flex-wrap gap-1.5 text-[#C59B24] font-medium">
+                  <a href="tel:+923127777952" className="hover:underline">
                     +92 312 7777952
                   </a>
-                  <a href="tel:+923127777951" className="text-[#C59B24] hover:underline block font-medium">
+                  <span className="text-white/60">/</span>
+                  <a href="tel:+923127777951" className="hover:underline">
                     +92 312 7777951
                   </a>
                 </div>
