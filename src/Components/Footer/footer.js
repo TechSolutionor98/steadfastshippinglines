@@ -76,14 +76,15 @@ export default function Footer() {
         {/* Main 4 Columns Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-12">
           {/* Column 1: Brand, Tagline, Socials & Newsletter (4 cols) */}
-          <div className="lg:col-span-4 space-y-4">
-            <Link href="/" className="inline-block">
-              <div className="relative h-20 sm:h-24 w-48 sm:w-56">
+          <div className="lg:col-span-4 space-y-4 flex flex-col items-center text-center">
+            {/* Enlarged & Centered Logo */}
+            <Link href="/" className="inline-block group">
+              <div className="relative h-28 sm:h-32 w-48 sm:w-56 transition-transform group-hover:scale-105">
                 <Image
                   src="/images/logo-white.png"
                   alt="Steadfast Shipping Lines"
                   fill
-                  className="object-contain object-left"
+                  className="object-contain object-center"
                 />
               </div>
             </Link>
@@ -93,9 +94,9 @@ export default function Footer() {
             </p>
 
             {/* Follow Us */}
-            <div className="space-y-2 pt-1">
+            <div className="space-y-2 pt-1 flex flex-col items-center">
               <span className="text-xs font-semibold text-white block">Follow Us</span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <a
                   href="#"
                   aria-label="Facebook"
@@ -130,7 +131,7 @@ export default function Footer() {
             </div>
 
             {/* Newsletter Input */}
-            <div className="space-y-1.5 pt-2 max-w-[270px]">
+            <div className="space-y-1.5 pt-2 max-w-[270px] w-full text-center">
               <p className="text-xs text-slate-300">
                 Stay updated with our latest news and offers
               </p>
