@@ -110,21 +110,19 @@ Additional Notes: ${formData.comments || "None"}
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen text-slate-800">
+    <div className="bg-white min-h-screen text-slate-800">
       {/* Hero Header */}
-      <section className="relative bg-gradient-to-br from-[#071325] via-[#0b1b33] to-[#132c52] text-white py-16 sm:py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-        
+      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-16 sm:py-24 px-4 overflow-hidden border-b border-[#D7DCE0]/15">
         <div className="max-w-7xl mx-auto relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-400/20 text-sky-300 text-xs font-bold mb-4">
-            <Calculator className="w-4 h-4 text-sky-400" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
+            <Calculator className="w-4 h-4 text-[#C59B24]" />
             <span>Fast & Free Freight Estimation</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
             REQUEST A FREIGHT QUOTE
           </h1>
-          <p className="text-base sm:text-xl text-sky-100/90 max-w-3xl mx-auto mt-4 leading-relaxed">
+          <p className="text-base sm:text-lg text-[#D7DCE0] max-w-3xl mx-auto mt-4 leading-relaxed">
             Get instant, competitive freight rates tailored to your cargo specs, transit timeline, and international trade lane.
           </p>
         </div>
@@ -134,10 +132,10 @@ Additional Notes: ${formData.comments || "None"}
       <section className="py-16 px-4 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Form Column */}
-          <div className="lg:col-span-8 bg-white p-8 sm:p-12 rounded-3xl border border-slate-200/80 shadow-md">
+          <div className="lg:col-span-8 bg-white p-8 sm:p-12 rounded-3xl border border-[#D7DCE0] shadow-md">
             <div>
-              <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">Online Rate Calculation</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0b1b33] mt-1">
+              <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Online Rate Calculation</span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1D2A4C] mt-1">
                 Cargo Specifications & Routing
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 mt-2">
@@ -149,11 +147,11 @@ Additional Notes: ${formData.comments || "None"}
               <div
                 className={`my-6 p-4 rounded-xl text-xs sm:text-sm font-medium flex items-center gap-2.5 ${
                   status.type === "success"
-                    ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                    ? "bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]"
                     : "bg-red-50 text-red-800 border border-red-200"
                 }`}
               >
-                {status.type === "success" && <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />}
+                {status.type === "success" && <CheckCircle2 className="w-5 h-5 text-[#C59B24] shrink-0" />}
                 <span>{status.msg}</span>
               </div>
             )}
@@ -168,7 +166,7 @@ Additional Notes: ${formData.comments || "None"}
                   name="freightType"
                   value={formData.freightType}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7] font-medium text-slate-800"
+                  className="w-full px-4 py-3 text-xs sm:text-sm bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24] font-medium text-slate-800"
                 >
                   <option value="Ocean Freight">Ocean Freight (FCL / LCL Container)</option>
                   <option value="Air Freight">Air Freight (Express & Consolidated)</option>
@@ -196,7 +194,7 @@ Additional Notes: ${formData.comments || "None"}
                     value={formData.origin}
                     onChange={handleChange}
                     placeholder="e.g. Shanghai Port, China or Dubai, UAE"
-                    className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                    className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                   />
                 </div>
                 <div>
@@ -210,7 +208,7 @@ Additional Notes: ${formData.comments || "None"}
                     value={formData.destination}
                     onChange={handleChange}
                     placeholder="e.g. Karachi / Felixstowe / Rotterdam"
-                    className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                    className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                   />
                 </div>
               </div>
@@ -227,7 +225,7 @@ Additional Notes: ${formData.comments || "None"}
                     value={formData.cargoWeight}
                     onChange={handleChange}
                     placeholder="e.g. 1500"
-                    className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                    className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                   />
                 </div>
                 <div>
@@ -240,7 +238,7 @@ Additional Notes: ${formData.comments || "None"}
                     value={formData.cargoVolume}
                     onChange={handleChange}
                     placeholder="e.g. 12 CBM or Pallet Count"
-                    className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                    className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                   />
                 </div>
                 <div>
@@ -253,14 +251,14 @@ Additional Notes: ${formData.comments || "None"}
                     value={formData.cargoType}
                     onChange={handleChange}
                     placeholder="e.g. General, Reefer, HazMat"
-                    className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                    className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                   />
                 </div>
               </div>
 
               {/* Customer Contact Details */}
-              <div className="pt-4 border-t border-slate-100">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-4">
+              <div className="pt-4 border-t border-[#D7DCE0]/60">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#1D2A4C] mb-4">
                   Contact Information
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -273,7 +271,7 @@ Additional Notes: ${formData.comments || "None"}
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="e.g. Sarah Jenkins"
-                      className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                      className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
                   <div>
@@ -285,7 +283,7 @@ Additional Notes: ${formData.comments || "None"}
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="e.g. sarah@company.com"
-                      className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                      className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
                   <div>
@@ -296,8 +294,8 @@ Additional Notes: ${formData.comments || "None"}
                       required
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="e.g. +92 321 8662222"
-                      className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                      placeholder="e.g. +92 312 7777952"
+                      className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
                   <div>
@@ -308,7 +306,7 @@ Additional Notes: ${formData.comments || "None"}
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="e.g. Global Traders LLC"
-                      className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                      className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
                 </div>
@@ -322,14 +320,14 @@ Additional Notes: ${formData.comments || "None"}
                   value={formData.comments}
                   onChange={handleChange}
                   placeholder="Tell us if you need container loading, customs clearance at destination, or liftgate delivery..."
-                  className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0284c7]"
+                  className="w-full px-4 py-2.5 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-sm rounded-xl shadow-lg shadow-sky-500/25 transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-[#C59B24]/20 transition-all flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" />
                 <span>{loading ? "Calculating Routing & Sending..." : "Submit Quote Request"}</span>
@@ -339,62 +337,56 @@ Additional Notes: ${formData.comments || "None"}
 
           {/* Right Highlights & Global Offices */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-gradient-to-br from-[#0c1f3d] to-[#122e54] text-white p-7 rounded-3xl shadow-sm space-y-6">
+            <div className="bg-gradient-to-br from-[#141E36] to-[#1D2A4C] text-white p-7 rounded-3xl shadow-sm space-y-6 border border-[#D7DCE0]/15">
               <div>
-                <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">The Steadfast Advantage</span>
-                <h3 className="text-xl font-bold text-white mt-1">Why Choose Steadfast Shipping?</h3>
+                <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">The Steadfast Advantage</span>
+                <h3 className="text-xl font-bold text-white mt-1">Why Choose Steadfast Shipping Lines?</h3>
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-start gap-3 bg-white/5 p-3.5 rounded-xl border border-white/10">
-                  <Clock className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 bg-white/5 p-3.5 rounded-xl border border-[#D7DCE0]/15">
+                  <Clock className="w-5 h-5 text-[#C59B24] shrink-0 mt-0.5" />
                   <div>
                     <h5 className="font-bold text-sm">24/7 Operations Support</h5>
-                    <p className="text-xs text-slate-300 mt-0.5">Instant human response from dispatchers</p>
+                    <p className="text-xs text-[#D7DCE0] mt-0.5">Instant human response from dispatchers</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 bg-white/5 p-3.5 rounded-xl border border-white/10">
-                  <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 bg-white/5 p-3.5 rounded-xl border border-[#D7DCE0]/15">
+                  <CheckCircle2 className="w-5 h-5 text-[#C59B24] shrink-0 mt-0.5" />
                   <div>
                     <h5 className="font-bold text-sm">On-Time Delivery Guarantee</h5>
-                    <p className="text-xs text-slate-300 mt-0.5">Reliable maritime and air schedules</p>
+                    <p className="text-xs text-[#D7DCE0] mt-0.5">Reliable maritime and air schedules</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 bg-white/5 p-3.5 rounded-xl border border-white/10">
-                  <Globe className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 bg-white/5 p-3.5 rounded-xl border border-[#D7DCE0]/15">
+                  <Globe className="w-5 h-5 text-[#C59B24] shrink-0 mt-0.5" />
                   <div>
                     <h5 className="font-bold text-sm">Worldwide Port Service</h5>
-                    <p className="text-xs text-slate-300 mt-0.5">Global agency network in 120+ ports</p>
+                    <p className="text-xs text-[#D7DCE0] mt-0.5">Global agency network in major ports</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Global Offices Mini-Cards */}
-            <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
-              <h4 className="text-sm font-bold uppercase tracking-wider text-[#0b1b33]">
+            {/* Direct Office Inquiries Mini-Cards */}
+            <div className="bg-white p-6 rounded-3xl border border-[#D7DCE0] shadow-sm space-y-4">
+              <h4 className="text-sm font-bold uppercase tracking-wider text-[#1D2A4C]">
                 Direct Office Inquiries
               </h4>
 
               <div className="space-y-3 text-xs text-slate-600">
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="font-bold text-slate-900 block">Head Office: Faisalabad</span>
-                  <p className="text-slate-500 mt-0.5">Office No. 1, 1st Floor, Bilal Center</p>
-                  <a href="tel:+923218662222" className="text-[#0284c7] font-semibold block mt-1">+92 321 8662 222</a>
+                <div className="p-3.5 rounded-xl bg-[#F4F6F8] border border-[#D7DCE0]">
+                  <span className="font-bold text-[#1D2A4C] block">Head Office: Faisalabad</span>
+                  <p className="text-slate-500 mt-0.5">Razzaq Center, West Canal Road</p>
+                  <a href="tel:+923127777952" className="text-[#C59B24] font-bold block mt-1">+92 312 7777952 / 951</a>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="font-bold text-slate-900 block">United Kingdom Desk</span>
-                  <p className="text-slate-500 mt-0.5">23A Wednesbury Road, Walsall</p>
-                  <a href="tel:+447383783357" className="text-[#0284c7] font-semibold block mt-1">+44 7383 783357</a>
-                </div>
-
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="font-bold text-slate-900 block">Dubai, UAE Desk</span>
-                  <p className="text-slate-500 mt-0.5">Raja Building, Office 3, Bur Dubai</p>
-                  <a href="tel:+971559682523" className="text-[#0284c7] font-semibold block mt-1">+971 55 9682523</a>
+                <div className="p-3.5 rounded-xl bg-[#F4F6F8] border border-[#D7DCE0]">
+                  <span className="font-bold text-[#1D2A4C] block">Karachi Office Desk</span>
+                  <p className="text-slate-500 mt-0.5">Saima Trade Tower, I.I. Chundrigar Road</p>
+                  <a href="tel:+923127777952" className="text-[#C59B24] font-bold block mt-1">+92 312 7777952 / 951</a>
                 </div>
               </div>
             </div>

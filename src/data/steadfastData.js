@@ -1,32 +1,28 @@
 export const companyDetails = {
-  name: "Steadfast Shipping",
-  legalName: "Steadfast Shipping (PVT) LTD",
+  name: "Steadfast Shipping Lines",
+  legalName: "Steadfast Shipping Lines (Pvt) Ltd",
   tagline: "Tailored Logistics & Global Freight Solutions for Every Need",
-  description: "Steadfast Shipping (PVT) LTD is your trusted partner in logistics, providing innovative and reliable transportation solutions worldwide. Our expert team and advanced technology ensure seamless, efficient, and secure delivery of your goods.",
-  phone: "+92 321 8662 222",
-  email: "info@steadfastshipping.com",
+  description: "Steadfast Shipping Lines (Pvt) Ltd is your trusted partner in logistics, providing innovative and reliable transportation solutions worldwide. Our expert team and advanced technology ensure seamless, efficient, and secure delivery of your goods.",
+  phone: "+92 312 7777952",
+  phone2: "+92 312 7777951",
+  email: "info@steadfastshippinglines.com",
+  website: "www.steadfastshippinglines.com",
   workingHours: "24/7 Operations & Support",
+  thankYouMessage: "Thank you for taking the time to explore our company profile and for considering Steadfast Shipping Lines (Pvt) Ltd as your trusted logistics and supply chain partner. We deeply appreciate your interest in our global freight forwarding, transportation, and cargo management solutions. It is our privilege to connect businesses with seamless trade networks, and we look forward to the opportunity of building a strong, reliable, and successful partnership with you in the future.",
   offices: [
     {
       country: "Pakistan",
-      city: "Faisalabad (Head Office)",
-      address: "Office No. 1, First Floor, Bilal Center, West Canal Road, Faisalabad - Pakistan",
-      phone: "+92 321 8662 222",
-      email: "pk@steadfastshipping.com",
+      city: "Head Office (Faisalabad)",
+      address: "P-3067, Office No. 01, 1st Floor, Razzaq Center, Behind Kia Motors, West Canal Road, Faisalabad, Pakistan.",
+      phone: "+92 312 7777952, +92 312 7777951",
+      email: "info@steadfastshippinglines.com",
     },
     {
-      country: "United Kingdom",
-      city: "Walsall, UK",
-      address: "23A Wednesbury Road, Walsall, WS1 3RU, United Kingdom",
-      phone: "+44 7383 783357",
-      email: "uk@steadfastshipping.com",
-    },
-    {
-      country: "United Arab Emirates",
-      city: "Dubai, UAE",
-      address: "Raja Building, Office 3, Bur Dubai, Dubai, United Arab Emirates",
-      phone: "+971 55 9682523",
-      email: "uae@steadfastshipping.com",
+      country: "Pakistan",
+      city: "Karachi Office",
+      address: "Saima Trade Tower, Block A 810 main I.I. Chundrigar road near Shaheen Complex, Karachi.",
+      phone: "+92 312 7777952, +92 312 7777951",
+      email: "info@steadfastshippinglines.com",
     },
   ],
   stats: [
@@ -98,7 +94,7 @@ export const companyDetails = {
   ],
   faqs: [
     {
-      q: "What services does Steadfast Shipping (PVT) LTD offer?",
+      q: "What services does Steadfast Shipping Lines (Pvt) Ltd offer?",
       a: "Steadfast Shipping provides end-to-end logistics solutions including Ocean Freight (FCL & LCL), Air Freight, Road Freight, Warehousing & Distribution, Cargo Handling, Cross-Stuffing / Cross-Docking, Break Bulk Cargo, Multimodal Transportation, Customs Clearance, and Door-to-Door Delivery."
     },
     {
@@ -129,7 +125,7 @@ export const servicesData = [
     tagline: "Cost-Effective & High-Capacity Maritime Solutions",
     icon: "Ship",
     shortDescription: "Ocean freight is a cost-effective and reliable method of transporting large quantities of goods across international trade lanes with FCL and LCL options.",
-    overview: "Ocean freight is a cost-effective and reliable method of transporting large quantities of goods across long distances. At Steadfast Shipping (PVT) LTD, we provide comprehensive ocean freight solutions designed to meet the diverse shipping requirements of modern businesses. Whether shipping Full Container Loads (FCL) or Less than Container Loads (LCL), our seasoned team ensures your cargo is safely booked, tracked, and delivered with competitive transit schedules.",
+    overview: "Ocean freight is a cost-effective and reliable method of transporting large quantities of goods across long distances. At Steadfast Shipping Lines (Pvt) Ltd, we provide comprehensive ocean freight solutions designed to meet the diverse shipping requirements of modern businesses. Whether shipping Full Container Loads (FCL) or Less than Container Loads (LCL), our seasoned team ensures your cargo is safely booked, tracked, and delivered with competitive transit schedules.",
     image: "/images/ocean-freight.jpg",
     features: [
       {
@@ -172,7 +168,7 @@ export const servicesData = [
     tagline: "Fast, Reliable & Priority Worldwide Air Cargo",
     icon: "Plane",
     shortDescription: "Air freight is the fastest method of transporting goods over long distances, ideal for urgent, high-value, and time-critical shipments.",
-    overview: "Air freight is the fastest and most reliable method of transporting goods over long distances. At Steadfast Shipping (PVT) LTD, we provide top-tier air freight services engineered for businesses requiring expedited shipping and guaranteed delivery windows. Leveraging our global partnerships with premier cargo airlines, we manage your air shipments from tarmac to destination with maximum velocity and security.",
+    overview: "Air freight is the fastest and most reliable method of transporting goods over long distances. At Steadfast Shipping Lines (Pvt) Ltd, we provide top-tier air freight services engineered for businesses requiring expedited shipping and guaranteed delivery windows. Leveraging our global partnerships with premier cargo airlines, we manage your air shipments from tarmac to destination with maximum velocity and security.",
     image: "/images/air-freight.jpg",
     features: [
       {
@@ -215,7 +211,7 @@ export const servicesData = [
     tagline: "Versatile, Cross-Border & Regional Highway Logistics",
     icon: "Truck",
     shortDescription: "Road freight offers adaptable transportation across regions and borders with modern dedicated fleets and scheduled delivery routes.",
-    overview: "Road freight is a versatile and efficient method of transporting goods across regions and countries, offering flexibility and convenience for various shipping volumes. At Steadfast Shipping (PVT) LTD, our road freight solutions provide dependable domestic and cross-border transport with modern well-maintained fleets, experienced drivers, and precision telemetry.",
+    overview: "Road freight is a versatile and efficient method of transporting goods across regions and countries, offering flexibility and convenience for various shipping volumes. At Steadfast Shipping Lines (Pvt) Ltd, our road freight solutions provide dependable domestic and cross-border transport with modern well-maintained fleets, experienced drivers, and precision telemetry.",
     image: "/images/road-freight.jpg",
     features: [
       {
@@ -258,7 +254,7 @@ export const servicesData = [
     tagline: "Secure Storage, Smart Inventory & Modern Distribution",
     icon: "Warehouse",
     shortDescription: "Effective warehousing crucial for managing your supply chain, featuring climate-controlled storage and advanced WMS inventory tracking.",
-    overview: "Effective warehousing is crucial for managing and optimizing your supply chain, providing secure and efficient storage solutions for your commercial goods. At Steadfast Shipping (PVT) LTD, our state-of-the-art warehousing facilities feature 24/7 digital surveillance, climate-controlled zones, automated inventory management, and integrated order fulfillment services.",
+    overview: "Effective warehousing is crucial for managing and optimizing your supply chain, providing secure and efficient storage solutions for your commercial goods. At Steadfast Shipping Lines (Pvt) Ltd, our state-of-the-art warehousing facilities feature 24/7 digital surveillance, climate-controlled zones, automated inventory management, and integrated order fulfillment services.",
     image: "/images/warehousing.jpg",
     features: [
       {
@@ -301,7 +297,7 @@ export const servicesData = [
     tagline: "Specialized & Multimodal Cargo Management",
     icon: "Package",
     shortDescription: "Essential cargo management across land, sea, and air with specialized handling for standard, high-value, and sensitive shipments.",
-    overview: "Cargo services are essential for managing the safe and efficient transport of goods across diverse modes of transportation. At Steadfast Shipping (PVT) LTD, our comprehensive cargo services provide end-to-end logistics coordination, secure packing, multimodal routing, and certified customs handling for both general and specialized shipments.",
+    overview: "Cargo services are essential for managing the safe and efficient transport of goods across diverse modes of transportation. At Steadfast Shipping Lines (Pvt) Ltd, our comprehensive cargo services provide end-to-end logistics coordination, secure packing, multimodal routing, and certified customs handling for both general and specialized shipments.",
     image: "/images/cargo-services.jpg",
     features: [
       {
@@ -344,7 +340,7 @@ export const servicesData = [
     tagline: "Rapid Cargo Transfer, Transshipment & Hub Optimization",
     icon: "Boxes",
     shortDescription: "Cross-stuffing / cross-docking transfers cargo directly from inbound to outbound containers with zero warehouse delay.",
-    overview: "Cross-stuffing, also known as cross-docking, is a specialized logistics process designed to optimize cargo flow by transferring goods directly from inbound containers or trucks to outbound transport vehicles with minimal handling. At Steadfast Shipping (PVT) LTD, our dedicated transshipment hubs streamline your distribution, eliminate unnecessary demurrage, and accelerate delivery times.",
+    overview: "Cross-stuffing, also known as cross-docking, is a specialized logistics process designed to optimize cargo flow by transferring goods directly from inbound containers or trucks to outbound transport vehicles with minimal handling. At Steadfast Shipping Lines (Pvt) Ltd, our dedicated transshipment hubs streamline your distribution, eliminate unnecessary demurrage, and accelerate delivery times.",
     image: "/images/cross-stuffing.jpg",
     features: [
       {
@@ -387,7 +383,7 @@ export const servicesData = [
     tagline: "Heavy Lift, Out-of-Gauge & Non-Containerized Freight",
     icon: "Anchor",
     shortDescription: "Expert handling and safe transport for oversized machinery, steel, project cargo, and non-standardized industrial goods.",
-    overview: "Break bulk cargo refers to goods that cannot fit into standard shipping containers and must be transported as individual pieces, heavy units, or loose freight. At Steadfast Shipping (PVT) LTD, we specialize in project cargo logistics, heavy lift maritime charters, and specialized flat rack stowage for industrial machinery, energy infrastructure, and construction cargo.",
+    overview: "Break bulk cargo refers to goods that cannot fit into standard shipping containers and must be transported as individual pieces, heavy units, or loose freight. At Steadfast Shipping Lines (Pvt) Ltd, we specialize in project cargo logistics, heavy lift maritime charters, and specialized flat rack stowage for industrial machinery, energy infrastructure, and construction cargo.",
     image: "/images/break-bulk.jpg",
     features: [
       {
@@ -430,7 +426,7 @@ export const servicesData = [
     tagline: "Multimodal Fleet, Route Optimization & Intermodal Delivery",
     icon: "Truck",
     shortDescription: "Vital transportation encompassing road, rail, and sea with modern fleets and dynamic routing algorithms for timely delivery.",
-    overview: "Transportation is a vital component of modern commerce, encompassing the coordinated movement of goods across diverse terrains and transport modes. At Steadfast Shipping (PVT) LTD, we combine cutting-edge fleet telematics, strategic multimodal routing, and dedicated driver networks to transport your cargo safely across domestic, regional, and international borders.",
+    overview: "Transportation is a vital component of modern commerce, encompassing the coordinated movement of goods across diverse terrains and transport modes. At Steadfast Shipping Lines (Pvt) Ltd, we combine cutting-edge fleet telematics, strategic multimodal routing, and dedicated driver networks to transport your cargo safely across domestic, regional, and international borders.",
     image: "/images/transportation.jpg",
     features: [
       {
@@ -473,7 +469,7 @@ export const servicesData = [
     tagline: "Fast Regulatory Approval, Tariff Compliance & Documentation",
     icon: "FileCheck",
     shortDescription: "Smooth customs clearance with expert documentation, HS code classification, duty optimization, and regulatory compliance.",
-    overview: "Customs clearance is a critical step in international trade, ensuring that goods comply with all regulatory requirements before entering or leaving a country. At Steadfast Shipping (PVT) LTD, our licensed customs brokers navigate the complexities of import/export regulations, HS code tariff classifications, duty calculations, and government authority coordination to prevent delays and penalties.",
+    overview: "Customs clearance is a critical step in international trade, ensuring that goods comply with all regulatory requirements before entering or leaving a country. At Steadfast Shipping Lines (Pvt) Ltd, our licensed customs brokers navigate the complexities of import/export regulations, HS code tariff classifications, duty calculations, and government authority coordination to prevent delays and penalties.",
     image: "/images/customs-clearance.jpg",
     features: [
       {
@@ -516,7 +512,7 @@ export const servicesData = [
     tagline: "End-to-End Seamless Logistics from Origin to Final Address",
     icon: "Building2",
     shortDescription: "Complete door-to-door delivery managing pickup, international transit, customs, and final delivery directly to the recipient.",
-    overview: "Door-to-door delivery is the ultimate convenience for businesses and individuals seeking a seamless shipping experience. At Steadfast Shipping (PVT) LTD, our all-inclusive door-to-door service handles the entire logistics journey from initial pickup at the manufacturer's facility to direct delivery at the recipient's doorstep with complete visibility throughout.",
+    overview: "Door-to-door delivery is the ultimate convenience for businesses and individuals seeking a seamless shipping experience. At Steadfast Shipping Lines (Pvt) Ltd, our all-inclusive door-to-door service handles the entire logistics journey from initial pickup at the manufacturer's facility to direct delivery at the recipient's doorstep with complete visibility throughout.",
     image: "/images/door-to-door.jpg",
     features: [
       {

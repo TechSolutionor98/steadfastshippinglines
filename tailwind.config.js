@@ -6,6 +6,22 @@ export const content = [
 ];
 export const theme = {
   extend: {
+    colors: {
+      brand: {
+        gold: '#C59B24',
+        'gold-hover': '#B0891E',
+        'gold-light': '#FDF9EE',
+        'gold-border': '#E2C876',
+        navy: '#1D2A4C',
+        'navy-dark': '#141E36',
+        'navy-deep': '#0D1424',
+        'navy-light': '#2A3C6A',
+        silver: '#D7DCE0',
+        'silver-light': '#F4F6F8',
+        'silver-dark': '#9CA3AF',
+        white: '#FFFFFF',
+      }
+    },
     fontFamily: {
       urbanist: ['Urbanist', 'sans-serif'],
       roboto: ['Roboto', 'sans-serif'],

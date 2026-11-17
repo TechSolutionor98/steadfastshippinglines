@@ -40,7 +40,7 @@ export default function HomePage({ cmsContent }) {
   const heroSlides = [
     {
       title: "RELIABLE FREIGHT SOLUTIONS",
-      subtitle: "Welcome to Steadfast Shipping (Pvt) LTD",
+      subtitle: "Welcome to Steadfast Shipping Lines (Pvt) Ltd",
       description: "Providing innovative and reliable transportation solutions worldwide with seamless air, sea, and road freight management.",
       bgImage: "/images/home/hero-slide.jpg",
     },
@@ -135,11 +135,12 @@ export default function HomePage({ cmsContent }) {
   ];
 
   return (
-    <div className="bg-slate-50 text-slate-800">
+    <div className="bg-white text-slate-800">
       {/* =========================================================================
           SECTION 1: HERO BANNER SLIDER (Matching Osum Hero Banner)
+          Theme Colors: Navy #1D2A4C backdrop with Gold #C59B24 Accents
       ========================================================================== */}
-      <section className="relative min-h-[580px] sm:min-h-[660px] flex items-center justify-center text-white overflow-hidden bg-slate-950">
+      <section className="relative min-h-[580px] sm:min-h-[660px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
         {heroSlides.map((slide, idx) => (
           <div
             key={idx}
@@ -147,18 +148,18 @@ export default function HomePage({ cmsContent }) {
               idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
-            {/* Background Image with Dark Blue Gradient Overlay */}
+            {/* Background Image with Dark Blue & Navy Overlay */}
             <div
               className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-10000"
               style={{ backgroundImage: `url(${slide.bgImage})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-slate-900/80 to-blue-950/60" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#141E36]/95 via-[#1D2A4C]/85 to-[#141E36]/80" />
           </div>
         ))}
 
         <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-8 text-center space-y-6 py-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs sm:text-sm font-bold tracking-wider uppercase animate-in fade-in duration-500">
-            <Ship className="w-4 h-4 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs sm:text-sm font-bold tracking-wider uppercase animate-in fade-in duration-500">
+            <Ship className="w-4 h-4 text-[#C59B24]" />
             <span>{heroSlides[currentSlide].subtitle}</span>
           </div>
 
@@ -166,20 +167,20 @@ export default function HomePage({ cmsContent }) {
             {heroSlides[currentSlide].title}
           </h1>
 
-          <p className="text-sm sm:text-lg text-slate-200 max-w-2xl mx-auto leading-relaxed drop-shadow">
+          <p className="text-sm sm:text-lg text-[#D7DCE0] max-w-2xl mx-auto leading-relaxed drop-shadow">
             {heroSlides[currentSlide].description}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <Link
               href="/services"
-              className="px-8 py-3.5 rounded-md bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-sky-500/30 transition-all hover:scale-105"
+              className="px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#C59B24]/25 transition-all hover:scale-105"
             >
               SEE SERVICES
             </Link>
             <Link
               href="/contact"
-              className="px-8 py-3.5 rounded-md bg-transparent hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider border-2 border-white transition-all"
+              className="px-8 py-3.5 rounded-md bg-transparent hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider border-2 border-[#D7DCE0] transition-all hover:border-[#C59B24]"
             >
               CONTACT US
             </Link>
@@ -192,7 +193,7 @@ export default function HomePage({ cmsContent }) {
                 key={i}
                 onClick={() => setCurrentSlide(i)}
                 className={`h-2.5 rounded-full transition-all ${
-                  i === currentSlide ? "w-8 bg-cyan-400" : "w-2.5 bg-white/40 hover:bg-white/70"
+                  i === currentSlide ? "w-8 bg-[#C59B24]" : "w-2.5 bg-white/40 hover:bg-white/70"
                 }`}
                 aria-label={`Go to slide ${i + 1}`}
               />
@@ -203,30 +204,31 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 2: "HOW WE CAN HELP YOU" (Left text with 3 items + Right image)
+          Theme Colors: White surface, Navy #1D2A4C titles, Gold #C59B24 highlights
       ========================================================================== */}
       <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Text */}
           <div className="lg:col-span-7 space-y-6">
             <div>
-              <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">SUPPORT & EFFICIENCY</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
+              <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">SUPPORT & EFFICIENCY</span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1D2A4C] mt-1">
                 How We Can Help You
               </h2>
             </div>
 
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              At Steadfast Shipping (PVT) LTD, we are dedicated to providing comprehensive logistics solutions tailored to meet your business needs. Here’s how we can support you:
+              At Steadfast Shipping Lines (Pvt) Ltd, we are dedicated to providing comprehensive logistics solutions tailored to meet your business needs. Here’s how we can support you:
             </p>
 
             <div className="space-y-5 pt-2">
               {/* Item 1 */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0 border border-cyan-200 mt-1">
-                  <CheckCircle2 className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-full bg-[#FDF9EE] text-[#C59B24] flex items-center justify-center shrink-0 border border-[#E2C876]/40 mt-1">
+                  <CheckCircle2 className="w-5 h-5 text-[#C59B24]" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#0b1b33]">Innovative Technology</h3>
+                  <h3 className="text-base font-bold text-[#1D2A4C]">Innovative Technology</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     Leveraging cutting-edge technology, we optimize routes and track shipments in real-time for maximum efficiency.
                   </p>
@@ -235,11 +237,11 @@ export default function HomePage({ cmsContent }) {
 
               {/* Item 2 */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-blue-50 text-[#0284c7] flex items-center justify-center shrink-0 border border-blue-200 mt-1">
-                  <CheckCircle2 className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-full bg-[#1D2A4C]/10 text-[#1D2A4C] flex items-center justify-center shrink-0 border border-[#D7DCE0] mt-1">
+                  <CheckCircle2 className="w-5 h-5 text-[#1D2A4C]" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#0b1b33]">Worldwide Reach</h3>
+                  <h3 className="text-base font-bold text-[#1D2A4C]">Worldwide Reach</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     With a vast network of global partners, we provide reliable logistics solutions across international borders.
                   </p>
@@ -248,11 +250,11 @@ export default function HomePage({ cmsContent }) {
 
               {/* Item 3 */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200 mt-1">
-                  <CheckCircle2 className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-full bg-[#FDF9EE] text-[#C59B24] flex items-center justify-center shrink-0 border border-[#E2C876]/40 mt-1">
+                  <CheckCircle2 className="w-5 h-5 text-[#C59B24]" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#0b1b33]">Comprehensive Services</h3>
+                  <h3 className="text-base font-bold text-[#1D2A4C]">Comprehensive Services</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     From warehousing and packaging to air, sea, and road freight, we provide a full spectrum of logistics services to streamline your supply chain.
                   </p>
@@ -263,10 +265,10 @@ export default function HomePage({ cmsContent }) {
 
           {/* Right Image */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3] ring-1 ring-[#D7DCE0]">
               <Image
                 src="/images/home/how-we-help.jpg"
-                alt="Steadfast Logistics Cargo Yard"
+                alt="Steadfast Shipping Cargo Yard"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-700"
               />
@@ -276,13 +278,14 @@ export default function HomePage({ cmsContent }) {
       </section>
 
       {/* =========================================================================
-          SECTION 3: "OUR SERVICES" / "WHAT WE PROVIDE" (3x3 Cards with Images)
+          SECTION 3: "OUR SERVICES" / "WHAT WE PROVIDE" (Cards with Images)
+          Theme Colors: Light Silver #F4F6F8 backdrop, White Cards, Gold & Navy Accents
       ========================================================================== */}
-      <section className="bg-slate-100/70 py-20 px-4 sm:px-8 border-y border-slate-200">
+      <section className="bg-[#F4F6F8] py-20 px-4 sm:px-8 border-y border-[#D7DCE0]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">OUR SERVICES</span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">OUR SERVICES</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1D2A4C] mt-1">
               WHAT WE PROVIDE
             </h2>
           </div>
@@ -291,25 +294,25 @@ export default function HomePage({ cmsContent }) {
             {servicesData.map((svc) => (
               <div
                 key={svc.slug}
-                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl border border-[#D7DCE0] transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
                   {/* Service Image Banner on Top */}
-                  <div className="relative h-48 w-full overflow-hidden bg-slate-900">
+                  <div className="relative h-48 w-full overflow-hidden bg-[#141E36]">
                     <Image
                       src={serviceImages[svc.slug] || "/images/home/ocean.jpg"}
                       alt={svc.title}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <span className="absolute bottom-3 left-4 text-xs font-bold text-white uppercase tracking-wider drop-shadow">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#141E36]/80 via-transparent to-transparent" />
+                    <span className="absolute bottom-3 left-4 text-xs font-bold text-[#C59B24] uppercase tracking-wider drop-shadow bg-[#141E36]/70 px-2.5 py-1 rounded">
                       {svc.shortTitle}
                     </span>
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-[#0b1b33] mb-2 group-hover:text-[#0284c7] transition-colors">
+                    <h3 className="text-lg font-bold text-[#1D2A4C] mb-2 group-hover:text-[#C59B24] transition-colors">
                       {svc.title}
                     </h3>
                     <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
@@ -321,7 +324,7 @@ export default function HomePage({ cmsContent }) {
                 <div className="px-6 pb-6 pt-0">
                   <Link
                     href={`/${svc.slug}`}
-                    className="inline-block px-5 py-2.5 rounded-md bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
+                    className="inline-block px-5 py-2.5 rounded-md bg-[#1D2A4C] hover:bg-[#C59B24] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
                   >
                     READ MORE
                   </Link>
@@ -333,34 +336,35 @@ export default function HomePage({ cmsContent }) {
       </section>
 
       {/* =========================================================================
-          SECTION 4: SPLIT BLUE BOX - "WE ARE Steadfast Shipping" (About Us Preview)
+          SECTION 4: SPLIT BLUE BOX - "WE ARE Steadfast Shipping Lines" (About Us Preview)
+          Theme Colors: Deep Navy #1D2A4C to #141E36 with Gold #C59B24 Buttons & Cards
       ========================================================================== */}
-      <section className="bg-gradient-to-r from-[#0b1b33] via-[#0f2342] to-[#122e54] text-white py-20 px-4 sm:px-8">
+      <section className="bg-gradient-to-r from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-20 px-4 sm:px-8 border-y border-[#D7DCE0]/15">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Column */}
           <div className="lg:col-span-6 space-y-5">
-            <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">ABOUT US</span>
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest">ABOUT US</span>
             <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight">
-              WE ARE Steadfast Shipping (PVT) LTD
+              WE ARE Steadfast Shipping Lines (Pvt) Ltd
             </h2>
 
-            <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
-              Steadfast Shipping (PVT) LTD is your trusted partner in logistics, providing innovative and reliable transportation solutions worldwide. Our expert team and advanced technology ensure seamless, efficient, and secure delivery of your goods.
+            <p className="text-[#D7DCE0] text-sm sm:text-base leading-relaxed">
+              Steadfast Shipping Lines (Pvt) Ltd is your trusted partner in logistics, providing innovative and reliable transportation solutions worldwide. Our expert team and advanced technology ensure seamless, efficient, and secure delivery of your goods.
             </p>
 
-            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+            <p className="text-[#D7DCE0]/80 text-xs sm:text-sm leading-relaxed">
               We are dedicated to exceeding expectations with personalized service and a commitment to excellence.
             </p>
 
             <div className="pt-2">
               <div className="text-base font-bold text-white">Executive Management</div>
-              <div className="text-xs text-cyan-400">Founder & CEO</div>
+              <div className="text-xs text-[#C59B24] font-semibold">Founder & Board of Directors</div>
             </div>
 
             <div className="pt-3">
               <Link
                 href="/about-us"
-                className="inline-block px-8 py-3.5 rounded-md bg-cyan-500 hover:bg-cyan-400 text-[#0b1b33] font-bold text-xs uppercase tracking-wider shadow-md transition-colors"
+                className="inline-block px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors"
               >
                 ABOUT US
               </Link>
@@ -369,38 +373,38 @@ export default function HomePage({ cmsContent }) {
 
           {/* Right Column: 3 Strategic Solution Cards */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="p-6 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md space-y-2 hover:bg-white/15 transition-colors">
+            <div className="p-6 rounded-xl bg-white/5 border border-[#D7DCE0]/15 backdrop-blur-md space-y-2 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] flex items-center justify-center shrink-0 border border-[#C59B24]/30">
                   <TrendingUp className="w-5 h-5" />
                 </div>
                 <h3 className="text-base font-bold text-white">Advanced Technology</h3>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed pl-12">
+              <p className="text-xs text-[#D7DCE0] leading-relaxed pl-12">
                 We use AI-powered route optimization and real-time tracking to enhance delivery efficiency and accuracy, ensuring your shipments are handled with the latest innovations in logistics.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md space-y-2 hover:bg-white/15 transition-colors">
+            <div className="p-6 rounded-xl bg-white/5 border border-[#D7DCE0]/15 backdrop-blur-md space-y-2 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] flex items-center justify-center shrink-0 border border-[#C59B24]/30">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <h3 className="text-base font-bold text-white">Sustainable Practices</h3>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed pl-12">
+              <p className="text-xs text-[#D7DCE0] leading-relaxed pl-12">
                 We implement eco-friendly practices across our operations, reducing our carbon footprint through optimized routes, energy-efficient vehicles, and green warehousing solutions.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md space-y-2 hover:bg-white/15 transition-colors">
+            <div className="p-6 rounded-xl bg-white/5 border border-[#D7DCE0]/15 backdrop-blur-md space-y-2 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] flex items-center justify-center shrink-0 border border-[#C59B24]/30">
                   <Award className="w-5 h-5" />
                 </div>
                 <h3 className="text-base font-bold text-white">Industry-Specific Solutions</h3>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed pl-12">
+              <p className="text-xs text-[#D7DCE0] leading-relaxed pl-12">
                 Our tailored logistics services cater to the unique needs of various industries, including healthcare, retail, automotive, and technology, providing specialized solutions for each sector.
               </p>
             </div>
@@ -410,24 +414,25 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 5: OUR MISSION & OUR VISION (2 Clean Cards)
+          Theme Colors: White cards, Navy #1D2A4C titles, Gold #C59B24 accents
       ========================================================================== */}
       <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-8 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#0284c7] flex items-center justify-center font-bold">
+          <div className="p-8 sm:p-10 rounded-2xl bg-white border border-[#D7DCE0] shadow-sm space-y-4 hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-xl bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/40 flex items-center justify-center font-bold">
               <Compass className="w-6 h-6" />
             </div>
-            <h3 className="text-2xl font-black text-[#0b1b33]">OUR MISSION</h3>
+            <h3 className="text-2xl font-black text-[#1D2A4C]">OUR MISSION</h3>
             <p className="text-slate-600 text-sm leading-relaxed">
-              At Steadfast Shipping (PVT) LTD, our mission is to provide innovative, reliable, and efficient logistics and transportation solutions that exceed our clients&apos; expectations. We strive to simplify global trade, ensuring seamless movement of goods with unparalleled service and support.
+              At Steadfast Shipping Lines (Pvt) Ltd, our mission is to provide innovative, reliable, and efficient logistics and transportation solutions that exceed our clients&apos; expectations. We strive to simplify global trade, ensuring seamless movement of goods with unparalleled service and support.
             </p>
           </div>
 
-          <div className="p-8 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold">
+          <div className="p-8 sm:p-10 rounded-2xl bg-white border border-[#D7DCE0] shadow-sm space-y-4 hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-xl bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/40 flex items-center justify-center font-bold">
               <Globe className="w-6 h-6" />
             </div>
-            <h3 className="text-2xl font-black text-[#0b1b33]">OUR VISION</h3>
+            <h3 className="text-2xl font-black text-[#1D2A4C]">OUR VISION</h3>
             <p className="text-slate-600 text-sm leading-relaxed">
               Our vision is to be a leading global logistics provider, recognized for our commitment to excellence, customer satisfaction, and sustainable practices. We aim to set new standards in the industry, driving growth and success for our clients and partners worldwide.
             </p>
@@ -436,43 +441,44 @@ export default function HomePage({ cmsContent }) {
       </section>
 
       {/* =========================================================================
-          SECTION 6: "WHY CHOOSE Steadfast Shipping (PVT) LTD" (3 Round Icon Highlights)
+          SECTION 6: "WHY CHOOSE Steadfast Shipping Lines" (3 Round Icon Highlights)
+          Theme Colors: Light Silver #F4F6F8 backdrop, White Cards, Navy #1D2A4C & Gold
       ========================================================================== */}
-      <section className="bg-slate-100/70 py-20 px-4 sm:px-8 border-y border-slate-200">
+      <section className="bg-[#F4F6F8] py-20 px-4 sm:px-8 border-y border-[#D7DCE0]">
         <div className="max-w-7xl mx-auto text-center">
           <div className="mb-14">
-            <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">WHY CHOOSE US</span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
-              WHY CHOOSE Steadfast Shipping (PVT) LTD
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">WHY CHOOSE US</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1D2A4C] mt-1">
+              WHY CHOOSE Steadfast Shipping Lines (Pvt) Ltd
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-200 flex items-center justify-center mx-auto">
+            <div className="bg-white p-8 rounded-2xl border border-[#D7DCE0] shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/50 flex items-center justify-center mx-auto">
                 <Clock className="w-7 h-7" />
               </div>
-              <h3 className="text-xl font-bold text-[#0b1b33]">24/7 support</h3>
+              <h3 className="text-xl font-bold text-[#1D2A4C]">24/7 support</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Our customer service team is available 24/7 to assist with any questions or issues, ensuring peace of mind and continuous support.
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-blue-50 text-[#0284c7] border border-blue-200 flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-7 h-7" />
+            <div className="bg-white p-8 rounded-2xl border border-[#D7DCE0] shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-[#1D2A4C]/10 text-[#1D2A4C] border border-[#D7DCE0] flex items-center justify-center mx-auto">
+                <CheckCircle2 className="w-7 h-7 text-[#1D2A4C]" />
               </div>
-              <h3 className="text-xl font-bold text-[#0b1b33]">On time delivery</h3>
+              <h3 className="text-xl font-bold text-[#1D2A4C]">On time delivery</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 We pride ourselves on our reliability, ensuring your shipments are delivered on schedule, every time, to keep your operations running smoothly.
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto">
+            <div className="bg-white p-8 rounded-2xl border border-[#D7DCE0] shadow-sm hover:shadow-md transition-shadow text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/50 flex items-center justify-center mx-auto">
                 <Globe className="w-7 h-7" />
               </div>
-              <h3 className="text-xl font-bold text-[#0b1b33]">Global service</h3>
+              <h3 className="text-xl font-bold text-[#1D2A4C]">Global service</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 We customize our logistics services to meet the specific needs of your business, ensuring efficient and cost-effective results.
               </p>
@@ -483,12 +489,13 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 7: WORKING HIGHLIGHTS GALLERY (Visual operational gallery)
+          Theme Colors: White surface with #D7DCE0 borders and gold labels
       ========================================================================== */}
       <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-14">
-          <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">Reach your destination 100% safe & secure</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
-            Working Highlights at Steadfast Shipping (PVT) LTD
+          <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Reach your destination 100% safe & secure</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1D2A4C] mt-1">
+            Working Highlights at Steadfast Shipping Lines (Pvt) Ltd
           </h2>
         </div>
 
@@ -501,15 +508,15 @@ export default function HomePage({ cmsContent }) {
             { img: "/images/home/how-we-help.jpg", label: "Container Terminals" },
             { img: "/images/home/door.jpg", label: "Doorstep Delivery" },
           ].map((item, idx) => (
-            <div key={idx} className="relative h-56 rounded-xl overflow-hidden shadow-sm group">
+            <div key={idx} className="relative h-56 rounded-xl overflow-hidden shadow-sm border border-[#D7DCE0] group">
               <Image
                 src={item.img}
                 alt={item.label}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
-              <span className="absolute bottom-3 left-3 right-3 text-center text-xs font-bold text-white drop-shadow">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#141E36]/90 via-transparent to-transparent opacity-85 group-hover:opacity-100 transition-opacity" />
+              <span className="absolute bottom-3 left-3 right-3 text-center text-xs font-bold text-[#C59B24] drop-shadow">
                 {item.label}
               </span>
             </div>
@@ -518,21 +525,22 @@ export default function HomePage({ cmsContent }) {
       </section>
 
       {/* =========================================================================
-          SECTION 8: BLUE CTA BAR ("Reach your destination 100% safe & secure")
+          SECTION 8: CTA BAR ("Reach your destination 100% safe & secure")
+          Theme Colors: Deep Navy #1D2A4C with Gold #C59B24 Button
       ========================================================================== */}
-      <section className="bg-gradient-to-r from-[#0284c7] to-[#0369a1] text-white py-12 px-4 sm:px-8">
+      <section className="bg-gradient-to-r from-[#1D2A4C] via-[#141E36] to-[#1D2A4C] text-white py-12 px-4 sm:px-8 border-y border-[#C59B24]/40">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div>
-            <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight">
+            <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
               Reach your destination 100% safe & secure
             </h3>
-            <p className="text-xs sm:text-sm text-sky-100 mt-1">
+            <p className="text-xs sm:text-sm text-[#D7DCE0] mt-1">
               Contact our dispatch team for real-time rates and space allocation.
             </p>
           </div>
           <Link
             href="/quote"
-            className="px-8 py-3.5 rounded-md bg-white hover:bg-slate-100 text-[#0b1b33] font-bold text-xs uppercase tracking-wider shadow-md transition-colors shrink-0"
+            className="px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors shrink-0"
           >
             REQUEST A QUOTE
           </Link>
@@ -541,45 +549,46 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 9: "WHAT THEY SAY" (Testimonials)
+          Theme Colors: White surface, Gold stars, Navy #1D2A4C headings
       ========================================================================== */}
       <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-14">
-          <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">TESTIMONIALS</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
+          <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">TESTIMONIALS</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1D2A4C] mt-1">
             WHAT THEY SAY
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Review 1 */}
-          <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
-            <div className="flex items-center gap-1 text-amber-400">
+          <div className="p-8 rounded-2xl bg-white border border-[#D7DCE0] shadow-sm space-y-4">
+            <div className="flex items-center gap-1 text-[#C59B24]">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-amber-400" />
+                <Star key={i} className="w-4 h-4 fill-[#C59B24] text-[#C59B24]" />
               ))}
             </div>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
-              &ldquo;Steadfast Shipping (PVT) LTD has been a game-changer for our supply chain operations. Their efficient air freight services and real-time tracking have significantly reduced our transit times. Highly recommend their professional and reliable team!&rdquo;
+              &ldquo;Steadfast Shipping Lines (Pvt) Ltd has been a game-changer for our supply chain operations. Their efficient air freight services and real-time tracking have significantly reduced our transit times. Highly recommend their professional and reliable team!&rdquo;
             </p>
-            <div className="pt-2 border-t border-slate-100">
-              <h4 className="text-sm font-bold text-[#0b1b33]">Jonathon Doe</h4>
-              <span className="text-xs text-slate-400">Supply Chain Director</span>
+            <div className="pt-2 border-t border-[#D7DCE0]/60">
+              <h4 className="text-sm font-bold text-[#1D2A4C]">Jonathon Doe</h4>
+              <span className="text-xs text-slate-500">Supply Chain Director</span>
             </div>
           </div>
 
           {/* Review 2 */}
-          <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
-            <div className="flex items-center gap-1 text-amber-400">
+          <div className="p-8 rounded-2xl bg-white border border-[#D7DCE0] shadow-sm space-y-4">
+            <div className="flex items-center gap-1 text-[#C59B24]">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-amber-400" />
+                <Star key={i} className="w-4 h-4 fill-[#C59B24] text-[#C59B24]" />
               ))}
             </div>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
-              &ldquo;Steadfast Shipping (PVT) LTD&apos;s road freight services are top-notch. Their timely deliveries and expert handling of our cargo have helped us maintain a smooth supply chain. Their dedication to customer satisfaction is evident in every interaction.&rdquo;
+              &ldquo;Steadfast Shipping Lines (Pvt) Ltd&apos;s road freight services are top-notch. Their timely deliveries and expert handling of our cargo have helped us maintain a smooth supply chain. Their dedication to customer satisfaction is evident in every interaction.&rdquo;
             </p>
-            <div className="pt-2 border-t border-slate-100">
-              <h4 className="text-sm font-bold text-[#0b1b33]">Maria Carrol</h4>
-              <span className="text-xs text-slate-400">Operations Manager</span>
+            <div className="pt-2 border-t border-[#D7DCE0]/60">
+              <h4 className="text-sm font-bold text-[#1D2A4C]">Maria Carrol</h4>
+              <span className="text-xs text-slate-500">Operations Manager</span>
             </div>
           </div>
         </div>
@@ -587,38 +596,39 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 10: "REQUEST A QUOTE" WITH FORM OVERLAY (Matching Osum Quote Banner)
+          Theme Colors: Navy #141E36 with Gold #C59B24 Button & Accents
       ========================================================================== */}
-      <section className="relative py-20 px-4 sm:px-8 bg-slate-900 text-white overflow-hidden">
+      <section className="relative py-20 px-4 sm:px-8 bg-[#141E36] text-white overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
+          className="absolute inset-0 bg-cover bg-center opacity-25"
           style={{ backgroundImage: `url('/images/home/quote-bg.jpg')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/80 to-blue-950/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#141E36]/95 via-[#1D2A4C]/90 to-[#141E36]/90" />
 
         <div className="relative z-10 max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">REQUEST A FREE QUOTE</span>
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest">REQUEST A FREE QUOTE</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1">
               Request a quote
             </h2>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-md p-8 sm:p-10 rounded-2xl border border-white/20 shadow-2xl">
+          <div className="bg-[#1D2A4C]/85 backdrop-blur-md p-8 sm:p-10 rounded-2xl border border-[#D7DCE0]/30 shadow-2xl">
             {quoteSuccess ? (
-              <div className="p-6 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-center text-emerald-300">
-                <CheckCircle2 className="w-10 h-10 mx-auto mb-2 text-emerald-400" />
-                <h4 className="font-bold text-lg">Thank You! Quote Request Submitted</h4>
-                <p className="text-xs mt-1">Our freight desk is preparing your estimation.</p>
+              <div className="p-6 rounded-xl bg-[#C59B24]/20 border border-[#C59B24]/40 text-center text-[#C59B24]">
+                <CheckCircle2 className="w-10 h-10 mx-auto mb-2 text-[#C59B24]" />
+                <h4 className="font-bold text-lg text-white">Thank You! Quote Request Submitted</h4>
+                <p className="text-xs mt-1 text-[#D7DCE0]">Our freight desk is preparing your estimation.</p>
               </div>
             ) : (
               <form onSubmit={handleQuoteSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="sm:col-span-3">
-                    <label className="text-xs font-bold text-slate-200 block mb-1">Select a Freight Service</label>
+                    <label className="text-xs font-bold text-white block mb-1">Select a Freight Service</label>
                     <select
                       value={quoteFreight}
                       onChange={(e) => setQuoteFreight(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs focus:outline-none focus:border-[#C59B24]"
                     >
                       <option value="Air Freight">Air Freight</option>
                       <option value="Ocean Freight">Ocean Freight</option>
@@ -640,7 +650,7 @@ export default function HomePage({ cmsContent }) {
                       placeholder="Departure City / Port"
                       value={quoteOrigin}
                       onChange={(e) => setQuoteOrigin(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
 
@@ -651,7 +661,7 @@ export default function HomePage({ cmsContent }) {
                       placeholder="Delivery City / Port"
                       value={quoteDestination}
                       onChange={(e) => setQuoteDestination(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
 
@@ -662,7 +672,7 @@ export default function HomePage({ cmsContent }) {
                       placeholder="Your Name"
                       value={quoteName}
                       onChange={(e) => setQuoteName(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
 
@@ -673,7 +683,7 @@ export default function HomePage({ cmsContent }) {
                       placeholder="Email Address"
                       value={quoteEmail}
                       onChange={(e) => setQuoteEmail(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
 
@@ -684,7 +694,7 @@ export default function HomePage({ cmsContent }) {
                       placeholder="Phone Number"
                       value={quotePhone}
                       onChange={(e) => setQuotePhone(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white border border-slate-700 text-xs placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-2.5 rounded-lg bg-[#141E36] text-white border border-[#D7DCE0]/30 text-xs placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
                     />
                   </div>
 
@@ -692,7 +702,7 @@ export default function HomePage({ cmsContent }) {
                     <button
                       type="submit"
                       disabled={quoteSubmitting}
-                      className="w-full py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-[#0b1b33] font-black text-xs uppercase tracking-wider transition-colors shadow-md"
+                      className="w-full py-2.5 rounded-lg bg-[#C59B24] hover:bg-[#B0891E] text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#C59B24]/20"
                     >
                       {quoteSubmitting ? "SENDING..." : "SUBMIT"}
                     </button>
@@ -706,13 +716,14 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 11: OUR SERVICE AREAS / REGULAR SERVICES FROM ALL MAJOR PORTS
+          Theme Colors: White surface, Silver #D7DCE0 badges with Navy text & Gold hover
       ========================================================================== */}
       <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-8 space-y-6">
             <div>
-              <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">Our Service Areas</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0b1b33] mt-1">
+              <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Our Service Areas</span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1D2A4C] mt-1">
                 We run regular services from all major ports:
               </h2>
             </div>
@@ -721,7 +732,7 @@ export default function HomePage({ cmsContent }) {
               {majorPorts.map((port) => (
                 <div
                   key={port}
-                  className="px-3 py-2 text-center rounded-lg bg-sky-50 text-[#0369a1] border border-sky-200 text-xs font-black tracking-wider shadow-sm"
+                  className="px-3 py-2 text-center rounded-lg bg-[#F4F6F8] text-[#1D2A4C] border border-[#D7DCE0] text-xs font-black tracking-wider shadow-sm hover:border-[#C59B24] hover:text-[#C59B24] transition-colors"
                 >
                   {port}
                 </div>
@@ -734,7 +745,7 @@ export default function HomePage({ cmsContent }) {
           </div>
 
           <div className="lg:col-span-4 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-white aspect-[4/3]">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-white aspect-[4/3] ring-1 ring-[#D7DCE0]">
               <Image
                 src="/images/home/service-areas.jpg"
                 alt="Major Global Ports"
@@ -747,14 +758,15 @@ export default function HomePage({ cmsContent }) {
       </section>
 
       {/* =========================================================================
-          SECTION 12: OUR PROCESS AT STEADFAST SHIPPING (PVT) LTD (6 Steps)
+          SECTION 12: OUR PROCESS AT STEADFAST SHIPPING LINES (6 Steps)
+          Theme Colors: Light Silver #F4F6F8 backdrop, White Cards, Gold Numbers, Navy Titles
       ========================================================================== */}
-      <section className="bg-slate-100/70 py-20 px-4 sm:px-8 border-y border-slate-200">
+      <section className="bg-[#F4F6F8] py-20 px-4 sm:px-8 border-y border-[#D7DCE0]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
-            <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">STEP BY STEP LOGISTICS</span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1b33] mt-1">
-              Our Process at Steadfast Shipping (PVT) LTD
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">STEP BY STEP LOGISTICS</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1D2A4C] mt-1">
+              Our Process at Steadfast Shipping Lines (Pvt) Ltd
             </h2>
           </div>
 
@@ -762,9 +774,9 @@ export default function HomePage({ cmsContent }) {
             {companyDetails.processSteps.map((st) => (
               <div
                 key={st.step}
-                className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-2 hover:shadow-md transition-shadow"
+                className="bg-white p-6 rounded-xl border border-[#D7DCE0] shadow-sm space-y-2 hover:shadow-md transition-shadow group"
               >
-                <div className="text-xl font-black text-[#0284c7]">
+                <div className="text-xl font-black text-[#C59B24]">
                   {st.step}. {st.title}
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -778,14 +790,15 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 13: FREQUENTLY ASKED QUESTIONS (Left FAQs + Right Ship Image)
+          Theme Colors: White surface, Navy #1D2A4C headings, Gold Chevrons & Active borders
       ========================================================================== */}
       <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Column: Accordion */}
           <div className="lg:col-span-7 space-y-4">
             <div className="mb-6">
-              <span className="text-xs font-bold text-[#0284c7] uppercase tracking-wider">FAQS</span>
-              <h2 className="text-3xl font-extrabold text-[#0b1b33] mt-1">
+              <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">FAQS</span>
+              <h2 className="text-3xl font-extrabold text-[#1D2A4C] mt-1">
                 FREQUENTLY ASKED QUESTIONS
               </h2>
             </div>
@@ -794,21 +807,23 @@ export default function HomePage({ cmsContent }) {
               {companyDetails.faqs.map((faq, idx) => (
                 <div
                   key={idx}
-                  className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm"
+                  className={`bg-white rounded-xl border transition-colors overflow-hidden shadow-sm ${
+                    openFaq === idx ? "border-[#C59B24]" : "border-[#D7DCE0]"
+                  }`}
                 >
                   <button
                     onClick={() => setOpenFaq(openFaq === idx ? -1 : idx)}
-                    className="w-full text-left p-4 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-[#0b1b33]"
+                    className="w-full text-left p-4 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-[#1D2A4C] hover:text-[#C59B24] transition-colors"
                   >
                     <span>{faq.q}</span>
                     {openFaq === idx ? (
-                      <ChevronUp className="w-4 h-4 text-[#0284c7] shrink-0" />
+                      <ChevronUp className="w-4 h-4 text-[#C59B24] shrink-0" />
                     ) : (
                       <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
                     )}
                   </button>
                   {openFaq === idx && (
-                    <div className="px-4 pb-4 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-2.5">
+                    <div className="px-4 pb-4 text-xs text-slate-600 leading-relaxed border-t border-[#D7DCE0]/60 pt-2.5">
                       {faq.a}
                     </div>
                   )}
@@ -819,7 +834,7 @@ export default function HomePage({ cmsContent }) {
 
           {/* Right Column: Ship Image */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3] ring-1 ring-[#D7DCE0]">
               <Image
                 src="/images/home/faq-ship.jpg"
                 alt="Container Ship FAQ"
@@ -833,8 +848,9 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 14: STATS COUNTER BAR ("Our Commitment, Your Success")
+          Theme Colors: Deep Navy #141E36 & #1D2A4C with Bold Gold #C59B24 Numbers
       ========================================================================== */}
-      <section className="bg-gradient-to-r from-[#071325] via-[#0b1b33] to-[#132c52] text-white py-14 px-4 sm:px-8 border-t border-[#1b2b46]">
+      <section className="bg-gradient-to-r from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-14 px-4 sm:px-8 border-t border-[#D7DCE0]/15">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
             <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
@@ -843,29 +859,29 @@ export default function HomePage({ cmsContent }) {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center">
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <div className="text-2xl sm:text-3xl font-black text-cyan-400">2,500+</div>
-              <div className="text-xs text-slate-300 font-bold uppercase mt-1">Happy Customers</div>
+            <div className="p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
+              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">2,500+</div>
+              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">Happy Customers</div>
             </div>
 
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <div className="text-2xl sm:text-3xl font-black text-cyan-400">18,000+</div>
-              <div className="text-xs text-slate-300 font-bold uppercase mt-1">Project Complete</div>
+            <div className="p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
+              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">18,000+</div>
+              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">Project Complete</div>
             </div>
 
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <div className="text-2xl sm:text-3xl font-black text-cyan-400">99%</div>
-              <div className="text-xs text-slate-300 font-bold uppercase mt-1">5-Star Reviews</div>
+            <div className="p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
+              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">99%</div>
+              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">5-Star Reviews</div>
             </div>
 
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <div className="text-2xl sm:text-3xl font-black text-cyan-400">24/7</div>
-              <div className="text-xs text-slate-300 font-bold uppercase mt-1">Customer Support</div>
+            <div className="p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
+              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">24/7</div>
+              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">Customer Support</div>
             </div>
 
-            <div className="col-span-2 sm:col-span-1 p-4 rounded-xl bg-white/5 border border-white/10">
-              <div className="text-2xl sm:text-3xl font-black text-cyan-400">100%</div>
-              <div className="text-xs text-slate-300 font-bold uppercase mt-1">Satisfaction Rate</div>
+            <div className="col-span-2 sm:col-span-1 p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
+              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">100%</div>
+              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">Satisfaction Rate</div>
             </div>
           </div>
         </div>

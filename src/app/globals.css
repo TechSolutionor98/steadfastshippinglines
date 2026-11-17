@@ -45,6 +45,18 @@ font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-anton: 'Anton', Impact, sans-serif;
   --font-jakarta: 'Plus Jakarta Sans', sans-serif;
+  --color-brand-gold: #C59B24;
+  --color-brand-gold-hover: #B0891E;
+  --color-brand-gold-light: #FDF9EE;
+  --color-brand-gold-border: #E2C876;
+  --color-brand-navy: #1D2A4C;
+  --color-brand-navy-dark: #141E36;
+  --color-brand-navy-deep: #0D1424;
+  --color-brand-navy-light: #2A3C6A;
+  --color-brand-silver: #D7DCE0;
+  --color-brand-silver-light: #F4F6F8;
+  --color-brand-silver-dark: #9CA3AF;
+  --color-brand-white: #FFFFFF;
 }
 /* Add this in your global CSS file */
 input[type="number"]::-webkit-inner-spin-button,
