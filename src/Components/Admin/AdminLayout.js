@@ -205,19 +205,20 @@ export default function AdminLayout({ children, title = '' }) {
 
       {/* Sidebar */}
       <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-gray-200 p-6 pt-16 md:pt-6 md:sticky md:top-0 md:h-screen md:overflow-y-auto">
-        <div className="mb-6">
-          <Link href="/admin" className="block">
-            <Image
-              alt="Steadfast Shipping Lines Logo"
-              width={180}
-              height={55}
-              src="/images/logo.png"
-              priority
-              className="object-contain"
-            />
+        <div className="mb-4 flex items-center justify-center">
+          <Link href="/admin" className="block group">
+            <div className="relative h-20 w-24">
+              <Image
+                alt="Steadfast Shipping Lines Logo"
+                src="/images/logo.png"
+                fill
+                priority
+                className="object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+            </div>
           </Link>
         </div>
-        <hr className='bg-gray-400 text-gray-400 w-full h-[2px] mb-7' />
+        <hr className='border-t border-gray-200 w-full mb-5' />
         {/* ── Sidebar nav: only render after user role is confirmed ── */}
         {loading ? (
           // Skeleton while loading — prevents role flash
