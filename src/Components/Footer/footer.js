@@ -79,10 +79,10 @@ export default function Footer() {
         {/* Main 4 Columns Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-12">
           {/* Column 1: Brand, Tagline, Socials & Newsletter (4 cols) */}
-          <div className="lg:col-span-4 space-y-4 flex flex-col items-center text-center">
+          <div className="lg:col-span-4 space-y-2.5 flex flex-col items-center text-center">
             {/* Enlarged & Centered Logo */}
             <Link href="/" className="inline-block group">
-              <div className="relative h-28 sm:h-32 w-48 sm:w-56 transition-transform group-hover:scale-105">
+              <div className="relative h-24 sm:h-28 w-44 sm:w-52 transition-transform group-hover:scale-105">
                 <Image
                   src="/images/logo-white.png"
                   alt="Steadfast Shipping Lines"
@@ -92,49 +92,49 @@ export default function Footer() {
               </div>
             </Link>
 
-            <p className="text-xs text-slate-300 font-medium tracking-wide">
+            <p className="text-xs text-slate-300 font-medium tracking-wide -mt-1">
               Your Trusted Partner in Global Logistics
             </p>
 
             {/* Follow Us */}
-            <div className="space-y-2 pt-1 flex flex-col items-center">
+            <div className="space-y-1.5 flex flex-col items-center">
               <span className="text-xs font-semibold text-white block">Follow Us</span>
               <div className="flex items-center justify-center gap-2">
                 <a
                   href="#"
                   aria-label="Facebook"
-                  className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#C59B24] text-white flex items-center justify-center transition-colors"
+                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#C59B24] text-white flex items-center justify-center transition-colors"
                 >
-                  <Facebook className="w-4 h-4" />
+                  <Facebook className="w-3.5 h-3.5" />
                 </a>
                 <a
                   href="#"
                   aria-label="X (Twitter)"
-                  className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#C59B24] text-white flex items-center justify-center transition-colors"
+                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#C59B24] text-white flex items-center justify-center transition-colors"
                 >
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
                 <a
                   href="#"
                   aria-label="Instagram"
-                  className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#C59B24] text-white flex items-center justify-center transition-colors"
+                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#C59B24] text-white flex items-center justify-center transition-colors"
                 >
-                  <Instagram className="w-4 h-4" />
+                  <Instagram className="w-3.5 h-3.5" />
                 </a>
                 <a
                   href="#"
                   aria-label="LinkedIn"
-                  className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#C59B24] text-white flex items-center justify-center transition-colors"
+                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#C59B24] text-white flex items-center justify-center transition-colors"
                 >
-                  <Linkedin className="w-4 h-4" />
+                  <Linkedin className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
 
             {/* Newsletter Input */}
-            <div className="space-y-1.5 pt-2 max-w-[270px] w-full text-center">
+            <div className="space-y-1.5 max-w-[270px] w-full text-center">
               <p className="text-xs text-slate-300">
                 Stay updated with our latest news and offers
               </p>
@@ -144,15 +144,15 @@ export default function Footer() {
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full px-3.5 py-2.5 text-xs bg-white/10 border border-white/20 border-r-0 rounded-l-lg text-white placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
+                  className="w-full px-3.5 py-2 text-xs bg-white/10 border border-white/20 border-r-0 rounded-l-lg text-white placeholder-slate-400 focus:outline-none focus:border-[#C59B24]"
                 />
                 <button
                   type="submit"
                   disabled={submitting}
                   aria-label="Subscribe"
-                  className="px-4 py-2.5 bg-[#C59B24] hover:bg-[#B0891E] text-white rounded-r-lg border border-[#C59B24] flex items-center justify-center transition-colors shrink-0"
+                  className="px-3.5 py-2 bg-[#C59B24] hover:bg-[#B0891E] text-white rounded-r-lg border border-[#C59B24] flex items-center justify-center transition-colors shrink-0"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-3.5 h-3.5" />
                 </button>
               </form>
               {statusMsg && (
