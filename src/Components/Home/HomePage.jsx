@@ -35,6 +35,7 @@ import {
   Calculator,
   Navigation,
   User,
+  Users,
   Headphones,
   Route,
   HeartHandshake
@@ -976,40 +977,88 @@ export default function HomePage({ cmsContent }) {
 
       {/* =========================================================================
           SECTION 14: STATS COUNTER BAR ("Our Commitment, Your Success")
-          Theme Colors: Deep Navy #141E36 & #1D2A4C with Bold Gold #C59B24 Numbers
+          Theme Colors: Deep Navy #141E36 & #1D2A4C with Bold Gold #C59B24 Accents
       ========================================================================== */}
-      <section className="bg-gradient-to-r from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-14 px-4 sm:px-8 border-t border-[#D7DCE0]/15">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8">
-            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
+      <section className="relative bg-gradient-to-b from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-20 px-4 sm:px-8 border-t border-[#D7DCE0]/15 overflow-hidden">
+        {/* Subtle decorative background glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none opacity-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#C59B24] blur-[140px] rounded-full" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-14 max-w-3xl mx-auto">
+            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest px-3 py-1 rounded-full bg-[#C59B24]/10 border border-[#C59B24]/30 inline-block mb-3">
+              PROVEN TRACK RECORD
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-white">
               Our Commitment, Your Success
-            </h3>
+            </h2>
+            <p className="text-xs sm:text-sm text-[#D7DCE0] mt-3 font-medium leading-relaxed">
+              Powering global commerce with precision logistics, end-to-end cargo security, and round-the-clock freight reliability.
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center">
-            <div className="p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
-              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">2,500+</div>
-              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">Happy Customers</div>
+          {/* 5 Stats Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 sm:gap-6">
+            <div className="group bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/50 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
+                <Users className="w-6 h-6" />
+              </div>
+              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors">
+                2,500+
+              </div>
+              <div className="text-xs font-bold text-[#D7DCE0] uppercase tracking-wider mt-2">
+                Happy Customers
+              </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
-              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">18,000+</div>
-              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">Project Complete</div>
+            <div className="group bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/50 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
+                <Award className="w-6 h-6" />
+              </div>
+              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors">
+                18,000+
+              </div>
+              <div className="text-xs font-bold text-[#D7DCE0] uppercase tracking-wider mt-2">
+                Shipments Delivered
+              </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
-              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">99%</div>
-              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">5-Star Reviews</div>
+            <div className="group bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/50 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
+                <Star className="w-6 h-6" />
+              </div>
+              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors">
+                99%
+              </div>
+              <div className="text-xs font-bold text-[#D7DCE0] uppercase tracking-wider mt-2">
+                5-Star Reviews
+              </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
-              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">24/7</div>
-              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">Customer Support</div>
+            <div className="group bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/50 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
+                <Clock className="w-6 h-6" />
+              </div>
+              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors">
+                24/7
+              </div>
+              <div className="text-xs font-bold text-[#D7DCE0] uppercase tracking-wider mt-2">
+                Active Operations
+              </div>
             </div>
 
-            <div className="col-span-2 sm:col-span-1 p-4 rounded-xl bg-white/5 border border-[#D7DCE0]/15">
-              <div className="text-2xl sm:text-3xl font-black text-[#C59B24]">100%</div>
-              <div className="text-xs text-[#D7DCE0] font-bold uppercase mt-1">Satisfaction Rate</div>
+            <div className="col-span-2 sm:col-span-1 group bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/50 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors">
+                100%
+              </div>
+              <div className="text-xs font-bold text-[#D7DCE0] uppercase tracking-wider mt-2">
+                Safe & Secure Cargo
+              </div>
             </div>
           </div>
         </div>
