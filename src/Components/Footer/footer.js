@@ -188,37 +188,46 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Get In Touch (4 cols) */}
+          {/* Column 4: Our Offices (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
-            <h4 className="text-base font-bold text-white tracking-tight">Get In Touch</h4>
-            <div className="space-y-3 text-xs text-slate-300 leading-relaxed">
-              <p>
-                <strong className="text-white font-semibold">Phone: </strong>
-                <a href="tel:+923127777952" className="hover:text-[#C59B24] transition-colors">
-                  +92 312 7777952
-                </a>
-                <span>, </span>
-                <a href="tel:+923127777951" className="hover:text-[#C59B24] transition-colors">
-                  +92 312 7777951
-                </a>
-              </p>
+            <h4 className="text-base font-bold text-white tracking-tight uppercase">OUR OFFICES</h4>
+            <div className="space-y-3.5 text-xs leading-relaxed">
+              {/* Contact Numbers */}
+              <div>
+                <span className="font-bold text-white block mb-1">Contact Numbers</span>
+                <div className="space-y-0.5">
+                  <a href="tel:+923127777952" className="text-[#C59B24] hover:underline block font-medium">
+                    +92 312 7777952
+                  </a>
+                  <a href="tel:+923127777951" className="text-[#C59B24] hover:underline block font-medium">
+                    +92 312 7777951
+                  </a>
+                </div>
+              </div>
 
-              <p>
-                <strong className="text-white font-semibold">Email: </strong>
-                <a href="mailto:info@steadfastshippinglines.com" className="hover:text-[#C59B24] transition-colors">
+              {/* Email */}
+              <div>
+                <span className="font-bold text-white block mb-1">Email</span>
+                <a href="mailto:info@steadfastshippinglines.com" className="text-[#C59B24] hover:underline block font-medium">
                   info@steadfastshippinglines.com
                 </a>
-              </p>
+              </div>
 
-              <p>
-                <strong className="text-white font-semibold block sm:inline">Head Office: </strong>
-                <span>P-3067, Office No. 01, 1st Floor, Razzaq Center, Behind Kia Motors, West Canal Road, Faisalabad, Pakistan.</span>
-              </p>
+              {/* Head Office – Faisalabad */}
+              <div>
+                <span className="font-bold text-white block mb-1">Head Office – Faisalabad</span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  P-3067, Office No. 01, 1st Floor, Razzaq Center, Behind Kia Motors, West Canal Road, Faisalabad, Pakistan.
+                </p>
+              </div>
 
-              <p>
-                <strong className="text-white font-semibold block sm:inline">Branch Office: </strong>
-                <span>Saima Trade Tower, Block A 810, Main I.I. Chundrigar Road, Near Shaheen Complex, Karachi, Pakistan.</span>
-              </p>
+              {/* Branch Office – Karachi */}
+              <div>
+                <span className="font-bold text-white block mb-1">Branch Office – Karachi</span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  Saima Trade Tower, Block A 810, Main I.I. Chundrigar Road, Near Shaheen Complex, Karachi, Pakistan.
+                </p>
+              </div>
             </div>
           </div>
         </div>
