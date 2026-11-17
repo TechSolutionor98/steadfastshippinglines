@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useMemo } from 'react';
 import { categories, productsByCategory, getProductBarcode } from '@/app/_components/AllProducts/catalogData';
@@ -93,7 +93,7 @@ export default function ProductCatalogSelector({ value = {}, onChange, disabled 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-150 pb-3">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#084032] text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#141E36] text-white">
             <FiLayers className="h-4 w-4" />
           </div>
           <div>
@@ -120,7 +120,7 @@ export default function ProductCatalogSelector({ value = {}, onChange, disabled 
               onClick={() => setActiveCategory(cat.slug)}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition cursor-pointer ${
                 isActive
-                  ? 'bg-[#084032] text-white shadow-sm'
+                  ? 'bg-[#141E36] text-white shadow-sm'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -128,7 +128,7 @@ export default function ProductCatalogSelector({ value = {}, onChange, disabled 
               <span
                 className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
                   isActive
-                    ? 'bg-emerald-300 text-[#084032]'
+                    ? 'bg-emerald-300 text-[#141E36]'
                     : count === 4
                     ? 'bg-emerald-100 text-emerald-800'
                     : 'bg-amber-100 text-amber-800'
@@ -204,7 +204,7 @@ export default function ProductCatalogSelector({ value = {}, onChange, disabled 
                   }}
                   className={`transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-emerald-50/40 hover:bg-emerald-50/70 border-l-4 border-l-[#084032]'
+                      ? 'bg-emerald-50/40 hover:bg-emerald-50/70 border-l-4 border-l-[#141E36]'
                       : isDisabledCheckbox
                       ? 'bg-white opacity-75'
                       : 'bg-white hover:bg-gray-50'
@@ -218,7 +218,7 @@ export default function ProductCatalogSelector({ value = {}, onChange, disabled 
                       onChange={() => handleToggleProduct(p.title)}
                       onClick={(e) => e.stopPropagation()}
                       className={`h-4 w-4 rounded border-gray-300 transition ${
-                        isDisabledCheckbox ? 'cursor-not-allowed opacity-30' : 'cursor-pointer accent-[#084032]'
+                        isDisabledCheckbox ? 'cursor-not-allowed opacity-30' : 'cursor-pointer accent-[#141E36]'
                       }`}
                     />
                   </td>
@@ -248,7 +248,7 @@ export default function ProductCatalogSelector({ value = {}, onChange, disabled 
                   <td className="py-2.5 px-3 text-center">
                     {isSelected ? (
                       <div className="flex items-center justify-center gap-1">
-                        <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#084032] text-white">
+                        <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#141E36] text-white">
                           #{orderIndex}
                         </span>
                         <div className="flex items-center gap-0.5">

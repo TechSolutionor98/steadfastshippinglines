@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useRef, useCallback } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -55,13 +55,13 @@ const CaptchaModal = ({ isOpen, onVerified, onClose }) => {
   return (
     <div className="fixed inset-0 z-[10000] md:z-50 flex items-center justify-center bg-black/50" onClick={handleClose}>
       <div className="bg-white rounded-xl p-6 w-[90%] max-w-[400px] shadow-2xl" onClick={(e) => e.stopPropagation()}>
-        <h3 className="text-xl font-bold text-[#084032] mb-4 text-center">Verify You&apos;re Human</h3>
+        <h3 className="text-xl font-bold text-[#141E36] mb-4 text-center">Verify You&apos;re Human</h3>
 
         <div className="flex flex-col items-center justify-center mb-4" style={{ minHeight: '100px' }}>
           {verifying && (
             <>
-              <div className="w-10 h-10 border-4 border-[#084032] border-t-transparent rounded-full animate-spin mb-3"></div>
-              <p className="text-[#084032] text-sm font-medium">Verifying...</p>
+              <div className="w-10 h-10 border-4 border-[#141E36] border-t-transparent rounded-full animate-spin mb-3"></div>
+              <p className="text-[#141E36] text-sm font-medium">Verifying...</p>
             </>
           )}
 
@@ -85,7 +85,7 @@ const CaptchaModal = ({ isOpen, onVerified, onClose }) => {
         <button
           type="button"
           onClick={handleClose}
-          className="w-full border border-[#084032] text-[#084032] rounded-full h-[42px] font-semibold text-[14px] cursor-pointer"
+          className="w-full border border-[#141E36] text-[#141E36] rounded-full h-[42px] font-semibold text-[14px] cursor-pointer"
         >
           Cancel
         </button>

@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -33,7 +34,8 @@ export default function LoginPage() {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-    //   background: "linear-gradient(135deg, #084032 0%, #0e6b50 100%)"
+      background: "linear-gradient(135deg, #141E36 0%, #1D2A4C 100%)",
+      padding: "20px"
     }}>
       <form
         onSubmit={handleLogin}
@@ -45,10 +47,21 @@ export default function LoginPage() {
           minWidth: 340,
           display: "flex",
           flexDirection: "column",
-          gap: 18
+          gap: 18,
+          alignItems: "center"
         }}
       >
-        <h2 style={{ textAlign: "center", color: "#084032", marginBottom: 8 }}>Admin Login</h2>
+        <div style={{ marginBottom: 4 }}>
+          <Image
+            src="/images/logo.png"
+            alt="Steadfast Shipping Lines"
+            width={180}
+            height={55}
+            priority
+            style={{ objectFit: "contain" }}
+          />
+        </div>
+        <h2 style={{ textAlign: "center", color: "#141E36", margin: "0 0 8px 0", fontSize: "20px", fontWeight: "700" }}>Admin Login</h2>
         <input
           type="email"
           placeholder="Email"
@@ -56,11 +69,13 @@ export default function LoginPage() {
           required
           onChange={e => setEmail(e.target.value)}
           style={{
+            width: "100%",
             padding: "12px",
             borderRadius: "8px",
             border: "1px solid #ccc",
-            fontSize: "16px",
-            color:'black'
+            fontSize: "15px",
+            color: "black",
+            boxSizing: "border-box"
           }}
         />
         <input
@@ -70,19 +85,22 @@ export default function LoginPage() {
           required
           onChange={e => setPassword(e.target.value)}
           style={{
+            width: "100%",
             padding: "12px",
             borderRadius: "8px",
             border: "1px solid #ccc",
-            fontSize: "16px",
-            color:'black'
+            fontSize: "15px",
+            color: "black",
+            boxSizing: "border-box"
           }}
         />
         <button
           type="submit"
           style={{
+            width: "100%",
             padding: "12px",
             borderRadius: "8px",
-            background: "#084032",
+            background: "#141E36",
             color: "#fff",
             fontWeight: "bold",
             fontSize: "16px",
@@ -98,9 +116,6 @@ export default function LoginPage() {
             {error}
           </div>
         )}
-        {/* <div style={{ textAlign: "center", color: "#888", fontSize: "13px", marginTop: "10px" }}>
-          <span>Demo: admin@crownexcel.com / admin123</span>
-        </div> */}
       </form>
     </div>
   );

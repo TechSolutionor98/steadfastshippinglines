@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import SeoEditorClient from './SeoEditorClient';
 import { ObjectId } from 'mongodb';
 import { getApiBase } from '@/lib/api-helper';
@@ -42,7 +42,7 @@ export default async function SeoEditPage({ params }) {
       <h1 className='text-[30px] font-bold'>EDIT SEO</h1>
       <p className="text-sm text-gray-600 mb-1">
         {routeData ? (
-          <>Managing SEO for: <code className="font-mono bg-gray-100 px-2 py-0.5 rounded text-[#084032]">{routeData.path}</code></>
+          <>Managing SEO for: <code className="font-mono bg-gray-100 px-2 py-0.5 rounded text-[#141E36]">{routeData.path}</code></>
         ) : (
           'Loading page information...'
         )}

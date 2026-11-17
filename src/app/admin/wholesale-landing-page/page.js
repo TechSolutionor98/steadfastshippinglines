@@ -2,7 +2,7 @@ import React from 'react';
 import WholesaleLandingPageClient from './WholesaleLandingPageClient';
 
 export const metadata = {
-  title: 'Wholesale Landing Page Products | Crown Excel Admin',
+  title: 'Wholesale Landing Page Products | Steadfast Shipping Lines Admin',
 };
 
 export const dynamic = 'force-dynamic';

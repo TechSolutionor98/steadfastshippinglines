@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
@@ -209,7 +209,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
         <div className="flex items-center flex-wrap gap-2 w-full sm:w-auto">
           <Link
             href="/admin/blogs/add"
-            className="px-4 py-2 bg-[#084032] hover:bg-[#00a63e] text-white font-semibold rounded-lg shadow-xs transition-all duration-200 text-sm cursor-pointer"
+            className="px-4 py-2 bg-[#141E36] hover:bg-[#C59B24] text-white font-semibold rounded-lg shadow-xs transition-all duration-200 text-sm cursor-pointer"
           >
             Add Blog Post
           </Link>
@@ -228,7 +228,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
             <button
               type="button"
               onClick={handleEnterBulkMode}
-              className="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 hover:text-[#084032] font-semibold rounded-lg text-sm shadow-xs transition-all duration-200 cursor-pointer inline-flex items-center gap-2"
+              className="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 hover:text-[#141E36] font-semibold rounded-lg text-sm shadow-xs transition-all duration-200 cursor-pointer inline-flex items-center gap-2"
               title="Enable bulk author selection mode"
             >
               <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -246,7 +246,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search blogs, authors, tags..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
           />
         </div>
       </div>
@@ -256,7 +256,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
         <div className="mb-4 px-4 py-3 bg-gray-50/90 border border-gray-200 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs transition-all duration-200">
           {/* Left: Selection Counter & Helper */}
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-[#084032] text-white">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-[#141E36] text-white">
               <svg className="w-3.5 h-3.5 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
@@ -266,7 +266,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
             <button
               type="button"
               onClick={handleToggleSelectAll}
-              className="text-xs text-[#084032] hover:text-[#00a63e] font-semibold hover:underline cursor-pointer"
+              className="text-xs text-[#141E36] hover:text-[#C59B24] font-semibold hover:underline cursor-pointer"
             >
               {isAllFilteredSelected ? 'Deselect All' : `Select All (${filteredBlogs.length})`}
             </button>
@@ -298,7 +298,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
                   }
                 }}
                 placeholder="New author name..."
-                className="w-48 sm:w-56 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none shadow-xs"
+                className="w-48 sm:w-56 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none shadow-xs"
               />
               <datalist id="bulk-author-suggestions">
                 {uniqueAuthors.map((authorName, idx) => (
@@ -311,7 +311,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
               type="button"
               onClick={handleBulkUpdateAuthor}
               disabled={bulkLoading || selectedIds.length === 0 || !bulkAuthor.trim()}
-              className={`px-4 py-1.5 bg-[#084032] hover:bg-[#00a63e] text-white font-semibold rounded-lg text-sm shadow-xs transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
+              className={`px-4 py-1.5 bg-[#141E36] hover:bg-[#C59B24] text-white font-semibold rounded-lg text-sm shadow-xs transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
                 bulkLoading || selectedIds.length === 0 || !bulkAuthor.trim() ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               title={selectedIds.length === 0 ? 'Select at least one post' : 'Update Author for selected posts'}
@@ -335,7 +335,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
       <div className="overflow-x-auto w-full rounded-lg border border-gray-150 shadow-xs">
         <table className="min-w-full text-sm">
           <thead>
-            <tr className="bg-[#084032] text-white text-left font-semibold">
+            <tr className="bg-[#141E36] text-white text-left font-semibold">
               {/* Checkbox Column (Rendered ONLY in Bulk Management Mode) */}
               {isBulkMode && (
                 <th className="w-12 px-3 py-3 text-center align-middle">
@@ -344,7 +344,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
                     ref={headerCheckboxRef}
                     checked={isAllFilteredSelected}
                     onChange={handleToggleSelectAll}
-                    className="w-4 h-4 rounded text-[#084032] focus:ring-[#084032] border-gray-300 cursor-pointer accent-[#084032]"
+                    className="w-4 h-4 rounded text-[#141E36] focus:ring-[#141E36] border-gray-300 cursor-pointer accent-[#141E36]"
                     title={isAllFilteredSelected ? 'Deselect all visible' : 'Select all visible'}
                     aria-label="Select all blog posts"
                   />
@@ -384,7 +384,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
                           type="checkbox"
                           checked={isSelected}
                           onChange={() => handleToggleSelect(blog._id)}
-                          className="w-4 h-4 rounded text-[#084032] focus:ring-[#084032] border-gray-300 cursor-pointer accent-[#084032]"
+                          className="w-4 h-4 rounded text-[#141E36] focus:ring-[#141E36] border-gray-300 cursor-pointer accent-[#141E36]"
                           aria-label={`Select blog post ${blog.title}`}
                         />
                       </td>
@@ -480,7 +480,7 @@ export default function BlogsListClient({ initialData = [], apiBase = '' }) {
                         </Link>
                         <Link
                           href={`/admin/blogs/edit/${blog._id}`}
-                          className="px-3 py-1 bg-[#084032] hover:bg-[#00a63e] text-white rounded text-xs font-semibold shadow-xs transition-all"
+                          className="px-3 py-1 bg-[#141E36] hover:bg-[#C59B24] text-white rounded text-xs font-semibold shadow-xs transition-all"
                         >
                           Edit
                         </Link>

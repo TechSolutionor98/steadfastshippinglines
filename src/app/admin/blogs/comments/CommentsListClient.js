@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
@@ -51,7 +51,7 @@ function EditModal({ comment, onClose, onSave }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-all duration-300">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden border border-gray-105 flex flex-col transform transition-transform duration-300 scale-100">
         {/* Header */}
-        <div className="bg-[#084032] px-6 py-5 flex items-center justify-between">
+        <div className="bg-[#141E36] px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5 text-[#4ade80]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -70,11 +70,11 @@ function EditModal({ comment, onClose, onSave }) {
         {/* Body */}
         <div className="p-6 space-y-6 flex-1">
           {/* Metadata info card */}
-          <div className="bg-[#084032]/5 rounded-xl border border-[#084032]/10 p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-[#141E36]/5 rounded-xl border border-[#141E36]/10 p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1 text-left">
               <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Comment Author</span>
               <div className="flex items-center gap-2 mt-1">
-                <div className="w-8 h-8 bg-[#084032] text-white rounded-full flex items-center justify-center font-bold text-sm">
+                <div className="w-8 h-8 bg-[#141E36] text-white rounded-full flex items-center justify-center font-bold text-sm">
                   {comment.authorName ? comment.authorName.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <div>
@@ -88,7 +88,7 @@ function EditModal({ comment, onClose, onSave }) {
             
             <div className="space-y-1 text-left border-t md:border-t-0 md:border-l border-gray-200/60 pt-3 md:pt-0 md:pl-4">
               <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider font-sans">Associated Article</span>
-              <p className="text-sm font-semibold text-[#084032] line-clamp-2 leading-tight mt-1" title={comment.blogTitle}>
+              <p className="text-sm font-semibold text-[#141E36] line-clamp-2 leading-tight mt-1" title={comment.blogTitle}>
                 {comment.blogTitle || 'N/A'}
               </p>
             </div>
@@ -101,7 +101,7 @@ function EditModal({ comment, onClose, onSave }) {
               value={text}
               onChange={e => setText(e.target.value)}
               rows={8}
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#084032]/50 focus:border-[#084032] transition bg-gray-50/30 focus:bg-white resize-y min-h-[160px]"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#141E36]/50 focus:border-[#141E36] transition bg-gray-50/30 focus:bg-white resize-y min-h-[160px]"
               placeholder="Write the comment text..."
             />
             <div className="flex justify-between items-center text-xs text-gray-400 mt-1.5 px-1">
@@ -124,7 +124,7 @@ function EditModal({ comment, onClose, onSave }) {
             type="button"
             onClick={handleSave}
             disabled={saving || !text.trim()}
-            className="px-6 py-2.5 bg-[#084032] hover:bg-[#0a5c48] text-white rounded-lg text-sm font-bold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-[#084032]/10"
+            className="px-6 py-2.5 bg-[#141E36] hover:bg-[#1D2A4C] text-white rounded-lg text-sm font-bold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-[#141E36]/10"
           >
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
@@ -216,7 +216,7 @@ function CommentCell({ text }) {
               {text}
             </div>
           )}
-          <span className="text-[10px] text-[#084032] font-semibold opacity-0 group-hover:opacity-100 transition absolute bottom-0 right-0">
+          <span className="text-[10px] text-[#141E36] font-semibold opacity-0 group-hover:opacity-100 transition absolute bottom-0 right-0">
             hover to read more
           </span>
         </div>
@@ -357,7 +357,7 @@ export default function CommentsListClient({
 
       {/* Active blog filter */}
       {filterBlogId && comments.length > 0 && (
-        <div className="mb-4 p-3 bg-green-50 border border-green-200 text-[#084032] rounded-lg text-sm flex items-center justify-between font-medium">
+        <div className="mb-4 p-3 bg-green-50 border border-green-200 text-[#141E36] rounded-lg text-sm flex items-center justify-between font-medium">
           <span>Showing comments for: <strong className="underline">{comments[0]?.blogTitle || 'Selected Blog'}</strong></span>
           <Link href="/admin/blogs/comments" className="text-xs px-2.5 py-1 bg-white border border-green-200 rounded hover:bg-green-100 transition font-semibold">
             Clear Filter
@@ -397,7 +397,7 @@ export default function CommentsListClient({
                     ? tab.key === 'approved' ? 'bg-white text-green-700 shadow-sm'
                     : tab.key === 'pending' ? 'bg-white text-yellow-700 shadow-sm'
                     : tab.key === 'rejected' ? 'bg-white text-red-600 shadow-sm'
-                    : 'bg-white text-[#084032] shadow-sm'
+                    : 'bg-white text-[#141E36] shadow-sm'
                     : 'text-gray-500 hover:text-black'
                 }`}
               >
@@ -419,7 +419,7 @@ export default function CommentsListClient({
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search comments, authors, blogs..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition"
           />
         </div>
       </div>
@@ -427,14 +427,14 @@ export default function CommentsListClient({
       {/* Table - fills remaining height */}
       <div className="flex-1 overflow-auto w-full rounded-xl border border-gray-150 shadow-sm min-h-0">
         <table className="min-w-full text-sm">
-          <thead className="sticky top-0 z-10 bg-[#084032] shadow-sm">
-            <tr className="bg-[#084032] text-white text-left font-semibold">
-              <th className="px-4 py-3 bg-[#084032]">Blog Post</th>
-              <th className="px-4 py-3 bg-[#084032]">Author</th>
-              <th className="px-4 py-3 bg-[#084032] min-w-[220px]">Comment</th>
-              <th className="px-4 py-3 bg-[#084032] whitespace-nowrap">Date & Time</th>
-              <th className="px-4 py-3 bg-[#084032]">Status</th>
-              <th className="px-4 py-3 bg-[#084032] text-right">Actions</th>
+          <thead className="sticky top-0 z-10 bg-[#141E36] shadow-sm">
+            <tr className="bg-[#141E36] text-white text-left font-semibold">
+              <th className="px-4 py-3 bg-[#141E36]">Blog Post</th>
+              <th className="px-4 py-3 bg-[#141E36]">Author</th>
+              <th className="px-4 py-3 bg-[#141E36] min-w-[220px]">Comment</th>
+              <th className="px-4 py-3 bg-[#141E36] whitespace-nowrap">Date & Time</th>
+              <th className="px-4 py-3 bg-[#141E36]">Status</th>
+              <th className="px-4 py-3 bg-[#141E36] text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 bg-white">
@@ -461,7 +461,7 @@ export default function CommentsListClient({
                     <td className="px-4 py-3 max-w-[180px]">
                       <Link
                         href={`/admin/blogs/edit/${c.blogId}`}
-                        className="font-bold text-gray-800 hover:text-[#084032] hover:underline block truncate text-sm"
+                        className="font-bold text-gray-800 hover:text-[#141E36] hover:underline block truncate text-sm"
                         title={c.blogTitle}
                       >
                         {c.blogTitle}

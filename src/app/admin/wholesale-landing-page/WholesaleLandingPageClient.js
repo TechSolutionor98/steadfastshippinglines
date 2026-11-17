@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
@@ -481,7 +481,7 @@ export default function WholesaleLandingPageClient() {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#084032] hover:bg-[#0c5946] rounded-lg transition-all shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#141E36] hover:bg-[#0c5946] rounded-lg transition-all shadow-xs cursor-pointer"
           >
             <FiPlus className="w-4 h-4" />
             <span>Add Product</span>
@@ -500,7 +500,7 @@ export default function WholesaleLandingPageClient() {
             On the client-side wholesale page, each category displays exactly{' '}
             <strong className="underline">4 product cards</strong> at a time.
             The top 4 active products in each category (marked with{' '}
-            <span className="font-bold text-[#084032]">Live (Slot 1–4)</span>)
+            <span className="font-bold text-[#141E36]">Live (Slot 1–4)</span>)
             will be visible to customers. Any additional products will be held as
             backup/reserve cards.
           </p>
@@ -519,7 +519,7 @@ export default function WholesaleLandingPageClient() {
               onClick={() => setActiveCategory(cat)}
               className={`px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                 isActive
-                  ? 'bg-[#084032] text-white shadow-xs'
+                  ? 'bg-[#141E36] text-white shadow-xs'
                   : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
               }`}
             >
@@ -563,7 +563,7 @@ export default function WholesaleLandingPageClient() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-[#084032] text-white font-semibold">
+              <tr className="bg-[#141E36] text-white font-semibold">
                 <th className="py-3 px-3.5 w-14 text-center">Slot</th>
                 <th className="py-3 px-3.5 w-16">Image</th>
                 <th className="py-3 px-3.5">Product Title & Brand</th>
@@ -757,7 +757,7 @@ export default function WholesaleLandingPageClient() {
                           <button
                             type="button"
                             onClick={() => handleOpenEdit(product)}
-                            className="p-1.5 text-gray-600 hover:text-[#084032] hover:bg-emerald-50 border border-gray-200 rounded-md transition-colors cursor-pointer"
+                            className="p-1.5 text-gray-600 hover:text-[#141E36] hover:bg-emerald-50 border border-gray-200 rounded-md transition-colors cursor-pointer"
                             title="Edit Product"
                           >
                             <FiEdit2 className="w-3.5 h-3.5" />
@@ -940,7 +940,7 @@ export default function WholesaleLandingPageClient() {
                         onClick={() => setSpecInputMode('builder')}
                         className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
                           specInputMode === 'builder'
-                            ? 'bg-[#084032] text-white shadow-xs'
+                            ? 'bg-[#141E36] text-white shadow-xs'
                             : 'text-gray-600 hover:text-gray-900'
                         }`}
                       >
@@ -951,7 +951,7 @@ export default function WholesaleLandingPageClient() {
                         onClick={() => setSpecInputMode('raw')}
                         className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
                           specInputMode === 'raw'
-                            ? 'bg-[#084032] text-white shadow-xs'
+                            ? 'bg-[#141E36] text-white shadow-xs'
                             : 'text-gray-600 hover:text-gray-900'
                         }`}
                       >
@@ -1118,7 +1118,7 @@ export default function WholesaleLandingPageClient() {
                 <button
                   type="submit"
                   disabled={saving || uploadingImage}
-                  className="px-4 py-1.5 text-xs font-bold text-white bg-[#084032] hover:bg-[#0c5946] rounded-lg transition-all shadow-xs cursor-pointer disabled:opacity-50"
+                  className="px-4 py-1.5 text-xs font-bold text-white bg-[#141E36] hover:bg-[#0c5946] rounded-lg transition-all shadow-xs cursor-pointer disabled:opacity-50"
                 >
                   {saving
                     ? 'Saving...'

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { FiPlus, FiUsers, FiEdit2, FiTrash2, FiShield, FiX, FiUserCheck, FiUserX, FiChevronDown, FiCheck } from 'react-icons/fi';
@@ -74,7 +74,7 @@ function RoleMultiSelect({ selectedRoles = [], onChange, label = 'Role' }) {
     const labels = selectedRoles.map(v => ROLES.find(r => r.value === v)?.label || v);
     return (
       <span className="text-gray-800 truncate">
-        <span className="font-semibold text-[#084032]">{selectedRoles.length} Roles Selected: </span>
+        <span className="font-semibold text-[#141E36]">{selectedRoles.length} Roles Selected: </span>
         {labels.join(', ')}
       </span>
     );
@@ -89,7 +89,7 @@ function RoleMultiSelect({ selectedRoles = [], onChange, label = 'Role' }) {
           type="button"
           onClick={handleToggle}
           className={`w-full rounded-md border ${
-            isOpen ? 'border-[#084032] ring-2 ring-[#00a63e]' : 'border-gray-300'
+            isOpen ? 'border-[#141E36] ring-2 ring-[#C59B24]' : 'border-gray-300'
           } px-4 py-2 text-sm text-left bg-white flex items-center justify-between gap-2 shadow-sm transition hover:border-gray-400 outline-none cursor-pointer`}
         >
           <div className="flex items-center gap-2 truncate">
@@ -108,7 +108,7 @@ function RoleMultiSelect({ selectedRoles = [], onChange, label = 'Role' }) {
           >
             <div className="px-3 py-1.5 bg-gray-50 border-b border-gray-100 flex items-center justify-between text-[11px] text-gray-500 font-medium sticky top-0 z-10">
               <span>Check roles to grant access</span>
-              <span className="text-[#084032] font-semibold">{selectedRoles.length} selected</span>
+              <span className="text-[#141E36] font-semibold">{selectedRoles.length} selected</span>
             </div>
             {ROLES.map(role => {
               const isChecked = selectedRoles.includes(role.value);
@@ -120,20 +120,20 @@ function RoleMultiSelect({ selectedRoles = [], onChange, label = 'Role' }) {
                     toggleRole(role.value);
                   }}
                   className={`flex items-center gap-3 px-3.5 py-2 text-sm cursor-pointer select-none transition ${
-                    isChecked ? 'bg-[#084032]/10 font-medium' : 'hover:bg-gray-50 text-gray-700'
+                    isChecked ? 'bg-[#141E36]/10 font-medium' : 'hover:bg-gray-50 text-gray-700'
                   }`}
                 >
                   <input
                     type="checkbox"
                     checked={isChecked}
                     onChange={() => {}}
-                    className="w-4 h-4 text-[#084032] rounded border-gray-300 focus:ring-[#084032] cursor-pointer"
+                    className="w-4 h-4 text-[#141E36] rounded border-gray-300 focus:ring-[#141E36] cursor-pointer"
                   />
                   <span className="flex-1 truncate">
                     <span className={isChecked ? 'font-semibold text-gray-900' : 'text-gray-800'}>{role.label}</span>
                     <span className="text-gray-500 font-normal"> — {role.desc}</span>
                   </span>
-                  {isChecked && <FiCheck className="text-[#084032] text-xs flex-shrink-0" />}
+                  {isChecked && <FiCheck className="text-[#141E36] text-xs flex-shrink-0" />}
                 </label>
               );
             })}
@@ -270,7 +270,7 @@ function TableRoleMultiSelect({ user, onRolesChange }) {
         >
           <div className="px-3 py-1.5 bg-gray-50 border-b border-gray-100 flex items-center justify-between text-[11px] text-gray-500 font-medium sticky top-0 z-10">
             <span>Toggle Role Access</span>
-            <span className="text-[#084032] font-semibold">{userRoles.length} active</span>
+            <span className="text-[#141E36] font-semibold">{userRoles.length} active</span>
           </div>
           {ROLES.map(role => {
             const isChecked = userRoles.includes(role.value);
@@ -289,13 +289,13 @@ function TableRoleMultiSelect({ user, onRolesChange }) {
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => {}}
-                  className="w-3.5 h-3.5 text-[#084032] rounded border-gray-300 focus:ring-[#084032] cursor-pointer"
+                  className="w-3.5 h-3.5 text-[#141E36] rounded border-gray-300 focus:ring-[#141E36] cursor-pointer"
                 />
                 <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${role.color}`}>
                   {role.label}
                 </span>
                 <span className="text-gray-400 text-[10px] truncate ml-auto">{role.desc.split(' ')[0]}</span>
-                {isChecked && <FiCheck className="text-[#084032] text-xs flex-shrink-0" />}
+                {isChecked && <FiCheck className="text-[#141E36] text-xs flex-shrink-0" />}
               </label>
             );
           })}
@@ -490,7 +490,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#084032] text-white text-sm font-semibold rounded-md hover:bg-[#0a5c48] transition cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#141E36] text-white text-sm font-semibold rounded-md hover:bg-[#1D2A4C] transition cursor-pointer"
         >
           <FiPlus /> Add User
         </button>
@@ -521,7 +521,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
                 <tr key={user._id} className="hover:bg-gray-50">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#084032] flex items-center justify-center text-white text-sm font-bold">
+                      <div className="w-8 h-8 rounded-full bg-[#141E36] flex items-center justify-center text-white text-sm font-bold">
                         {user.name?.charAt(0).toUpperCase() || '?'}
                       </div>
                       <div>
@@ -595,7 +595,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
       {/* Role Permissions Matrix */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-2">
-          <FiShield size={15} className="text-[#084032]" />
+          <FiShield size={15} className="text-[#141E36]" />
           <h3 className="text-sm font-semibold text-gray-700">Role Permissions — What each role can access</h3>
         </div>
 
@@ -708,7 +708,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
                   value={editForm.name}
                   onChange={(e) => setEditForm(p => ({ ...p, name: e.target.value }))}
                   placeholder="Full name"
-                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] outline-none"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] outline-none"
                 />
               </div>
               <div>
@@ -718,7 +718,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
                   value={editForm.email}
                   onChange={(e) => setEditForm(p => ({ ...p, email: e.target.value }))}
                   placeholder="user@example.com"
-                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] outline-none"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] outline-none"
                 />
               </div>
               <div>
@@ -731,7 +731,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
                   value={editForm.password}
                   onChange={(e) => setEditForm(p => ({ ...p, password: e.target.value }))}
                   placeholder="Leave blank to keep current password"
-                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] outline-none"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] outline-none"
                 />
               </div>
               <div>
@@ -744,7 +744,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
               <button
                 onClick={handleEdit}
                 disabled={editLoading}
-                className="w-full px-4 py-2.5 bg-[#084032] text-white text-sm font-semibold rounded-md hover:bg-[#0a5c48] transition disabled:opacity-60 cursor-pointer"
+                className="w-full px-4 py-2.5 bg-[#141E36] text-white text-sm font-semibold rounded-md hover:bg-[#1D2A4C] transition disabled:opacity-60 cursor-pointer"
               >
                 {editLoading ? 'Saving...' : 'Save Changes'}
               </button>
@@ -768,7 +768,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
                   value={form.name}
                   onChange={(e) => setForm(p => ({ ...p, name: e.target.value }))}
                   placeholder="John Doe"
-                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] outline-none"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] outline-none"
                 />
               </div>
               <div>
@@ -778,7 +778,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
                   value={form.email}
                   onChange={(e) => setForm(p => ({ ...p, email: e.target.value }))}
                   placeholder="user@example.com"
-                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] outline-none"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] outline-none"
                 />
               </div>
               <div>
@@ -788,7 +788,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
                   value={form.password}
                   onChange={(e) => setForm(p => ({ ...p, password: e.target.value }))}
                   placeholder="Min 8 characters"
-                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] outline-none"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] outline-none"
                 />
               </div>
               <div>
@@ -800,7 +800,7 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
               </div>
               <button
                 onClick={handleCreate}
-                className="w-full px-4 py-2.5 bg-[#084032] text-white text-sm font-semibold rounded-md hover:bg-[#0a5c48] transition cursor-pointer"
+                className="w-full px-4 py-2.5 bg-[#141E36] text-white text-sm font-semibold rounded-md hover:bg-[#1D2A4C] transition cursor-pointer"
               >
                 Create User
               </button>

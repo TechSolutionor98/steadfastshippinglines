@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { FiSearch, FiRefreshCw, FiEdit, FiEye, FiEyeOff, FiGlobe, FiLayers, FiChevronRight, FiChevronDown, FiCheckCircle, FiAlertCircle, FiCopy, FiCheck } from 'react-icons/fi';
@@ -218,9 +218,9 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#084032]">
+        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#141E36]">
           <p className="text-sm text-gray-500">Total Pages</p>
-          <p className="text-2xl font-bold text-[#084032]">{stats.total}</p>
+          <p className="text-2xl font-bold text-[#141E36]">{stats.total}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
           <p className="text-sm text-gray-500">Active</p>
@@ -249,14 +249,14 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 text-gray-900 text-sm
-                           focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none transition"
+                           focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none transition"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-3 py-2 rounded-md border border-gray-300 text-gray-700 text-sm
-                         focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none"
+                         focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -266,7 +266,7 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
               className="px-3 py-2 rounded-md border border-gray-300 text-gray-700 text-sm
-                         focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none"
+                         focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none"
             >
               <option value="all">All Types</option>
               <option value="static">Static</option>
@@ -283,7 +283,7 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
               className={`flex items-center gap-2 px-5 py-2.5 rounded-md text-white text-sm font-semibold transition whitespace-nowrap
                 ${scanning
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-[#084032] hover:bg-[#0a5c48] focus:outline-none focus:ring-2 focus:ring-[#00a63e]'}`}
+                  : 'bg-[#141E36] hover:bg-[#1D2A4C] focus:outline-none focus:ring-2 focus:ring-[#C59B24]'}`}
             >
               <FiRefreshCw className={scanning ? 'animate-spin' : ''} />
               {scanning ? 'Scanning...' : 'Scan Routes'}
@@ -305,7 +305,7 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
               <button
                 onClick={handleScanRoutes}
                 disabled={scanning}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#084032] text-white text-sm font-semibold hover:bg-[#0a5c48] transition"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#141E36] text-white text-sm font-semibold hover:bg-[#1D2A4C] transition"
               >
                 <FiRefreshCw className={scanning ? 'animate-spin' : ''} />
                 {scanning ? 'Scanning...' : 'Scan Routes'}
@@ -352,7 +352,7 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
                           <div className="flex items-center gap-1.5 min-w-0 max-w-[120px] sm:max-w-[180px] md:max-w-[220px]">
                             <Link 
                               href={`/admin/pages/${route._id}`} 
-                              className="text-sm font-mono text-[#084032] hover:text-[#0a5c48] hover:underline font-semibold truncate"
+                              className="text-sm font-mono text-[#141E36] hover:text-[#1D2A4C] hover:underline font-semibold truncate"
                               title={route.path}
                             >
                               {route.path}
@@ -362,7 +362,7 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
                                 e.stopPropagation();
                                 handleCopy(route.path);
                               }}
-                              className="p-1 text-gray-400 hover:text-[#084032] rounded hover:bg-gray-100 transition-colors flex-shrink-0"
+                              className="p-1 text-gray-400 hover:text-[#141E36] rounded hover:bg-gray-100 transition-colors flex-shrink-0"
                               title="Copy Path"
                             >
                               {copiedText === route.path ? <FiCheck className="text-green-600" size={13} /> : <FiCopy size={13} />}
@@ -410,7 +410,7 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
                                 e.stopPropagation();
                                 handleCopy(route.filePath);
                               }}
-                              className="p-1 text-gray-400 hover:text-[#084032] rounded hover:bg-gray-100 transition-colors flex-shrink-0"
+                              className="p-1 text-gray-400 hover:text-[#141E36] rounded hover:bg-gray-100 transition-colors flex-shrink-0"
                               title="Copy File Path"
                             >
                               {copiedText === route.filePath ? <FiCheck className="text-green-600" size={12} /> : <FiCopy size={12} />}
@@ -432,7 +432,7 @@ export default function PagesClient({ initialRoutes = [], apiBase, initialError 
                               e.stopPropagation();
                               setActiveDropdownId(activeDropdownId === route._id ? null : route._id);
                             }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00a63e] shadow-sm transition-colors"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#C59B24] shadow-sm transition-colors"
                           >
                             Actions
                             <FiChevronDown size={14} className={`transition-transform duration-200 ${activeDropdownId === route._id ? 'rotate-180' : ''}`} />

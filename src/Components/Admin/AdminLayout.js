@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import LogoutButton from '@/app/admin/components/LogoutButton';
 import { usePathname } from 'next/navigation';
-import Logo from "../../Components/Images/Mobile-logo.png"
 import Image from 'next/image';
 import { FiLogOut, FiLock } from 'react-icons/fi';
 import { IoIosLogOut } from "react-icons/io";
@@ -193,11 +192,11 @@ export default function AdminLayout({ children, title = '' }) {
       <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
         {currentUser && (
           <span className="hidden md:inline-block text-xs text-gray-500 font-medium">
-            Logged in as: <strong className="text-[#084032]">{currentUser.name}</strong> ({roles.map(r => r.replace('_', ' ')).join(', ') || role?.replace('_', ' ') || 'User'})
+            Logged in as: <strong className="text-[#141E36]">{currentUser.name}</strong> ({roles.map(r => r.replace('_', ' ')).join(', ') || role?.replace('_', ' ') || 'User'})
           </span>
         )}
         <LogoutButton>
-          <div className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-[#084032] text-white text-sm rounded hover:bg-[#0a5c48] transition-colors duration-200">
+          <div className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-[#141E36] hover:bg-[#1D2A4C] text-white text-sm rounded transition-colors duration-200 shadow-sm">
             <IoIosLogOut />
             <span>Logout</span>
           </div>
@@ -207,8 +206,15 @@ export default function AdminLayout({ children, title = '' }) {
       {/* Sidebar */}
       <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-gray-200 p-6 pt-16 md:pt-6 md:sticky md:top-0 md:h-screen md:overflow-y-auto">
         <div className="mb-6">
-          <Link href="/admin">
-            <Image alt='Crown Excel Logo' width={200} height={200} src={Logo} />
+          <Link href="/admin" className="block">
+            <Image
+              alt="Steadfast Shipping Lines Logo"
+              width={180}
+              height={55}
+              src="/images/logo.png"
+              priority
+              className="object-contain"
+            />
           </Link>
         </div>
         <hr className='bg-gray-400 text-gray-400 w-full h-[2px] mb-7' />
@@ -248,7 +254,7 @@ export default function AdminLayout({ children, title = '' }) {
                               <p
                                 className={`px-3 py-2 text-sm rounded ${
                                   isActive
-                                    ? "bg-[#084032] text-white font-semibold"
+                                    ? "bg-[#141E36] text-white font-semibold shadow-sm"
                                     : "hover:bg-gray-100"
                                 }`}
                                 style={isActive ? { cursor: "default" } : {}}
@@ -273,7 +279,7 @@ export default function AdminLayout({ children, title = '' }) {
                         <p
                           className={`px-3 py-2 rounded ${
                             isActive
-                              ? "bg-[#084032] text-white font-semibold"
+                              ? "bg-[#141E36] text-white font-semibold shadow-sm"
                               : "hover:bg-gray-100"
                           }`}
                           style={isActive ? { cursor: "default" } : {}}
@@ -305,10 +311,10 @@ export default function AdminLayout({ children, title = '' }) {
               </div>
               <h2 className="text-2xl font-bold text-gray-800 mb-2">Access Restricted</h2>
               <p className="text-gray-600 max-w-md mb-8">
-                Your account role <span className="font-semibold text-[#084032] uppercase">({roles.map(r => r.replace('_', ' ')).join(', ') || role?.replace('_', ' ') || 'None'})</span> does not have permission to view this section.
+                Your account role <span className="font-semibold text-[#141E36] uppercase">({roles.map(r => r.replace('_', ' ')).join(', ') || role?.replace('_', ' ') || 'None'})</span> does not have permission to view this section.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <Link href="/admin" className="px-5 py-2.5 bg-[#084032] hover:bg-[#0a5c48] text-white font-semibold rounded-md transition shadow-md">
+                <Link href="/admin" className="px-5 py-2.5 bg-[#141E36] hover:bg-[#1D2A4C] text-white font-semibold rounded-md transition shadow-md">
                   Go to Dashboard
                 </Link>
                 {roles.includes('seo') && (

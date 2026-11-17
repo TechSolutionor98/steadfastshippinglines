@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useEffect, useRef } from 'react';
 import CaptchaModal from '../CaptchaModal/CaptchaModal';
 import OtpModal from '../OtpModal/OtpModal';
@@ -216,7 +216,7 @@ const ContactFormPopup = ({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-[#084032] rounded-t-2xl px-6 py-5 flex items-center justify-between">
+          <div className="bg-[#141E36] rounded-t-2xl px-6 py-5 flex items-center justify-between">
             <div>
               <h2 className="text-white text-xl font-bold">Get In Touch</h2>
               <p className="text-white/70 text-sm mt-1">Fill in the form and we&apos;ll get back to you</p>
@@ -234,7 +234,7 @@ const ContactFormPopup = ({
             {/* Name & Email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <input
-                className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[48px] outline-0 focus:border-[#084032] transition-colors"
+                className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[48px] outline-0 focus:border-[#141E36] transition-colors"
                 type="text"
                 name="name"
                 placeholder="Name *"
@@ -242,7 +242,7 @@ const ContactFormPopup = ({
                 style={{ padding: '12px 16px' }}
               />
               <input
-                className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[48px] outline-0 focus:border-[#084032] transition-colors"
+                className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[48px] outline-0 focus:border-[#141E36] transition-colors"
                 type="email"
                 name="email"
                 placeholder="Email *"
@@ -253,11 +253,11 @@ const ContactFormPopup = ({
 
             {/* Phone & Subject */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div className="flex border border-[#333] rounded-lg w-full h-[48px] bg-white overflow-hidden focus-within:border-[#084032] transition-colors">
+              <div className="flex border border-[#333] rounded-lg w-full h-[48px] bg-white overflow-hidden focus-within:border-[#141E36] transition-colors">
                 <select
                   value={countryCode}
                   onChange={(e) => setCountryCode(e.target.value)}
-                  className="text-[11px] bg-white text-[#084032] outline-0 border-r w-[80px] shrink-0 cursor-pointer"
+                  className="text-[11px] bg-white text-[#141E36] outline-0 border-r w-[80px] shrink-0 cursor-pointer"
                   style={{ padding: '4px' }}
                 >
                   {countryCodes.map((c) => (
@@ -286,12 +286,12 @@ const ContactFormPopup = ({
                 name="subject"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[48px] cursor-pointer focus:border-[#084032] outline-0 transition-colors"
+                className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[48px] cursor-pointer focus:border-[#141E36] outline-0 transition-colors"
                 required
                 style={{ padding: '12px 16px' }}
               >
                 {subjects.map((item, index) => (
-                  <option key={index} value={item} disabled={index === 0} className="text-[13px] text-[#084032]">
+                  <option key={index} value={item} disabled={index === 0} className="text-[13px] text-[#141E36]">
                     {item}
                   </option>
                 ))}
@@ -305,7 +305,7 @@ const ContactFormPopup = ({
                   className={`border text-[13px] rounded-lg w-full h-[48px] outline-0 transition-colors ${
                     isProductReadOnly
                       ? 'bg-gray-100 text-gray-700 cursor-not-allowed border-gray-300'
-                      : 'bg-white text-[#333] focus:border-[#084032]'
+                      : 'bg-white text-[#333] focus:border-[#141E36]'
                   }`}
                   type="text"
                   name="productName"
@@ -320,7 +320,7 @@ const ContactFormPopup = ({
                   className={`border text-[13px] rounded-lg w-full h-[48px] outline-0 transition-colors ${
                     isProductReadOnly
                       ? 'bg-gray-100 text-gray-700 cursor-not-allowed border-gray-300'
-                      : 'bg-white text-[#333] focus:border-[#084032]'
+                      : 'bg-white text-[#333] focus:border-[#141E36]'
                   }`}
                   type="text"
                   name="productBarcode"
@@ -337,12 +337,12 @@ const ContactFormPopup = ({
                 name="service"
                 value={service}
                 onChange={(e) => setService(e.target.value)}
-                className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[48px] mb-4 cursor-pointer focus:border-[#084032] outline-0 transition-colors"
+                className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[48px] mb-4 cursor-pointer focus:border-[#141E36] outline-0 transition-colors"
                 required
                 style={{ padding: '12px 16px' }}
               >
                 {services.map((item, index) => (
-                  <option key={index} value={item} disabled={index === 0} className="text-[13px] text-[#084032]">
+                  <option key={index} value={item} disabled={index === 0} className="text-[13px] text-[#141E36]">
                     {item}
                   </option>
                 ))}
@@ -354,14 +354,14 @@ const ContactFormPopup = ({
               name="comments"
               placeholder="Additional Details *"
               required
-              className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[100px] mb-4 outline-0 focus:border-[#084032] transition-colors resize-none"
+              className="border text-[13px] bg-white text-[#333] rounded-lg w-full h-[100px] mb-4 outline-0 focus:border-[#141E36] transition-colors resize-none"
               style={{ padding: '12px 16px' }}
             ></textarea>
 
             {/* Submit Button */}
             <button
               disabled={loading}
-              className="bg-[#084032] hover:bg-[#0a5a47] text-white rounded-full text-[15px] font-bold h-[50px] w-full cursor-pointer transition-colors duration-300"
+              className="bg-[#141E36] hover:bg-[#1D2A4C] text-white rounded-full text-[15px] font-bold h-[50px] w-full cursor-pointer transition-colors duration-300"
             >
               {loading ? 'Submitting...' : 'SUBMIT NOW'}
             </button>

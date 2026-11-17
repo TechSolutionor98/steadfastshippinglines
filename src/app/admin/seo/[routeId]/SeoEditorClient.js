@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiArrowLeft, FiSave, FiEye, FiSearch, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
@@ -16,7 +16,7 @@ const InputField = ({ label, value, onChange, type = 'text', placeholder = '', h
         maxLength={maxLength}
         rows={3}
         className={`rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder-gray-400 shadow-sm resize-none
-                   focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none transition text-sm ${disabled ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                   focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none transition text-sm ${disabled ? 'bg-gray-50 cursor-not-allowed' : ''}`}
       />
     ) : (
       <input
@@ -27,7 +27,7 @@ const InputField = ({ label, value, onChange, type = 'text', placeholder = '', h
         placeholder={placeholder}
         maxLength={maxLength}
         className={`rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder-gray-400 shadow-sm
-                   focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none transition text-sm ${disabled ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                   focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none transition text-sm ${disabled ? 'bg-gray-50 cursor-not-allowed' : ''}`}
       />
     )}
     {helpText && <p className="text-xs text-gray-400 mt-1">{helpText}</p>}
@@ -140,7 +140,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
       <div className="flex items-center justify-between">
         <Link
           href="/admin/seo"
-          className="flex items-center gap-2 text-sm text-gray-600 hover:text-[#084032] transition-colors"
+          className="flex items-center gap-2 text-sm text-gray-600 hover:text-[#141E36] transition-colors"
         >
           <FiArrowLeft /> Back to SEO Overview
         </Link>
@@ -160,7 +160,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
               className={`flex items-center gap-2 px-5 py-2 rounded-md text-white text-sm font-semibold transition
                 ${loading
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-[#084032] hover:bg-[#0a5c48] focus:outline-none focus:ring-2 focus:ring-[#00a63e]'}`}
+                  : 'bg-[#141E36] hover:bg-[#1D2A4C] focus:outline-none focus:ring-2 focus:ring-[#C59B24]'}`}
             >
               <FiSave size={14} />
               {loading ? 'Saving...' : 'Save SEO'}
@@ -178,7 +178,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors
                 ${activeTab === tab.id
-                  ? 'border-[#084032] text-[#084032]'
+                  ? 'border-[#141E36] text-[#141E36]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
             >
               {tab.label}
@@ -224,7 +224,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                 onChange={(v) => handleChange(null, 'canonicalUrl', v)}
                 disabled={!canEditSeo}
                 type="url"
-                placeholder="https://crownexcel.com/products/laptops"
+                placeholder="https://steadfastshippinglines.com/services/ocean-freight"
                 helpText="The preferred URL for this page (prevents duplicate content)"
               />
             </div>
@@ -267,7 +267,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                     disabled={!canEditSeo}
                     value={seo.openGraph?.type || 'website'}
                     onChange={(e) => handleChange('openGraph', 'type', e.target.value)}
-                    className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
+                    className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
                   >
                     <option value="website">Website</option>
                     <option value="article">Article</option>
@@ -297,7 +297,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                   disabled={!canEditSeo}
                   value={seo.twitterCard?.cardType || 'summary_large_image'}
                   onChange={(e) => handleChange('twitterCard', 'cardType', e.target.value)}
-                  className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
                 >
                   <option value="summary">Summary</option>
                   <option value="summary_large_image">Summary Large Image</option>
@@ -343,7 +343,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                   disabled={!canEditSeo}
                   value={seo.schema?.type || 'WebPage'}
                   onChange={(e) => handleChange('schema', 'type', e.target.value)}
-                  className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
                 >
                   <option value="WebPage">WebPage</option>
                   <option value="Article">Article</option>
@@ -363,7 +363,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                   onChange={(e) => handleChange('schema', 'customSchema', e.target.value)}
                   placeholder={'{\n  "@context": "https://schema.org",\n  "@type": "WebPage",\n  "name": "Page Title"\n}'}
                   rows={10}
-                  className={`rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder-gray-400 shadow-sm resize-y focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none transition text-sm font-mono ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                  className={`rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder-gray-400 shadow-sm resize-y focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none transition text-sm font-mono ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed' : ''}`}
                 />
                 <p className="text-xs text-gray-400 mt-1">Enter valid JSON-LD schema markup. Leave empty to auto-generate based on schema type.</p>
               </div>
@@ -390,7 +390,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                         type="checkbox"
                         checked={item.invert ? (seo.robots?.[item.field] || false) : (seo.robots?.[item.field] !== false)}
                         onChange={(e) => handleChange('robots', item.field, e.target.checked)}
-                        className={`mt-0.5 h-4 w-4 rounded border-gray-300 text-[#084032] focus:ring-[#00a63e] ${!canEditSeo ? 'cursor-not-allowed' : ''}`}
+                        className={`mt-0.5 h-4 w-4 rounded border-gray-300 text-[#141E36] focus:ring-[#C59B24] ${!canEditSeo ? 'cursor-not-allowed' : ''}`}
                       />
                       <div>
                         <p className="text-sm font-medium text-gray-800">{item.label}</p>
@@ -410,7 +410,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                       type="checkbox"
                       checked={seo.sitemap?.include !== false}
                       onChange={(e) => handleChange('sitemap', 'include', e.target.checked)}
-                      className={`mt-0.5 h-4 w-4 rounded border-gray-300 text-[#084032] focus:ring-[#00a63e] ${!canEditSeo ? 'cursor-not-allowed' : ''}`}
+                      className={`mt-0.5 h-4 w-4 rounded border-gray-300 text-[#141E36] focus:ring-[#C59B24] ${!canEditSeo ? 'cursor-not-allowed' : ''}`}
                     />
                     <div>
                       <p className="text-sm font-medium text-gray-800">Include in Sitemap</p>
@@ -425,7 +425,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                         disabled={!canEditSeo}
                         value={seo.sitemap?.priority || 0.5}
                         onChange={(e) => handleChange('sitemap', 'priority', parseFloat(e.target.value))}
-                        className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
+                        className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
                       >
                         <option value={1.0}>1.0 (Highest)</option>
                         <option value={0.9}>0.9</option>
@@ -445,7 +445,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                         disabled={!canEditSeo}
                         value={seo.sitemap?.changeFrequency || 'weekly'}
                         onChange={(e) => handleChange('sitemap', 'changeFrequency', e.target.value)}
-                        className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
+                        className={`rounded-md border border-gray-300 px-4 py-2 text-gray-750 text-sm focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none ${!canEditSeo ? 'bg-gray-50 cursor-not-allowed text-gray-500' : ''}`}
                       >
                         <option value="always">Always</option>
                         <option value="hourly">Hourly</option>
@@ -473,10 +473,10 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                 </h3>
                 <div className="border border-gray-200 rounded-lg p-4 bg-white">
                   <p className="text-sm text-green-700 mb-1 truncate">
-                    {seo.canonicalUrl || `https://crownexcel.com${routePath}`}
+                    {seo.canonicalUrl || `https://steadfastshippinglines.com${routePath}`}
                   </p>
                   <h3 className="text-xl text-blue-800 hover:underline cursor-pointer mb-1 line-clamp-1">
-                    {seo.metaTitle || 'Page Title - Crown Excel'}
+                    {seo.metaTitle || 'Page Title - Steadfast Shipping Lines'}
                   </h3>
                   <p className="text-sm text-gray-600 line-clamp-2">
                     {seo.metaDescription || 'Add a meta description to see how it will appear in search results.'}
@@ -499,7 +499,7 @@ export default function SeoEditorClient({ initialSeo, routeId, routePath, apiBas
                     </div>
                   )}
                   <div className="p-3">
-                    <p className="text-xs text-gray-500 uppercase">crownexcel.com</p>
+                    <p className="text-xs text-gray-500 uppercase">steadfastshippinglines.com</p>
                     <h4 className="text-sm font-semibold text-gray-900 mt-1 line-clamp-2">
                       {seo.openGraph?.title || seo.metaTitle || 'Page Title'}
                     </h4>
@@ -541,7 +541,7 @@ ${seo.openGraph?.image ? `<meta property="og:image" content="${seo.openGraph.ima
       <div className="bg-white p-4 rounded-lg shadow flex items-center justify-between">
         <Link
           href="/admin/seo"
-          className="text-sm text-gray-600 hover:text-[#084032] transition-colors"
+          className="text-sm text-gray-600 hover:text-[#141E36] transition-colors"
         >
           ← Back to SEO Overview
         </Link>
@@ -552,7 +552,7 @@ ${seo.openGraph?.image ? `<meta property="og:image" content="${seo.openGraph.ima
             className={`flex items-center gap-2 px-6 py-2.5 rounded-md text-white text-sm font-semibold transition
               ${loading
                 ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-[#084032] hover:bg-[#0a5c48] focus:outline-none focus:ring-2 focus:ring-[#00a63e]'}`}
+                : 'bg-[#141E36] hover:bg-[#1D2A4C] focus:outline-none focus:ring-2 focus:ring-[#C59B24]'}`}
           >
             <FiSave size={14} />
             {loading ? 'Saving...' : 'Save SEO Settings'}

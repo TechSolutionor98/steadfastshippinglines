@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import toast from 'react-hot-toast';
 
@@ -155,7 +155,7 @@ export default function ReviewPopupForm({ apiBase, onClose, onSuccess }) {
             color: "#999",
             transition: "color 0.2s",
           }}
-          onMouseOver={(e) => (e.currentTarget.style.color = "#084032")}
+          onMouseOver={(e) => (e.currentTarget.style.color = "#141E36")}
           onMouseOut={(e) => (e.currentTarget.style.color = "#999")}
           aria-label="Close"
         >
@@ -166,7 +166,7 @@ export default function ReviewPopupForm({ apiBase, onClose, onSuccess }) {
             marginBottom: 22,
             fontWeight: 700,
             fontSize: 22,
-            color: "#084032",
+            color: "#141E36",
             textAlign: "center",
             letterSpacing: 1,
           }}
@@ -297,7 +297,7 @@ export default function ReviewPopupForm({ apiBase, onClose, onSuccess }) {
             marginTop: 24,
             width: "100%",
             padding: "12px 0",
-            background: "#084032",
+            background: "#141E36",
             color: "#fff",
             border: "none",
             borderRadius: 8,

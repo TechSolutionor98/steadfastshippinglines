@@ -87,9 +87,9 @@ export default async function AdminDashboard() {
       {/* CMS Stats */}
       <h2 className="text-xl font-bold text-gray-800 mt-4">CMS Overview</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow border-l-4 border-[#084032]">
+        <div className="bg-white p-6 rounded-lg shadow border-l-4 border-[#141E36]">
           <h3 className="text-lg font-semibold mb-2">Pages & Routes</h3>
-          <p className="text-3xl font-bold text-[#084032]">{pagesCount}</p>
+          <p className="text-3xl font-bold text-[#141E36]">{pagesCount}</p>
           <p className="text-sm text-gray-600">Detected routes</p>
         </div>
 

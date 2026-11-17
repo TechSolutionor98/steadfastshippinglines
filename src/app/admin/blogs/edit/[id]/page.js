@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import BlogFormClient from '../../components/BlogFormClient';
 import { getApiBase } from '@/lib/api-helper';
 import Link from 'next/link';
@@ -26,7 +26,7 @@ export default async function EditBlogPage({ params }) {
       <div className="text-center py-20 bg-white rounded-xl border border-gray-150">
         <h2 className="text-xl font-bold text-gray-700 mb-2">Blog Post Not Found</h2>
         <p className="text-gray-500 text-sm mb-6">The blog post you are trying to edit does not exist or has been deleted.</p>
-        <Link href="/admin/blogs" className="px-4 py-2 bg-[#084032] text-white rounded font-medium hover:bg-[#0a5c48]">
+        <Link href="/admin/blogs" className="px-4 py-2 bg-[#141E36] text-white rounded font-medium hover:bg-[#1D2A4C]">
           Back to Blog List
         </Link>
       </div>

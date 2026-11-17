@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { FiSearch, FiGlobe, FiCheckCircle, FiAlertTriangle, FiXCircle, FiExternalLink, FiCopy, FiCheck } from 'react-icons/fi';
@@ -91,9 +91,9 @@ export default function SeoOverviewClient({ initialPages = [], apiBase }) {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#084032]">
+        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#141E36]">
           <p className="text-sm text-gray-500">Total Pages</p>
-          <p className="text-2xl font-bold text-[#084032]">{stats.total}</p>
+          <p className="text-2xl font-bold text-[#141E36]">{stats.total}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
           <p className="text-sm text-gray-500">SEO Configured</p>
@@ -120,14 +120,14 @@ export default function SeoOverviewClient({ initialPages = [], apiBase }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 text-gray-900 text-sm
-                         focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none transition"
+                         focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none transition"
             />
           </div>
           <select
             value={scoreFilter}
             onChange={(e) => setScoreFilter(e.target.value)}
             className="px-3 py-2 rounded-md border border-gray-300 text-gray-700 text-sm
-                       focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none"
+                       focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none"
           >
             <option value="all">All Scores</option>
             <option value="good">Good (70%+)</option>
@@ -175,7 +175,7 @@ export default function SeoOverviewClient({ initialPages = [], apiBase }) {
                               e.stopPropagation();
                               handleCopy(page.path);
                             }}
-                            className="p-1 text-gray-400 hover:text-[#084032] rounded hover:bg-gray-100 transition-colors flex-shrink-0"
+                            className="p-1 text-gray-400 hover:text-[#141E36] rounded hover:bg-gray-100 transition-colors flex-shrink-0"
                             title="Copy Path"
                           >
                             {copiedText === page.path ? <FiCheck className="text-green-600" size={12} /> : <FiCopy size={12} />}
@@ -204,7 +204,7 @@ export default function SeoOverviewClient({ initialPages = [], apiBase }) {
                         <div className="flex items-center justify-end gap-1">
                           <Link
                             href={`/admin/seo/${page._id}`}
-                            className="px-3 py-1.5 text-xs font-semibold text-white bg-[#084032] rounded hover:bg-[#0a5c48] transition-colors whitespace-nowrap"
+                            className="px-3 py-1.5 text-xs font-semibold text-white bg-[#141E36] rounded hover:bg-[#1D2A4C] transition-colors whitespace-nowrap"
                           >
                             {canEditSeo ? (page.hasSeo ? 'Edit SEO' : 'Add SEO') : 'View SEO'}
                           </Link>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -1165,7 +1165,7 @@ export default function BlogFormClient({
               onChange={handleTitleChange}
               placeholder="Enter blog title"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
             />
           </div>
 
@@ -1173,7 +1173,7 @@ export default function BlogFormClient({
             <label className="block text-sm font-semibold text-gray-700 mb-1">
               Slug (URL path)
             </label>
-            <div className="flex rounded-lg border border-gray-300 focus-within:ring-2 focus-within:ring-[#084032] focus-within:border-[#084032] overflow-hidden bg-gray-50">
+            <div className="flex rounded-lg border border-gray-300 focus-within:ring-2 focus-within:ring-[#141E36] focus-within:border-[#141E36] overflow-hidden bg-gray-50">
               <span className="px-3 py-2 text-gray-500 bg-gray-100 border-r border-gray-200 text-xs font-mono select-none flex items-center">
                 /blogs/
               </span>
@@ -1203,7 +1203,7 @@ export default function BlogFormClient({
             onChange={(e) => setExcerpt(e.target.value)}
             placeholder="A brief overview of the blog post (shown on listing pages)..."
             rows={2}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
           />
         </div>
 
@@ -1218,7 +1218,7 @@ export default function BlogFormClient({
               value={coverImage}
               onChange={(e) => setCoverImage(e.target.value)}
               placeholder="Image URL (HTTPS)"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
             />
             <button
               type="button"
@@ -1259,7 +1259,7 @@ export default function BlogFormClient({
                 type="button"
                 onClick={() => handleTabChange('visual')}
                 className={`px-3 py-1 rounded-md font-semibold transition-all ${
-                  activeTab === 'visual' ? 'bg-white text-[#084032] shadow-sm' : 'text-gray-500 hover:text-black'
+                  activeTab === 'visual' ? 'bg-white text-[#141E36] shadow-sm' : 'text-gray-500 hover:text-black'
                 }`}
               >
                 Visual Editor
@@ -1268,7 +1268,7 @@ export default function BlogFormClient({
                 type="button"
                 onClick={() => handleTabChange('code')}
                 className={`px-3 py-1 rounded-md font-semibold transition-all ${
-                  activeTab === 'code' ? 'bg-white text-[#084032] shadow-sm' : 'text-gray-500 hover:text-black'
+                  activeTab === 'code' ? 'bg-white text-[#141E36] shadow-sm' : 'text-gray-500 hover:text-black'
                 }`}
               >
                 HTML Code
@@ -1289,7 +1289,7 @@ export default function BlogFormClient({
                     applyBlockFormat(val);
                     setCurrentFormat(val);
                   }}
-                  className="bg-white border border-gray-300 rounded px-2.5 py-1.5 text-xs font-semibold outline-none cursor-pointer text-gray-700 hover:bg-gray-50 focus:ring-1 focus:ring-[#084032] mr-1"
+                  className="bg-white border border-gray-300 rounded px-2.5 py-1.5 text-xs font-semibold outline-none cursor-pointer text-gray-700 hover:bg-gray-50 focus:ring-1 focus:ring-[#141E36] mr-1"
                   title="Heading / Style"
                 >
                   <option value="p">Normal Text</option>
@@ -1313,7 +1313,7 @@ export default function BlogFormClient({
                     }
                     setCurrentFontSize(size);
                   }}
-                  className="bg-white border border-gray-300 rounded px-2.5 py-1.5 text-xs font-semibold outline-none cursor-pointer text-gray-700 hover:bg-gray-50 focus:ring-1 focus:ring-[#084032] mr-1"
+                  className="bg-white border border-gray-300 rounded px-2.5 py-1.5 text-xs font-semibold outline-none cursor-pointer text-gray-700 hover:bg-gray-50 focus:ring-1 focus:ring-[#141E36] mr-1"
                   title="Font Size"
                 >
                   <option value="">Font Size</option>
@@ -1445,7 +1445,7 @@ export default function BlogFormClient({
                     setInputUrl('');
                     setShowMediaModal(true);
                   }}
-                  className="p-1.5 bg-white border border-gray-200 rounded hover:bg-gray-100 text-[#084032] shadow-xs cursor-pointer flex items-center justify-center w-8 h-8"
+                  className="p-1.5 bg-white border border-gray-200 rounded hover:bg-gray-100 text-[#141E36] shadow-xs cursor-pointer flex items-center justify-center w-8 h-8"
                   title="Insert Image"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -1470,7 +1470,7 @@ export default function BlogFormClient({
                       executeCommand('insertHTML', iframeHtml);
                     }
                   }}
-                  className="p-1.5 bg-white border border-gray-200 rounded hover:bg-gray-100 text-[#084032] shadow-xs cursor-pointer flex items-center justify-center w-8 h-8"
+                  className="p-1.5 bg-white border border-gray-200 rounded hover:bg-gray-100 text-[#141E36] shadow-xs cursor-pointer flex items-center justify-center w-8 h-8"
                   title="Insert YouTube Video"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -1481,7 +1481,7 @@ export default function BlogFormClient({
                 <button
                   type="button"
                   onMouseDown={handleOpenTopToolbarLink}
-                  className="p-1.5 bg-white border border-gray-200 rounded hover:bg-gray-100 text-[#084032] shadow-xs cursor-pointer flex items-center justify-center w-8 h-8"
+                  className="p-1.5 bg-white border border-gray-200 rounded hover:bg-gray-100 text-[#141E36] shadow-xs cursor-pointer flex items-center justify-center w-8 h-8"
                   title="Insert or Edit Link (Ctrl+K or click)"
                 >
                   <LinkIcon className="w-4 h-4" />
@@ -1714,7 +1714,7 @@ export default function BlogFormClient({
               onChange={(e) => setContent(e.target.value)}
               placeholder="Paste HTML source code here..."
               rows={16}
-              className="w-full p-4 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none"
+              className="w-full p-4 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none"
             />
           )}
         </div>
@@ -1730,7 +1730,7 @@ export default function BlogFormClient({
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               placeholder="e.g. Technology, Tutorials, Insights"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
             />
           </div>
 
@@ -1744,7 +1744,7 @@ export default function BlogFormClient({
               value={readMinutes}
               onChange={(e) => setReadMinutes(e.target.value)}
               placeholder="e.g. 5"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
             />
           </div>
         </div>
@@ -1760,7 +1760,7 @@ export default function BlogFormClient({
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
               placeholder="e.g. Admin or Writer Name"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
             />
           </div>
 
@@ -1773,7 +1773,7 @@ export default function BlogFormClient({
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
               placeholder="e.g. Technology, Business, Excel"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
             />
           </div>
         </div>
@@ -1792,7 +1792,7 @@ export default function BlogFormClient({
                 value={metaTitle}
                 onChange={(e) => setMetaTitle(e.target.value)}
                 placeholder="Defaults to blog title if left blank"
-                className="w-full bg-white px-3 py-1.5 border border-gray-300 rounded-md text-sm outline-none focus:ring-1 focus:ring-[#084032]"
+                className="w-full bg-white px-3 py-1.5 border border-gray-300 rounded-md text-sm outline-none focus:ring-1 focus:ring-[#141E36]"
               />
             </div>
             <div>
@@ -1802,7 +1802,7 @@ export default function BlogFormClient({
                 onChange={(e) => setMetaDescription(e.target.value)}
                 placeholder="A compelling, keyword-rich summary of less than 160 characters for search listings..."
                 rows={2}
-                className="w-full bg-white px-3 py-1.5 border border-gray-300 rounded-md text-sm outline-none focus:ring-1 focus:ring-[#084032]"
+                className="w-full bg-white px-3 py-1.5 border border-gray-300 rounded-md text-sm outline-none focus:ring-1 focus:ring-[#141E36]"
               />
             </div>
             <div>
@@ -1811,8 +1811,8 @@ export default function BlogFormClient({
                 type="text"
                 value={keywords}
                 onChange={(e) => setKeywords(e.target.value)}
-                placeholder="e.g. excel dashboard, crown excel templates, reporting"
-                className="w-full bg-white px-3 py-1.5 border border-gray-300 rounded-md text-sm outline-none focus:ring-1 focus:ring-[#084032]"
+                placeholder="e.g. ocean freight, logistics tips, custom clearance"
+                className="w-full bg-white px-3 py-1.5 border border-gray-300 rounded-md text-sm outline-none focus:ring-1 focus:ring-[#141E36]"
               />
             </div>
           </div>
@@ -1825,7 +1825,7 @@ export default function BlogFormClient({
             id="published"
             checked={published}
             onChange={(e) => setPublished(e.target.checked)}
-            className="w-5 h-5 accent-[#084032] border-gray-300 rounded focus:ring-[#084032]"
+            className="w-5 h-5 accent-[#141E36] border-gray-300 rounded focus:ring-[#141E36]"
           />
           <label htmlFor="published" className="text-sm font-semibold text-gray-700 select-none cursor-pointer">
             Publish Post immediately (uncheck to save as draft)
@@ -1844,7 +1844,7 @@ export default function BlogFormClient({
           <button
             type="submit"
             disabled={loading}
-            className="px-5 py-2 bg-[#084032] hover:bg-[#00a63e] text-white font-semibold rounded-lg shadow disabled:opacity-60 transition-all cursor-pointer"
+            className="px-5 py-2 bg-[#141E36] hover:bg-[#C59B24] text-white font-semibold rounded-lg shadow disabled:opacity-60 transition-all cursor-pointer"
           >
             {loading ? 'Saving...' : isEdit ? 'Update Post' : 'Create Post'}
           </button>
@@ -1887,8 +1887,8 @@ export default function BlogFormClient({
                 onClick={() => setMediaModalTab('library')}
                 className={`py-3 px-4 text-sm font-semibold border-b-2 transition-all ${
                   mediaModalTab === 'library'
-                    ? 'border-[#084032] text-[#084032]'
-                    : 'border-transparent text-gray-550 hover:text-[#084032]'
+                    ? 'border-[#141E36] text-[#141E36]'
+                    : 'border-transparent text-gray-550 hover:text-[#141E36]'
                 }`}
               >
                 Media Library
@@ -1898,8 +1898,8 @@ export default function BlogFormClient({
                 onClick={() => setMediaModalTab('url')}
                 className={`py-3 px-4 text-sm font-semibold border-b-2 transition-all ${
                   mediaModalTab === 'url'
-                    ? 'border-[#084032] text-[#084032]'
-                    : 'border-transparent text-gray-550 hover:text-[#084032]'
+                    ? 'border-[#141E36] text-[#141E36]'
+                    : 'border-transparent text-gray-550 hover:text-[#141E36]'
                 }`}
               >
                 {mediaTarget === 'replace-image' ? 'Replace by URL' : 'Insert from URL'}
@@ -1919,7 +1919,7 @@ export default function BlogFormClient({
                       value={inputUrl}
                       onChange={(e) => setInputUrl(e.target.value)}
                       placeholder="https://example.com/image.jpg"
-                      className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition-all"
+                      className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition-all"
                     />
                   </div>
                   <div className="flex justify-end gap-2 pt-2">
@@ -1939,7 +1939,7 @@ export default function BlogFormClient({
                           setInputUrl('');
                         }
                       }}
-                      className="px-5 py-2 bg-[#084032] hover:bg-[#00a63e] disabled:opacity-50 text-white font-semibold rounded-lg text-sm shadow transition-all cursor-pointer"
+                      className="px-5 py-2 bg-[#141E36] hover:bg-[#C59B24] disabled:opacity-50 text-white font-semibold rounded-lg text-sm shadow transition-all cursor-pointer"
                     >
                       {mediaTarget === 'replace-image' ? 'Replace Image' : 'Insert Image'}
                     </button>
@@ -1956,12 +1956,12 @@ export default function BlogFormClient({
                       value={mediaSearch}
                       onChange={(e) => setMediaSearch(e.target.value)}
                       placeholder="Search media..."
-                      className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#084032] outline-none"
+                      className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#141E36] outline-none"
                     />
                   </div>
 
                   <div className="flex gap-2 w-full sm:w-auto justify-end">
-                    <label className="cursor-pointer px-4 py-2 bg-[#084032] hover:bg-[#00a63e] text-white font-semibold rounded-lg text-sm transition-all text-center">
+                    <label className="cursor-pointer px-4 py-2 bg-[#141E36] hover:bg-[#C59B24] text-white font-semibold rounded-lg text-sm transition-all text-center">
                       {uploadingImage ? 'Uploading...' : mediaTarget === 'replace-image' ? 'Upload Replacement' : 'Upload New Image'}
                       <input
                         type="file"
@@ -1978,7 +1978,7 @@ export default function BlogFormClient({
                 <div className="flex-1 overflow-y-auto p-6 bg-gray-50 min-h-[300px]">
                   {loadingMedia ? (
                     <div className="flex items-center justify-center h-48">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#084032]"></div>
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#141E36]"></div>
                     </div>
                   ) : mediaList.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-48 text-gray-500">
@@ -1993,7 +1993,7 @@ export default function BlogFormClient({
                           onClick={() => {
                             handleMediaSelect(media.url);
                           }}
-                          className="group cursor-pointer border border-gray-200 hover:border-[#084032] rounded-lg overflow-hidden bg-white shadow-xs hover:shadow transition-all relative flex flex-col"
+                          className="group cursor-pointer border border-gray-200 hover:border-[#141E36] rounded-lg overflow-hidden bg-white shadow-xs hover:shadow transition-all relative flex flex-col"
                         >
                           <div className="w-full aspect-square bg-gray-100 relative overflow-hidden">
                             <img
@@ -2034,7 +2034,7 @@ export default function BlogFormClient({
             {/* Modal Header */}
             <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-emerald-100 text-[#084032] rounded-lg">
+                <div className="p-2 bg-emerald-100 text-[#141E36] rounded-lg">
                   <ImageIcon className="w-5 h-5" />
                 </div>
                 <div>
@@ -2075,12 +2075,12 @@ export default function BlogFormClient({
                         setShowImageEditModal(false);
                         handleOpenReplaceMedia();
                       }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-[#084032] hover:bg-[#062e24] text-white rounded-lg shadow-xs transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-[#141E36] hover:bg-[#062e24] text-white rounded-lg shadow-xs transition-colors cursor-pointer"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
                       Replace / Change
                     </button>
-                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-white hover:bg-gray-100 text-[#084032] border border-emerald-300 rounded-lg shadow-xs transition-colors cursor-pointer">
+                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-white hover:bg-gray-100 text-[#141E36] border border-emerald-300 rounded-lg shadow-xs transition-colors cursor-pointer">
                       <Upload className="w-3.5 h-3.5" />
                       Upload New
                       <input
@@ -2144,7 +2144,7 @@ export default function BlogFormClient({
                     value={imageEditSrc}
                     onChange={(e) => setImageEditSrc(e.target.value)}
                     placeholder="https://example.com/image.jpg"
-                    className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none"
+                    className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none"
                   />
                 </div>
                 <p className="text-[11px] text-gray-500 mt-1">
@@ -2162,7 +2162,7 @@ export default function BlogFormClient({
                   value={imageEditAlt}
                   onChange={(e) => setImageEditAlt(e.target.value)}
                   placeholder="e.g. Lenovo ThinkPad laptop wholesale supplier in Dubai"
-                  className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none"
+                  className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none"
                 />
                 <p className="text-[11px] text-gray-500 mt-1">
                   Important for SEO and screen readers. Accurately describe what is shown in the image.
@@ -2178,8 +2178,8 @@ export default function BlogFormClient({
                   type="text"
                   value={imageEditLink}
                   onChange={(e) => setImageEditLink(e.target.value)}
-                  placeholder="e.g. https://crownexcel.ae/products or /blogs/your-post"
-                  className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none"
+                  placeholder="e.g. https://steadfastshippinglines.com/services or /blogs/your-post"
+                  className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none"
                 />
                 <div className="flex items-center gap-2 mt-2">
                   <label className="inline-flex items-center gap-2 cursor-pointer text-xs font-medium text-gray-700">
@@ -2187,7 +2187,7 @@ export default function BlogFormClient({
                       type="checkbox"
                       checked={imageEditLinkNewTab}
                       onChange={(e) => setImageEditLinkNewTab(e.target.checked)}
-                      className="w-4 h-4 text-[#084032] border-gray-300 rounded focus:ring-[#084032]"
+                      className="w-4 h-4 text-[#141E36] border-gray-300 rounded focus:ring-[#141E36]"
                     />
                     <span>Open link in new tab (target="_blank")</span>
                   </label>
@@ -2208,7 +2208,7 @@ export default function BlogFormClient({
                     onClick={() => setImageEditAlign('center')}
                     className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer ${
                       imageEditAlign === 'center'
-                        ? 'border-[#084032] bg-emerald-50 text-[#084032] ring-1 ring-[#084032]'
+                        ? 'border-[#141E36] bg-emerald-50 text-[#141E36] ring-1 ring-[#141E36]'
                         : 'border-gray-200 hover:bg-gray-50 text-gray-700'
                     }`}
                   >
@@ -2221,7 +2221,7 @@ export default function BlogFormClient({
                     onClick={() => setImageEditAlign('left')}
                     className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer ${
                       imageEditAlign === 'left'
-                        ? 'border-[#084032] bg-emerald-50 text-[#084032] ring-1 ring-[#084032]'
+                        ? 'border-[#141E36] bg-emerald-50 text-[#141E36] ring-1 ring-[#141E36]'
                         : 'border-gray-200 hover:bg-gray-50 text-gray-700'
                     }`}
                   >
@@ -2234,7 +2234,7 @@ export default function BlogFormClient({
                     onClick={() => setImageEditAlign('right')}
                     className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer ${
                       imageEditAlign === 'right'
-                        ? 'border-[#084032] bg-emerald-50 text-[#084032] ring-1 ring-[#084032]'
+                        ? 'border-[#141E36] bg-emerald-50 text-[#141E36] ring-1 ring-[#141E36]'
                         : 'border-gray-200 hover:bg-gray-50 text-gray-700'
                     }`}
                   >
@@ -2247,7 +2247,7 @@ export default function BlogFormClient({
                     onClick={() => setImageEditAlign('full')}
                     className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer ${
                       imageEditAlign === 'full'
-                        ? 'border-[#084032] bg-emerald-50 text-[#084032] ring-1 ring-[#084032]'
+                        ? 'border-[#141E36] bg-emerald-50 text-[#141E36] ring-1 ring-[#141E36]'
                         : 'border-gray-200 hover:bg-gray-50 text-gray-700'
                     }`}
                   >
@@ -2269,7 +2269,7 @@ export default function BlogFormClient({
                       checked={imageEditWrap && imageEditAlign !== 'center'}
                       disabled={imageEditAlign === 'center'}
                       onChange={(e) => setImageEditWrap(e.target.checked)}
-                      className="w-4 h-4 text-[#084032] border-gray-300 rounded focus:ring-[#084032]"
+                      className="w-4 h-4 text-[#141E36] border-gray-300 rounded focus:ring-[#141E36]"
                     />
                     <span>Allow text to flow alongside image (Left / Right)</span>
                   </label>
@@ -2295,7 +2295,7 @@ export default function BlogFormClient({
                       onClick={() => setImageEditWidth(sz.val)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${
                         imageEditWidth === sz.val
-                          ? 'border-[#084032] bg-emerald-50 text-[#084032] ring-1 ring-[#084032]'
+                          ? 'border-[#141E36] bg-emerald-50 text-[#141E36] ring-1 ring-[#141E36]'
                           : 'border-gray-200 hover:bg-gray-50 text-gray-700'
                       }`}
                     >
@@ -2310,7 +2310,7 @@ export default function BlogFormClient({
                     value={imageEditWidth}
                     onChange={(e) => setImageEditWidth(e.target.value)}
                     placeholder="e.g. 600px, 80%, auto"
-                    className="w-36 px-2.5 py-1 text-xs border border-gray-300 rounded-md focus:ring-1 focus:ring-[#084032] outline-none"
+                    className="w-36 px-2.5 py-1 text-xs border border-gray-300 rounded-md focus:ring-1 focus:ring-[#141E36] outline-none"
                   />
                 </div>
               </div>
@@ -2335,7 +2335,7 @@ export default function BlogFormClient({
                   </button>
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-1.5 px-5 py-2 bg-[#084032] hover:bg-[#00a63e] text-white font-semibold rounded-lg text-sm shadow transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-5 py-2 bg-[#141E36] hover:bg-[#C59B24] text-white font-semibold rounded-lg text-sm shadow transition-all cursor-pointer"
                   >
                     <Check className="w-4 h-4" />
                     Save & Update
@@ -2353,7 +2353,7 @@ export default function BlogFormClient({
             {/* Modal Header */}
             <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-emerald-100 text-[#084032] rounded-lg">
+                <div className="p-2 bg-emerald-100 text-[#141E36] rounded-lg">
                   <Link2 className="w-5 h-5" />
                 </div>
                 <div>
@@ -2408,7 +2408,7 @@ export default function BlogFormClient({
                     value={linkText}
                     onChange={(e) => setLinkText(e.target.value)}
                     placeholder="e.g. Learn more about laptop wholesale"
-                    className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none"
+                    className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none"
                   />
                   <p className="text-[11px] text-gray-500 mt-1">
                     The text that will appear hyperlinked in your blog post.
@@ -2427,8 +2427,8 @@ export default function BlogFormClient({
                   required
                   value={linkUrl}
                   onChange={(e) => setLinkUrl(e.target.value)}
-                  placeholder="e.g. https://crownexcel.ae/products or /blogs/post-slug"
-                  className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none"
+                  placeholder="e.g. https://steadfastshippinglines.com/services or /blogs/post-slug"
+                  className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none"
                 />
                 <p className="text-[11px] text-gray-500 mt-1">
                   Supports external websites (https://...), internal paths (/blogs/...), or mailto:.
@@ -2442,7 +2442,7 @@ export default function BlogFormClient({
                     type="checkbox"
                     checked={linkOpenNewTab}
                     onChange={(e) => setLinkOpenNewTab(e.target.checked)}
-                    className="w-4 h-4 text-[#084032] border-gray-300 rounded focus:ring-[#084032]"
+                    className="w-4 h-4 text-[#141E36] border-gray-300 rounded focus:ring-[#141E36]"
                   />
                   <span>Open link in new tab (target="_blank")</span>
                 </label>
@@ -2474,7 +2474,7 @@ export default function BlogFormClient({
                   </button>
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#084032] hover:bg-[#00a63e] text-white font-semibold rounded-lg text-xs shadow-xs transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#141E36] hover:bg-[#C59B24] text-white font-semibold rounded-lg text-xs shadow-xs transition-all cursor-pointer"
                   >
                     <Check className="w-3.5 h-3.5" />
                     {activeLinkNode || (isLinkingImage && imageEditLink) ? 'Save Link' : 'Add Link'}

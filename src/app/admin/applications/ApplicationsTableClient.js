@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 import React, { useState, useMemo } from 'react';
 
 export default function ApplicationsTableClient({ initialData = [], apiBase = process.env.NEXT_PUBLIC_API_URL }) {
@@ -73,12 +73,12 @@ export default function ApplicationsTableClient({ initialData = [], apiBase = pr
             value={query} 
             onChange={e => setQuery(e.target.value)} 
             placeholder="Search name, email, phone, position..." 
-            className="border border-[#00a63e] focus:border-[#084032] p-2 rounded-lg w-80 outline-none transition-all" 
+            className="border border-[#C59B24] focus:border-[#141E36] p-2 rounded-lg w-80 outline-none transition-all" 
           />
-          <button onClick={() => { setQuery(''); setPage(1); }} className="px-3 py-2 bg-gray-100 hover:bg-[#00a63e] hover:text-white rounded-lg transition-all">Clear</button>
+          <button onClick={() => { setQuery(''); setPage(1); }} className="px-3 py-2 bg-gray-100 hover:bg-[#C59B24] hover:text-white rounded-lg transition-all">Clear</button>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={refresh} className={`px-3 py-2 rounded-lg bg-[#00a63e] hover:bg-[#084032] text-white font-semibold shadow ${loading ? 'opacity-60' : ''} transition-all`}>Refresh</button>
+          <button onClick={refresh} className={`px-3 py-2 rounded-lg bg-[#C59B24] hover:bg-[#141E36] text-white font-semibold shadow ${loading ? 'opacity-60' : ''} transition-all`}>Refresh</button>
           <button onClick={downloadCSV} className="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-800 text-white font-semibold shadow transition-all">Export CSV</button>
         </div>
       </div>
@@ -89,7 +89,7 @@ export default function ApplicationsTableClient({ initialData = [], apiBase = pr
         <select
           value={pageSize}
           onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }}
-          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-[#084032] cursor-pointer"
+          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-[#141E36] cursor-pointer"
         >
           {[10, 25, 50, 100].map(n => (
             <option key={n} value={n}>{n}</option>
@@ -100,7 +100,7 @@ export default function ApplicationsTableClient({ initialData = [], apiBase = pr
       <div style={{ overflowX: "auto", maxHeight: "520px", overflowY: "auto" }} className="w-full rounded-lg border border-gray-200">
         <table style={{ whiteSpace: "nowrap" }} className="w-full text-sm overflow-hidden">
           <thead className="sticky top-0 z-10">
-            <tr className="bg-[#084032] text-white">
+            <tr className="bg-[#141E36] text-white">
               <th className="px-3 py-3 font-semibold text-left">App #</th>
               <th className="px-3 py-3 font-semibold text-left">Name</th>
               <th className="px-3 py-3 font-semibold text-left">Email</th>
@@ -116,7 +116,7 @@ export default function ApplicationsTableClient({ initialData = [], apiBase = pr
           <tbody>
             {pageData.map((app, idx) => (
               <tr key={app.id ?? app._id ?? idx} className="hover:bg-[#e6f9f0] align-top transition-all">
-                <td className="px-4 py-3 border-b border-gray-100 align-top font-semibold text-[#084032]">{getGlobalIndex(idx)}</td>
+                <td className="px-4 py-3 border-b border-gray-100 align-top font-semibold text-[#141E36]">{getGlobalIndex(idx)}</td>
                 <td className="px-4 py-3 border-b border-gray-100 align-top overflow-hidden text-ellipsis">{app.name}</td>
                 <td className="px-4 py-3 border-b border-gray-100 align-top overflow-hidden text-ellipsis">{app.email}</td>
                 <td className="px-4 py-3 border-b border-gray-100 align-top">{app.phone}</td>
@@ -142,7 +142,7 @@ export default function ApplicationsTableClient({ initialData = [], apiBase = pr
                 <td className="px-4 py-3 border-b border-gray-100 align-top">
                   <button
                     onClick={() => setViewRow({ ...app, appNo: getGlobalIndex(idx) })}
-                    className="px-3 py-1.5 bg-[#084032] hover:bg-[#0a5a47] text-white text-xs font-semibold rounded-lg transition-all cursor-pointer"
+                    className="px-3 py-1.5 bg-[#141E36] hover:bg-[#1D2A4C] text-white text-xs font-semibold rounded-lg transition-all cursor-pointer"
                   >
                     View
                   </button>
@@ -184,7 +184,7 @@ export default function ApplicationsTableClient({ initialData = [], apiBase = pr
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="bg-[#084032] rounded-t-2xl px-6 py-4 flex items-center justify-between">
+            <div className="bg-[#141E36] rounded-t-2xl px-6 py-4 flex items-center justify-between">
               <h2 className="text-white text-lg font-bold">Application #{viewRow.appNo}</h2>
               <button
                 onClick={() => setViewRow(null)}
@@ -199,23 +199,23 @@ export default function ApplicationsTableClient({ initialData = [], apiBase = pr
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Name</p>
-                  <p className="text-[#084032] font-semibold text-sm">{viewRow.name || '—'}</p>
+                  <p className="text-[#141E36] font-semibold text-sm">{viewRow.name || '—'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Email</p>
-                  <p className="text-[#084032] font-semibold text-sm break-all">{viewRow.email || '—'}</p>
+                  <p className="text-[#141E36] font-semibold text-sm break-all">{viewRow.email || '—'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Phone</p>
-                  <p className="text-[#084032] font-semibold text-sm">{viewRow.phone || '—'}</p>
+                  <p className="text-[#141E36] font-semibold text-sm">{viewRow.phone || '—'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Position</p>
-                  <p className="text-[#084032] font-semibold text-sm">{viewRow.position || '—'}</p>
+                  <p className="text-[#141E36] font-semibold text-sm">{viewRow.position || '—'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Applied At</p>
-                  <p className="text-[#084032] font-semibold text-sm">{viewRow.createdAt ? new Date(viewRow.createdAt).toLocaleString() : '—'}</p>
+                  <p className="text-[#141E36] font-semibold text-sm">{viewRow.createdAt ? new Date(viewRow.createdAt).toLocaleString() : '—'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">CV</p>
@@ -245,7 +245,7 @@ export default function ApplicationsTableClient({ initialData = [], apiBase = pr
 
               <button
                 onClick={() => setViewRow(null)}
-                className="w-full bg-[#084032] hover:bg-[#0a5a47] text-white rounded-full h-[42px] font-semibold text-[14px] cursor-pointer transition-colors"
+                className="w-full bg-[#141E36] hover:bg-[#1D2A4C] text-white rounded-full h-[42px] font-semibold text-[14px] cursor-pointer transition-colors"
               >
                 Close
               </button>

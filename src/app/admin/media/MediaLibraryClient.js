@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useRef } from 'react';
 import { FiUpload, FiSearch, FiGrid, FiList, FiTrash2, FiCopy, FiEdit2, FiImage, FiX, FiCheckCircle, FiAlertCircle, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
@@ -178,7 +178,7 @@ export default function MediaLibraryClient({ initialMedia = [], initialTotal = 0
       {/* Upload Zone */}
       <div
         className={`bg-white rounded-lg shadow p-8 border-2 border-dashed transition-colors text-center cursor-pointer
-          ${dragActive ? 'border-[#084032] bg-green-50' : 'border-gray-300 hover:border-gray-400'}`}
+          ${dragActive ? 'border-[#141E36] bg-green-50' : 'border-gray-300 hover:border-gray-400'}`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -193,7 +193,7 @@ export default function MediaLibraryClient({ initialMedia = [], initialTotal = 0
           className="hidden"
           onChange={(e) => handleUpload(Array.from(e.target.files))}
         />
-        <FiUpload className={`mx-auto text-3xl mb-3 ${dragActive ? 'text-[#084032]' : 'text-gray-400'}`} />
+        <FiUpload className={`mx-auto text-3xl mb-3 ${dragActive ? 'text-[#141E36]' : 'text-gray-400'}`} />
         {uploading ? (
           <p className="text-sm text-gray-600">Uploading...</p>
         ) : (
@@ -218,14 +218,14 @@ export default function MediaLibraryClient({ initialMedia = [], initialTotal = 0
                 value={search}
                 onChange={handleSearch}
                 className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 text-gray-900 text-sm
-                           focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none transition"
+                           focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none transition"
               />
             </div>
             <select
               value={selectedFolder}
               onChange={(e) => { setSelectedFolder(e.target.value); fetchMedia(1, search, e.target.value); }}
               className="px-3 py-2 rounded-md border border-gray-300 text-gray-700 text-sm
-                         focus:border-[#084032] focus:ring-2 focus:ring-[#00a63e] focus:outline-none"
+                         focus:border-[#141E36] focus:ring-2 focus:ring-[#C59B24] focus:outline-none"
             >
               <option value="">All Folders</option>
               {folders.map(f => <option key={f} value={f}>{f}</option>)}
@@ -235,13 +235,13 @@ export default function MediaLibraryClient({ initialMedia = [], initialTotal = 0
             <span className="text-sm text-gray-500">{total} files</span>
             <button
               onClick={() => setView('grid')}
-              className={`p-2 rounded ${view === 'grid' ? 'bg-[#084032] text-white' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`p-2 rounded ${view === 'grid' ? 'bg-[#141E36] text-white' : 'text-gray-400 hover:text-gray-600'}`}
             >
               <FiGrid size={16} />
             </button>
             <button
               onClick={() => setView('list')}
-              className={`p-2 rounded ${view === 'list' ? 'bg-[#084032] text-white' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`p-2 rounded ${view === 'list' ? 'bg-[#141E36] text-white' : 'text-gray-400 hover:text-gray-600'}`}
             >
               <FiList size={16} />
             </button>
@@ -406,7 +406,7 @@ export default function MediaLibraryClient({ initialMedia = [], initialTotal = 0
                   <input
                     value={editData.alt}
                     onChange={(e) => setEditData(prev => ({ ...prev, alt: e.target.value }))}
-                    className="w-full rounded border border-gray-300 px-3 py-1.5 text-sm focus:border-[#084032] focus:ring-1 focus:ring-[#00a63e] outline-none"
+                    className="w-full rounded border border-gray-300 px-3 py-1.5 text-sm focus:border-[#141E36] focus:ring-1 focus:ring-[#C59B24] outline-none"
                     placeholder="Describe the image..."
                   />
                 </div>
@@ -415,7 +415,7 @@ export default function MediaLibraryClient({ initialMedia = [], initialTotal = 0
                   <input
                     value={editData.title}
                     onChange={(e) => setEditData(prev => ({ ...prev, title: e.target.value }))}
-                    className="w-full rounded border border-gray-300 px-3 py-1.5 text-sm focus:border-[#084032] focus:ring-1 focus:ring-[#00a63e] outline-none"
+                    className="w-full rounded border border-gray-300 px-3 py-1.5 text-sm focus:border-[#141E36] focus:ring-1 focus:ring-[#C59B24] outline-none"
                     placeholder="Image title..."
                   />
                 </div>
@@ -438,7 +438,7 @@ export default function MediaLibraryClient({ initialMedia = [], initialTotal = 0
                 <div className="flex gap-2 pt-2">
                   <button
                     onClick={handleUpdateMeta}
-                    className="flex-1 px-4 py-2 bg-[#084032] text-white text-sm rounded hover:bg-[#0a5c48] transition font-medium"
+                    className="flex-1 px-4 py-2 bg-[#141E36] text-white text-sm rounded hover:bg-[#1D2A4C] transition font-medium"
                   >
                     Save Changes
                   </button>

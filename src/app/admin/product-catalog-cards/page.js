@@ -2,7 +2,7 @@ import React from 'react';
 import ProductCatalogCardsClient from './ProductCatalogCardsClient';
 
 export const metadata = {
-  title: 'Product Catalog Cards | Crown Excel Admin',
+  title: 'Product Catalog Cards | Steadfast Shipping Lines Admin',
 };
 
 export const dynamic = 'force-dynamic';

@@ -1,4 +1,4 @@
-/* Blog Rich Text Editor Styling */
+﻿/* Blog Rich Text Editor Styling */
 .prose, [contenteditable].prose {
   font-size: 16px;
   line-height: 1.75;
@@ -112,7 +112,7 @@
    ========================================================================== */
 
 .prose a, [contenteditable].prose a {
-  color: #084032;
+  color: #141E36;
   text-decoration: underline;
   text-decoration-color: rgba(8, 64, 50, 0.4);
   text-underline-offset: 3px;
@@ -122,8 +122,8 @@
 }
 
 .prose a:hover, [contenteditable].prose a:hover {
-  color: #00a63e;
-  text-decoration-color: #00a63e;
+  color: #C59B24;
+  text-decoration-color: #C59B24;
 }
 
 /* Headings with links retain heading weight and inherit heading color */
@@ -135,7 +135,7 @@
 .prose h6 a, [contenteditable].prose h6 a {
   color: inherit !important;
   text-decoration: underline !important;
-  text-decoration-color: #084032 !important;
+  text-decoration-color: #141E36 !important;
 }
 
 .prose h1 a:hover, [contenteditable].prose h1 a:hover,
@@ -144,8 +144,8 @@
 .prose h4 a:hover, [contenteditable].prose h4 a:hover,
 .prose h5 a:hover, [contenteditable].prose h5 a:hover,
 .prose h6 a:hover, [contenteditable].prose h6 a:hover {
-  color: #00a63e !important;
-  text-decoration-color: #00a63e !important;
+  color: #C59B24 !important;
+  text-decoration-color: #C59B24 !important;
 }
 
 /* Image Link Wrapper:
@@ -188,13 +188,13 @@
 
 .prose table th, [contenteditable].prose table th {
   background-color: #f8fafc !important;
-  color: #084032 !important;
+  color: #141E36 !important;
   font-weight: 700 !important;
   font-size: 0.8125rem !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
   padding: 0.75rem 1rem !important;
-  border-bottom: 2px solid #084032 !important;
+  border-bottom: 2px solid #141E36 !important;
   border-right: 1px solid #e2e8f0 !important;
   text-align: left !important;
   vertical-align: middle !important;

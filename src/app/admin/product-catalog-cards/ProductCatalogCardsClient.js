@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -238,7 +238,7 @@ export default function ProductCatalogCardsClient() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 space-y-3 font-montserrat">
-        <div className="h-9 w-9 animate-spin rounded-full border-4 border-[#084032] border-t-transparent" />
+        <div className="h-9 w-9 animate-spin rounded-full border-4 border-[#141E36] border-t-transparent" />
         <p className="text-sm font-medium text-gray-500">Loading Product Catalog Cards...</p>
       </div>
     );
@@ -252,7 +252,7 @@ export default function ProductCatalogCardsClient() {
       {/* Top Header Bar */}
       <div className="border-b border-gray-200 pb-5">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#084032] text-white shadow-sm">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#141E36] text-white shadow-sm">
             <FiLayers className="h-6 w-6" />
           </div>
           <div>
@@ -304,7 +304,7 @@ export default function ProductCatalogCardsClient() {
                 }}
                 className={`flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-bold transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-[#084032] text-white shadow-md scale-[1.02]'
+                    ? 'bg-[#141E36] text-white shadow-md scale-[1.02]'
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
@@ -312,7 +312,7 @@ export default function ProductCatalogCardsClient() {
                 <span
                   className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold transition-colors ${
                     isActive
-                      ? 'bg-emerald-300 text-[#084032]'
+                      ? 'bg-emerald-300 text-[#141E36]'
                       : count === 4
                       ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
                       : count > 0
@@ -389,7 +389,7 @@ export default function ProductCatalogCardsClient() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={`Search ${currentCategoryObj.name} by name, brand, or barcode...`}
-              className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-[#084032] focus:ring-1 focus:ring-[#084032] outline-none transition"
+              className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36] outline-none transition"
             />
             {searchTerm && (
               <button
@@ -452,7 +452,7 @@ export default function ProductCatalogCardsClient() {
                   setSearchTerm('');
                   setFilterStatus('all');
                 }}
-                className="mt-2 text-xs font-semibold text-[#084032] hover:underline cursor-pointer"
+                className="mt-2 text-xs font-semibold text-[#141E36] hover:underline cursor-pointer"
               >
                 Reset filters
               </button>
@@ -490,7 +490,7 @@ export default function ProductCatalogCardsClient() {
                       }}
                       className={`transition-colors cursor-pointer ${
                         p.isSelected
-                          ? 'bg-emerald-50/40 hover:bg-emerald-50/70 border-l-4 border-l-[#084032]'
+                          ? 'bg-emerald-50/40 hover:bg-emerald-50/70 border-l-4 border-l-[#141E36]'
                           : isDisabledCheckbox
                           ? 'bg-white hover:bg-gray-50/50 opacity-75'
                           : 'bg-white hover:bg-gray-50'
@@ -514,7 +514,7 @@ export default function ProductCatalogCardsClient() {
                           className={`h-5 w-5 rounded border-gray-300 transition ${
                             isDisabledCheckbox
                               ? 'cursor-not-allowed opacity-30'
-                              : 'cursor-pointer accent-[#084032]'
+                              : 'cursor-pointer accent-[#141E36]'
                           }`}
                         />
                       </td>
@@ -575,7 +575,7 @@ export default function ProductCatalogCardsClient() {
                         <div className="flex items-center justify-center gap-2">
                           {p.isSelected ? (
                             <div className="flex items-center gap-1.5">
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#084032] text-white shadow-xs">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#141E36] text-white shadow-xs">
                                 <FiCheckCircle className="h-3.5 w-3.5 text-emerald-400" />
                                 <span>Displayed (#{p.orderIndex})</span>
                               </span>
@@ -637,8 +637,8 @@ export default function ProductCatalogCardsClient() {
               saving
                 ? 'bg-gray-400 cursor-not-allowed'
                 : isDirty
-                ? 'bg-[#084032] hover:bg-[#0b5c48] ring-2 ring-emerald-400 ring-offset-1 active:scale-98'
-                : 'bg-[#084032] hover:bg-[#0b5c48] active:scale-98'
+                ? 'bg-[#141E36] hover:bg-[#0b5c48] ring-2 ring-emerald-400 ring-offset-1 active:scale-98'
+                : 'bg-[#141E36] hover:bg-[#0b5c48] active:scale-98'
             }`}
           >
             <FiSave className="h-4 w-4" />

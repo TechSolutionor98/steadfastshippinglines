@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { FiPlus, FiTrash2, FiCalendar, FiEdit2, FiUpload, FiX, FiCheck, FiMail, FiGlobe } from 'react-icons/fi';
@@ -172,7 +172,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
 
       {/* ── Top bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-[#084032]">
+        <div className="flex items-center gap-2 text-[#141E36]">
           <FiCalendar size={18} />
           <span className="font-semibold text-sm">
             Manage Appointment Profiles
@@ -185,7 +185,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
         </div>
         <button
           onClick={openAddModal}
-          className="flex items-center gap-2 px-4 py-2 bg-[#084032] text-white text-sm rounded hover:bg-[#0a5c48] transition-colors duration-200 cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 bg-[#141E36] text-white text-sm rounded hover:bg-[#1D2A4C] transition-colors duration-200 cursor-pointer"
         >
           <FiPlus size={14} />
           Add Appointment Slot
@@ -236,7 +236,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                 <tr key={link.id} className="hover:bg-gray-50 transition-colors">
                   {/* Index */}
                   <td className="px-4 py-4">
-                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#084032]/10 text-[#084032] text-xs font-bold">
+                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#141E36]/10 text-[#141E36] text-xs font-bold">
                       {idx + 1}
                     </span>
                   </td>
@@ -251,7 +251,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                           className="w-10 h-10 rounded-full object-cover border border-gray-200 shrink-0 bg-gray-50"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-[#084032]/10 flex items-center justify-center text-[#084032] text-sm font-bold shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-[#141E36]/10 flex items-center justify-center text-[#141E36] text-sm font-bold shrink-0">
                           {link.name ? link.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'AP'}
                         </div>
                       )}
@@ -269,7 +269,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                   {/* Department / Category */}
                   <td className="px-4 py-4">
                     {link.category ? (
-                      <span className="inline-block text-[10px] font-extrabold uppercase tracking-wider bg-green-50 text-[#084032] border border-[#084032]/10 px-2 py-0.5 rounded">
+                      <span className="inline-block text-[10px] font-extrabold uppercase tracking-wider bg-green-50 text-[#141E36] border border-[#141E36]/10 px-2 py-0.5 rounded">
                         {link.category}
                       </span>
                     ) : (
@@ -283,7 +283,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#084032] hover:text-[#00a63e] hover:underline text-xs truncate block"
+                      className="text-[#141E36] hover:text-[#C59B24] hover:underline text-xs truncate block"
                       title={link.url}
                     >
                       {link.url}
@@ -312,7 +312,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                       <button
                         onClick={() => openEditModal(link)}
                         title="Edit Details"
-                        className="p-1.5 text-[#084032] hover:text-[#0a5c48] hover:bg-[#084032]/10 rounded transition-colors cursor-pointer"
+                        className="p-1.5 text-[#141E36] hover:text-[#1D2A4C] hover:bg-[#141E36]/10 rounded transition-colors cursor-pointer"
                       >
                         <FiEdit2 size={14} />
                       </button>
@@ -340,7 +340,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <FiCalendar className="text-[#084032]" />
+                <FiCalendar className="text-[#141E36]" />
                 {formData.isNew ? 'Create Appointment Slot' : 'Edit Appointment Profile'}
               </h2>
               <button
@@ -366,7 +366,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                     value={formData.name}
                     onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
                     placeholder="e.g. John Doe"
-                    className="w-full px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#084032] focus:ring-1 focus:ring-[#084032]"
+                    className="w-full px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36]"
                   />
                 </div>
 
@@ -379,7 +379,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                     value={formData.url}
                     onChange={e => setFormData(p => ({ ...p, url: e.target.value }))}
                     placeholder="https://calendar.google.com/..."
-                    className="w-full px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#084032] focus:ring-1 focus:ring-[#084032]"
+                    className="w-full px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36]"
                   />
                 </div>
 
@@ -391,7 +391,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                     value={formData.category}
                     onChange={e => setFormData(p => ({ ...p, category: e.target.value }))}
                     placeholder="e.g. Technical Support, Sales"
-                    className="w-full px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#084032] focus:ring-1 focus:ring-[#084032]"
+                    className="w-full px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36]"
                   />
                 </div>
 
@@ -404,7 +404,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                       value={formData.profileImage}
                       onChange={e => setFormData(p => ({ ...p, profileImage: e.target.value }))}
                       placeholder="https://cloudinary.com/..."
-                      className="flex-1 px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#084032]"
+                      className="flex-1 px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#141E36]"
                     />
                     
                     {/* Cloudinary Upload Trigger */}
@@ -468,7 +468,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                   value={formData.description}
                   onChange={e => setFormData(p => ({ ...p, description: e.target.value }))}
                   placeholder="Provide a brief description of this meeting's scope, consulting parameters, or consultant biography..."
-                  className="w-full px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#084032] focus:ring-1 focus:ring-[#084032]"
+                  className="w-full px-3 py-2 border border-gray-250 rounded-lg text-sm focus:outline-none focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36]"
                 />
               </div>
 
@@ -490,7 +490,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                         socials: { ...p.socials, linkedin: e.target.value }
                       }))}
                       placeholder="https://linkedin.com/in/username"
-                      className="w-full px-3 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:border-[#084032]"
+                      className="w-full px-3 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:border-[#141E36]"
                     />
                   </div>
 
@@ -508,7 +508,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                         socials: { ...p.socials, twitter: e.target.value }
                       }))}
                       placeholder="https://twitter.com/username"
-                      className="w-full px-3 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:border-[#084032]"
+                      className="w-full px-3 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:border-[#141E36]"
                     />
                   </div>
 
@@ -526,7 +526,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                         socials: { ...p.socials, facebook: e.target.value }
                       }))}
                       placeholder="https://facebook.com/username"
-                      className="w-full px-3 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:border-[#084032]"
+                      className="w-full px-3 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:border-[#141E36]"
                     />
                   </div>
 
@@ -544,7 +544,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                         socials: { ...p.socials, instagram: e.target.value }
                       }))}
                       placeholder="https://instagram.com/username"
-                      className="w-full px-3 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:border-[#084032]"
+                      className="w-full px-3 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:border-[#141E36]"
                     />
                   </div>
                 </div>
@@ -561,7 +561,7 @@ export default function AppointmentsClient({ initialLinks = [], apiBase = '' }) 
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#084032] hover:bg-[#0a5c48] text-white rounded-lg text-sm font-semibold flex items-center gap-1 cursor-pointer"
+                  className="px-5 py-2 bg-[#141E36] hover:bg-[#1D2A4C] text-white rounded-lg text-sm font-semibold flex items-center gap-1 cursor-pointer"
                 >
                   <FiCheck size={14} />
                   Save Profile

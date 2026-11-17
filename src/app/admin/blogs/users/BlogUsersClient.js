@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
@@ -143,7 +143,7 @@ export default function BlogUsersClient({ initialComments = [], apiBase = '' }) 
           {/* Download CSV Button */}
           <button
             onClick={downloadCSV}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#084032] hover:bg-[#0a5c48] text-white font-semibold rounded-lg text-sm transition cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#141E36] hover:bg-[#1D2A4C] text-white font-semibold rounded-lg text-sm transition cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -159,7 +159,7 @@ export default function BlogUsersClient({ initialComments = [], apiBase = '' }) 
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search by name, email, or blog..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#084032] focus:border-[#084032] outline-none transition"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#141E36] focus:border-[#141E36] outline-none transition"
           />
         </div>
       </div>
@@ -167,13 +167,13 @@ export default function BlogUsersClient({ initialComments = [], apiBase = '' }) 
       {/* Table */}
       <div className="flex-1 overflow-auto w-full rounded-xl border border-gray-150 shadow-sm min-h-[300px]">
         <table className="min-w-full text-sm">
-          <thead className="sticky top-0 z-10 bg-[#084032] shadow-sm">
-            <tr className="bg-[#084032] text-white text-left font-semibold">
-              <th className="px-4 py-3 bg-[#084032]">User Name</th>
-              <th className="px-4 py-3 bg-[#084032]">Email Address</th>
-              <th className="px-4 py-3 bg-[#084032] text-center">Comments Count</th>
-              <th className="px-4 py-3 bg-[#084032]">Blogs Commented On</th>
-              <th className="px-4 py-3 bg-[#084032] whitespace-nowrap">Last Comment Date</th>
+          <thead className="sticky top-0 z-10 bg-[#141E36] shadow-sm">
+            <tr className="bg-[#141E36] text-white text-left font-semibold">
+              <th className="px-4 py-3 bg-[#141E36]">User Name</th>
+              <th className="px-4 py-3 bg-[#141E36]">Email Address</th>
+              <th className="px-4 py-3 bg-[#141E36] text-center">Comments Count</th>
+              <th className="px-4 py-3 bg-[#141E36]">Blogs Commented On</th>
+              <th className="px-4 py-3 bg-[#141E36] whitespace-nowrap">Last Comment Date</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 bg-white">
@@ -204,7 +204,7 @@ export default function BlogUsersClient({ initialComments = [], apiBase = '' }) 
                     </td>
 
                     {/* Comment Count */}
-                    <td className="px-4 py-3 text-center font-bold text-[#084032]">
+                    <td className="px-4 py-3 text-center font-bold text-[#141E36]">
                       {u.commentsCount}
                     </td>
 
