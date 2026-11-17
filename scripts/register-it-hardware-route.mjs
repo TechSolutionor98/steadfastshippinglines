@@ -6,7 +6,7 @@ const client = new MongoClient(uri);
 async function run() {
   try {
     await client.connect();
-    const db = client.db('crownexceladmin');
+    const db = client.db(process.env.MONGODB_DB || 'steadfastadmin');
 
     const routePath = '/our-services/it-hardware-supplier-and-distributor';
     const filePath = 'src/app/our-services/it-hardware-supplier-and-distributor/page.js';

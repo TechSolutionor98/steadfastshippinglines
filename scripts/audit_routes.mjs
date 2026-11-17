@@ -8,7 +8,7 @@ const BASE_URL = 'http://localhost:2999';
 async function runAudit() {
   const client = new MongoClient(MONGO_URI);
   await client.connect();
-  const db = client.db('crownexceladmin');
+  const db = client.db(process.env.MONGODB_DB || 'steadfastadmin');
 
   const routes = await db.collection('cms_routes').find({}).sort({ path: 1 }).toArray();
   console.log(`Auditing ${routes.length} routes...`);

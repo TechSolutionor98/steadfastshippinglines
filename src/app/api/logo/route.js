@@ -5,14 +5,13 @@ import { logActivity } from '../../../lib/activity-logger';
 
 // Cloudinary config (configured once)
 cloudinary.v2.config({
-  cloud_name: 'dqghun7oj',
-  api_key: '281487587427693',
-  api_secret: 'bxbrN76auL9pNUINMVdKJwqv6Uo',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dqghun7oj',
+  api_key: process.env.CLOUDINARY_API_KEY || '281487587427693',
+  api_secret: process.env.CLOUDINARY_API_SECRET || 'bxbrN76auL9pNUINMVdKJwqv6Uo',
 });
 
-// const MONGO_URI = 'mongodb+srv://mw951390:1234@cluster0.xxofs0k.mongodb.net/crownexceladmin';
-const MONGO_URI = 'mongodb+srv://admin:admin@cluster0.ac1fznk.mongodb.net';
-const DB_NAME = 'crownexceladmin';
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb+srv://admin:admin@cluster0.ac1fznk.mongodb.net';
+const DB_NAME = process.env.MONGODB_DB || 'steadfastadmin';
 const COLLECTION = 'settings';
 
 // Simple in-memory cache to speed up repeated GETs

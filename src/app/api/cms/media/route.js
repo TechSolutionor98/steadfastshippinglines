@@ -6,9 +6,9 @@ import { logActivity } from '@/lib/activity-logger';
 
 // Cloudinary config (reuse from existing logo route)
 cloudinary.v2.config({
-  cloud_name: 'dqghun7oj',
-  api_key: '281487587427693',
-  api_secret: 'bxbrN76auL9pNUINMVdKJwqv6Uo',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dqghun7oj',
+  api_key: process.env.CLOUDINARY_API_KEY || '281487587427693',
+  api_secret: process.env.CLOUDINARY_API_SECRET || 'bxbrN76auL9pNUINMVdKJwqv6Uo',
 });
 
 const CORS_HEADERS = {
