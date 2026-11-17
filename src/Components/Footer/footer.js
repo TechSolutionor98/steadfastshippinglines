@@ -188,9 +188,9 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Our Offices (4 cols) */}
+          {/* Column 4: Get In Touch (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
-            <h4 className="text-base font-bold text-white tracking-tight uppercase">OUR OFFICES</h4>
+            <h4 className="text-base font-bold text-white tracking-tight">Get In Touch</h4>
             <div className="space-y-3.5 text-xs leading-relaxed">
               {/* Contact Numbers */}
               <div>
