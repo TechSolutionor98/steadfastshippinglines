@@ -407,7 +407,13 @@ export default function HomePage({ cmsContent }) {
               We are dedicated to exceeding expectations with personalized service and a commitment to excellence.
             </p>
 
+            {/* Leadership Spot (Reserved for actual Founder & CEO data) */}
             <div className="pt-2">
+              <div className="text-base font-bold text-white">Executive Leadership</div>
+              <div className="text-xs text-[#C59B24] font-semibold">Founder & CEO</div>
+            </div>
+
+            <div className="pt-3">
               <Link
                 href="/about-us"
                 className="inline-block px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors"
