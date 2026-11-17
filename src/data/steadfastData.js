@@ -58,31 +58,37 @@ export const companyDetails = {
       step: "01",
       title: "Initial Consultation",
       description: "We begin by thoroughly understanding your logistics needs, allowing us to create a tailored plan that fits your business objectives.",
+      icon: "Headphones",
     },
     {
       step: "02",
       title: "Strategic Planning",
       description: "Our team optimizes routes and allocates resources efficiently, ensuring cost-effective and timely logistics operations.",
+      icon: "Route",
     },
     {
       step: "03",
       title: "Seamless Coordination",
       description: "We handle every detail of your shipment, from pickup to delivery, ensuring all documentation and regulatory requirements are met.",
+      icon: "Boxes",
     },
     {
       step: "04",
       title: "Real Time Tracking",
       description: "We provide real-time tracking and continuous shipment monitoring, keeping you informed and promptly addressing any issues.",
+      icon: "Navigation",
     },
     {
       step: "05",
       title: "On-Time Delivery",
       description: "We ensure your goods are delivered safely and on schedule, with confirmation and all necessary documentation provided.",
+      icon: "Clock",
     },
     {
       step: "06",
       title: "Post Delivery Support",
       description: "After delivery, we ensure your satisfaction and offer ongoing support, improving our services based on your feedback.",
+      icon: "HeartHandshake",
     },
   ],
   serviceAreas: [

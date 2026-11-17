@@ -34,7 +34,10 @@ import {
   Quote,
   Calculator,
   Navigation,
-  User
+  User,
+  Headphones,
+  Route,
+  HeartHandshake
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
 
@@ -871,19 +874,44 @@ export default function HomePage({ cmsContent }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {companyDetails.processSteps.map((st) => (
-              <div
-                key={st.step}
-                className="bg-white p-6 rounded-xl border border-[#D7DCE0] shadow-sm space-y-2 hover:shadow-md transition-shadow group"
-              >
-                <div className="text-xl font-black text-[#C59B24]">
-                  {st.step}. {st.title}
+            {companyDetails.processSteps.map((st) => {
+              const IconComp =
+                st.icon === "Headphones"
+                  ? Headphones
+                  : st.icon === "Route"
+                  ? Route
+                  : st.icon === "Boxes"
+                  ? Boxes
+                  : st.icon === "Navigation"
+                  ? Navigation
+                  : st.icon === "Clock"
+                  ? Clock
+                  : st.icon === "HeartHandshake"
+                  ? HeartHandshake
+                  : CheckCircle2;
+
+              return (
+                <div
+                  key={st.step}
+                  className="bg-white p-6 rounded-xl border border-[#D7DCE0] shadow-sm space-y-3 hover:shadow-md transition-all group hover:-translate-y-0.5"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="w-11 h-11 rounded-lg bg-[#1D2A4C] flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                      <IconComp className="w-5 h-5 text-[#C59B24]" />
+                    </div>
+                    <span className="text-2xl font-black text-slate-300 group-hover:text-[#C59B24]/40 transition-colors">
+                      {st.step}
+                    </span>
+                  </div>
+                  <div className="text-lg font-black text-[#1D2A4C] group-hover:text-[#C59B24] transition-colors">
+                    {st.step}. {st.title}
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {st.description}
+                  </p>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {st.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

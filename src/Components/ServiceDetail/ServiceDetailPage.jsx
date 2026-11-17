@@ -20,7 +20,11 @@ import {
   Phone,
   Mail,
   HelpCircle,
-  ChevronRight
+  ChevronRight,
+  Headphones,
+  Route,
+  Navigation,
+  HeartHandshake
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
 
@@ -187,13 +191,29 @@ export default function ServiceDetailPage({ service }) {
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {companyDetails.processSteps.slice(0, 3).map((st) => (
-              <div key={st.step} className="bg-white p-6 rounded-2xl border border-[#D7DCE0] shadow-sm">
-                <span className="text-xs font-black text-[#C59B24] tracking-wider uppercase">Stage {st.step}</span>
-                <h4 className="text-base font-bold text-[#1D2A4C] mt-1 mb-2">{st.title}</h4>
-                <p className="text-xs text-slate-600 leading-relaxed">{st.description}</p>
-              </div>
-            ))}
+            {companyDetails.processSteps.slice(0, 3).map((st) => {
+              const StepIcon =
+                st.icon === "Headphones"
+                  ? Headphones
+                  : st.icon === "Route"
+                  ? Route
+                  : st.icon === "Boxes"
+                  ? Boxes
+                  : CheckCircle2;
+
+              return (
+                <div key={st.step} className="bg-white p-6 rounded-2xl border border-[#D7DCE0] shadow-sm space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="w-10 h-10 rounded-lg bg-[#1D2A4C] flex items-center justify-center text-[#C59B24] shadow-sm">
+                      <StepIcon className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-black text-[#C59B24] tracking-wider uppercase">Stage {st.step}</span>
+                  </div>
+                  <h4 className="text-base font-bold text-[#1D2A4C]">{st.title}</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">{st.description}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
 
