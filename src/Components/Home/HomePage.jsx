@@ -815,22 +815,31 @@ export default function HomePage({ cmsContent }) {
             <div>
               <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Our Service Areas</span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1D2A4C] mt-1">
-                We run regular services from all major ports:
+                Our Service Areas
               </h2>
             </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5">
-              {majorPorts.map((port) => (
-                <div
-                  key={port}
-                  className="px-3 py-2 text-center rounded-lg bg-[#F4F6F8] text-[#1D2A4C] border border-[#D7DCE0] text-xs font-black tracking-wider shadow-sm hover:border-[#C59B24] hover:text-[#C59B24] transition-colors"
-                >
-                  {port}
-                </div>
-              ))}
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+              At Steadfast Shipping Lines (Pvt) Ltd, we provide our logistics services across a wide range of regions, ensuring seamless and efficient delivery no matter where your cargo needs to go. Our expertise spans domestic and international routes, covering major ports, cities, and transportation hubs. Whether your shipment is local or global, we have the network and resources to get it there safely and on time.
+            </p>
+
+            <div className="pt-1">
+              <h3 className="text-base sm:text-lg font-bold text-[#1D2A4C] mb-3">
+                We run regular services from all major ports:
+              </h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5">
+                {majorPorts.map((port, idx) => (
+                  <div
+                    key={`${port}-${idx}`}
+                    className="px-3 py-2 text-center rounded-lg bg-[#F4F6F8] text-[#1D2A4C] border border-[#D7DCE0] text-xs font-black tracking-wider shadow-sm hover:border-[#C59B24] hover:text-[#C59B24] transition-colors"
+                  >
+                    {port}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-2">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-1">
               We extend our services to CIS countries, including Afghanistan, Georgia, Azerbaijan, Turkmenistan, and other CIS destinations.
             </p>
           </div>
