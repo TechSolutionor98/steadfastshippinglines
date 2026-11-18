@@ -24,6 +24,40 @@ import {
   FiType
 } from 'react-icons/fi';
 
+// Calculate responsive typography & layout constraints for admin live preview
+function getAdminPreviewHeadingStyle(text = "") {
+  const clean = (text || "").trim();
+  const words = clean ? clean.split(/\s+/) : [];
+  const wordCount = words.length;
+  const charCount = clean.length;
+
+  if (wordCount <= 4 && charCount <= 26) {
+    return {
+      sizeClass: "text-lg sm:text-2xl md:text-3xl font-black leading-tight",
+      containerClass: "max-w-xs sm:max-w-md",
+      badge: "Global Logistics Network",
+    };
+  } else if (wordCount <= 8 && charCount <= 55) {
+    return {
+      sizeClass: "text-base sm:text-xl md:text-2xl font-extrabold leading-snug",
+      containerClass: "max-w-xs sm:max-w-lg",
+      badge: "Steadfast Shipping Lines",
+    };
+  } else if (wordCount <= 14 && charCount <= 90) {
+    return {
+      sizeClass: "text-sm sm:text-base md:text-lg font-bold leading-normal",
+      containerClass: "max-w-xs sm:max-w-md",
+      badge: "Worldwide Freight Solutions",
+    };
+  } else {
+    return {
+      sizeClass: "text-xs sm:text-sm md:text-base font-bold leading-normal",
+      containerClass: "max-w-xs sm:max-w-sm",
+      badge: "Reliable Shipping Partners",
+    };
+  }
+}
+
 export default function BannersClient() {
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -351,44 +385,81 @@ export default function BannersClient() {
                   style={{ backgroundImage: `url(${slide.imageUrl})` }}
                 />
 
-                {/* Live Preview Heading */}
+                {/* Dynamic Vignette / Gradient Overlay */}
                 {slide.showText !== false && slide.title && (
                   <div
-                    className={`absolute inset-0 flex flex-col justify-center p-6 sm:p-10 pointer-events-none ${
+                    className={`absolute inset-0 pointer-events-none transition-all duration-500 ${
                       slide.textAlign === 'left'
-                        ? 'items-start text-left'
+                        ? 'bg-gradient-to-r from-black/85 via-black/50 to-transparent'
                         : slide.textAlign === 'right'
-                        ? 'items-end text-right'
-                        : 'items-center text-center'
+                        ? 'bg-gradient-to-l from-black/85 via-black/50 to-transparent'
+                        : 'bg-black/45'
                     }`}
-                  >
+                  />
+                )}
+
+                {/* Live Preview Heading */}
+                {slide.showText !== false && slide.title && (() => {
+                  const pStyle = getAdminPreviewHeadingStyle(slide.title);
+                  const align = slide.textAlign || 'center';
+                  return (
                     <div
-                      className={`max-w-md ${
-                        slide.textAlign === 'left'
-                          ? 'mr-auto'
-                          : slide.textAlign === 'right'
-                          ? 'ml-auto'
-                          : 'mx-auto'
+                      className={`absolute inset-0 flex flex-col justify-center p-6 sm:p-10 pointer-events-none ${
+                        align === 'left'
+                          ? 'items-start text-left'
+                          : align === 'right'
+                          ? 'items-end text-right'
+                          : 'items-center text-center'
                       }`}
                     >
-                      <h3
-                        className="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
-                        style={{ color: slide.textColor || '#ffffff' }}
-                      >
-                        {slide.title}
-                      </h3>
                       <div
-                        className={`w-12 h-1 bg-[#C59B24] mt-2 rounded-full shadow ${
-                          slide.textAlign === 'left'
+                        className={`${pStyle.containerClass} space-y-2 ${
+                          align === 'left'
                             ? 'mr-auto'
-                            : slide.textAlign === 'right'
+                            : align === 'right'
                             ? 'ml-auto'
                             : 'mx-auto'
                         }`}
-                      />
+                      >
+                        <div
+                          className={`inline-block px-2.5 py-0.5 rounded-full bg-[#141E36]/80 border border-[#C59B24]/50 text-[#C59B24] text-[10px] font-bold tracking-wider uppercase ${
+                            align === 'left'
+                              ? 'self-start'
+                              : align === 'right'
+                              ? 'self-end'
+                              : 'self-center'
+                          }`}
+                        >
+                          {pStyle.badge}
+                        </div>
+                        <h3
+                          className={`${pStyle.sizeClass} uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]`}
+                          style={{
+                            color: slide.textColor || '#ffffff',
+                            textWrap: 'balance',
+                          }}
+                        >
+                          {slide.title}
+                        </h3>
+                        <div
+                          className={`w-12 h-1 rounded-full shadow ${
+                            align === 'left'
+                              ? 'mr-auto'
+                              : align === 'right'
+                              ? 'ml-auto'
+                              : 'mx-auto'
+                          }`}
+                          style={{
+                            backgroundColor:
+                              slide.textColor && slide.textColor.toLowerCase() === '#c59b24'
+                                ? '#ffffff'
+                                : '#C59B24',
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
 
                 <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-md text-xs font-semibold">
                   Slide {idx + 1} of {activeBanners.length}
@@ -644,13 +715,49 @@ export default function BannersClient() {
                   />
                 </div>
 
-                {/* Thumbnail Preview */}
+                {/* Thumbnail Preview with Live Text Overlay */}
                 {formData.imageUrl && (
-                  <div className="mt-3 relative w-full h-36 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+                  <div className="mt-3 relative w-full h-36 rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-[#141E36]">
                     <div
                       className="w-full h-full bg-cover bg-center bg-no-repeat"
                       style={{ backgroundImage: `url(${formData.imageUrl})` }}
                     />
+                    {formData.showText && formData.title && (
+                      <div
+                        className={`absolute inset-0 flex flex-col justify-center p-3 pointer-events-none ${
+                          formData.textAlign === 'left'
+                            ? 'items-start text-left bg-gradient-to-r from-black/80 via-black/40 to-transparent'
+                            : formData.textAlign === 'right'
+                            ? 'items-end text-right bg-gradient-to-l from-black/80 via-black/40 to-transparent'
+                            : 'items-center text-center bg-black/40'
+                        }`}
+                      >
+                        <p
+                          className="text-xs sm:text-sm font-black uppercase tracking-tight drop-shadow max-w-[85%]"
+                          style={{
+                            color: formData.textColor || '#ffffff',
+                            textWrap: 'balance',
+                          }}
+                        >
+                          {formData.title}
+                        </p>
+                        <div
+                          className={`w-8 h-0.5 rounded-full mt-1 ${
+                            formData.textAlign === 'left'
+                              ? 'mr-auto'
+                              : formData.textAlign === 'right'
+                              ? 'ml-auto'
+                              : 'mx-auto'
+                          }`}
+                          style={{
+                            backgroundColor:
+                              formData.textColor && formData.textColor.toLowerCase() === '#c59b24'
+                                ? '#ffffff'
+                                : '#C59B24',
+                          }}
+                        />
+                      </div>
+                    )}
                     <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded font-mono">
                       Image Preview
                     </div>
