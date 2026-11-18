@@ -16,6 +16,7 @@ import {
   Truck
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
+import QuoteButton from "@/Components/Quote/QuoteButton";
 
 export const metadata = {
   title: "About Us | Steadfast Shipping Lines",
@@ -87,13 +88,12 @@ export default function AboutUsPage() {
             </div>
 
             <div className="pt-2">
-              <Link
-                href="/quote"
+              <QuoteButton
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-all"
               >
                 <span>Request a Free Quote</span>
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </QuoteButton>
             </div>
           </div>
 

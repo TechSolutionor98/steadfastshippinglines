@@ -25,6 +25,7 @@ import {
   Globe
 } from "lucide-react";
 import { servicesData, companyDetails } from "@/data/steadfastData";
+import { openQuoteModal } from "@/Components/Quote/QuoteModal";
 
 const iconMap = {
   Ship: Ship,
@@ -91,13 +92,13 @@ export default function Navbar() {
 
           <div className="flex items-center gap-4">
             <span className="text-[#D7DCE0]/80 hidden sm:inline">Offices: Faisalabad | Karachi</span>
-            <Link
-              href="/quote"
-              className="inline-flex items-center gap-1 text-[#C59B24] hover:text-white font-semibold transition-colors"
+            <button
+              onClick={() => openQuoteModal()}
+              className="inline-flex items-center gap-1 text-[#C59B24] hover:text-white font-semibold transition-colors cursor-pointer"
             >
               <span>Instant Rate Estimation</span>
               <ArrowRight className="w-3 h-3" />
-            </Link>
+            </button>
           </div>
         </div>
       </div>
@@ -190,13 +191,13 @@ export default function Navbar() {
 
           {/* Right Action CTA (Gold #C59B24) */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link
-              href="/quote"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white text-sm font-bold shadow-md shadow-[#C59B24]/20 hover:shadow-lg hover:shadow-[#C59B24]/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            <button
+              onClick={() => openQuoteModal()}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white text-sm font-bold shadow-md shadow-[#C59B24]/20 hover:shadow-lg hover:shadow-[#C59B24]/30 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             >
               <span>Get a Quote</span>
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -275,12 +276,15 @@ export default function Navbar() {
               </Link>
 
               <div className="pt-4 mt-2 border-t border-[#D7DCE0] flex flex-col gap-3">
-                <Link
-                  href="/quote"
-                  className="w-full text-center py-3 rounded-xl bg-[#C59B24] text-white font-bold text-sm shadow-md shadow-[#C59B24]/20 hover:bg-[#B0891E] transition-colors"
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openQuoteModal();
+                  }}
+                  className="w-full text-center py-3 rounded-xl bg-[#C59B24] text-white font-bold text-sm shadow-md shadow-[#C59B24]/20 hover:bg-[#B0891E] transition-colors cursor-pointer"
                 >
                   Request a Quote
-                </Link>
+                </button>
 
                 <div className="text-xs text-slate-600 px-2 space-y-1">
                   <p className="flex items-center gap-1.5 font-semibold text-[#1D2A4C]">

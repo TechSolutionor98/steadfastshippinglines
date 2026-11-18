@@ -27,6 +27,7 @@ import {
   HeartHandshake
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
+import { openQuoteModal } from "@/Components/Quote/QuoteModal";
 
 const iconMap = {
   Ship: Ship,
@@ -70,13 +71,13 @@ export default function ServiceDetailPage({ service }) {
                 {service.tagline}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
-                <Link
-                  href="/quote"
-                  className="px-6 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#C59B24]/20 flex items-center gap-2 transition-all"
+                <button
+                  onClick={() => openQuoteModal(service.title)}
+                  className="px-6 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#C59B24]/20 flex items-center gap-2 transition-all cursor-pointer"
                 >
                   <span>Request Instant Rate</span>
                   <ArrowRight className="w-4 h-4" />
-                </Link>
+                </button>
                 <a
                   href={`tel:${companyDetails.phone.replace(/[\s+,]/g, "")}`}
                   className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 flex items-center gap-2 transition-all backdrop-blur-sm"
@@ -257,12 +258,12 @@ export default function ServiceDetailPage({ service }) {
             Get instant, competitive freight quotes tailored to your cargo origin, destination, and transit schedule.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-2">
-            <Link
-              href="/quote"
-              className="px-8 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-all hover:scale-105"
+            <button
+              onClick={() => openQuoteModal(service.title)}
+              className="px-8 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-all hover:scale-105 cursor-pointer"
             >
               Get a Free Quote
-            </Link>
+            </button>
             <Link
               href="/contact"
               className="px-8 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 transition-all"

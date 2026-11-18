@@ -9,6 +9,7 @@ import {
   Linkedin,
   Send
 } from "lucide-react";
+import { openQuoteModal } from "@/Components/Quote/QuoteModal";
 
 export default function Footer() {
   const [emailInput, setEmailInput] = useState("");
@@ -183,9 +184,18 @@ export default function Footer() {
               {companyList.map((item, idx) => (
                 <li key={idx} className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C59B24] shrink-0" />
-                  <Link href={item.href} className="hover:text-[#C59B24] transition-colors">
-                    {item.title}
-                  </Link>
+                  {item.href === "/quote" ? (
+                    <button
+                      onClick={() => openQuoteModal()}
+                      className="hover:text-[#C59B24] transition-colors cursor-pointer text-left"
+                    >
+                      {item.title}
+                    </button>
+                  ) : (
+                    <Link href={item.href} className="hover:text-[#C59B24] transition-colors">
+                      {item.title}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

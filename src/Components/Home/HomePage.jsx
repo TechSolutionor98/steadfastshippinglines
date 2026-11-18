@@ -41,6 +41,7 @@ import {
   HeartHandshake
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
+import { openQuoteModal } from "@/Components/Quote/QuoteModal";
 
 export default function HomePage({ cmsContent }) {
   // Dynamic Hero Banners State - Managed via Admin Panel
@@ -690,12 +691,12 @@ export default function HomePage({ cmsContent }) {
               Contact our dispatch team for real-time rates and space allocation.
             </p>
           </div>
-          <Link
-            href="/quote"
-            className="px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors shrink-0"
+          <button
+            onClick={() => openQuoteModal()}
+            className="px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors shrink-0 cursor-pointer"
           >
             REQUEST A QUOTE
-          </Link>
+          </button>
         </div>
       </section>
 

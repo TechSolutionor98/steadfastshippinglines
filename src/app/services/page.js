@@ -19,6 +19,7 @@ import {
   Phone
 } from "lucide-react";
 import { servicesData, companyDetails } from "@/data/steadfastData";
+import QuoteButton from "@/Components/Quote/QuoteButton";
 
 const iconMap = {
   Ship: Ship,
@@ -59,13 +60,12 @@ export default function ServicesPage() {
           </p>
 
           <div className="mt-8 flex justify-center gap-4">
-            <Link
-              href="/quote"
+            <QuoteButton
               className="px-6 py-3 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-all flex items-center gap-2"
             >
               <span>Request a Quote</span>
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </QuoteButton>
             <Link
               href="/contact"
               className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 transition-all"
@@ -164,12 +164,11 @@ export default function ServicesPage() {
             Get in touch with our team today to discuss your shipment specs and receive competitive, transparent pricing tailored to your routes.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/quote"
+            <QuoteButton
               className="px-8 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors"
             >
               Get an Instant Quote
-            </Link>
+            </QuoteButton>
             <Link
               href="/contact"
               className="px-8 py-3.5 rounded-xl bg-[#F4F6F8] hover:bg-[#D7DCE0]/60 text-[#1D2A4C] font-bold text-xs uppercase tracking-wider transition-colors border border-[#D7DCE0]"

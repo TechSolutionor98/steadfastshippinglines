@@ -11,6 +11,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { companyDetails } from "@/data/steadfastData";
+import { openQuoteModal } from "@/Components/Quote/QuoteModal";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -241,13 +242,13 @@ export default function ContactPage() {
               </div>
 
               <div className="pt-6 border-t border-[#D7DCE0]/15 mt-6">
-                <Link
-                  href="/quote"
-                  className="w-full py-3 bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-md shadow-[#C59B24]/20"
+                <button
+                  onClick={() => openQuoteModal()}
+                  className="w-full py-3 bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-md shadow-[#C59B24]/20 cursor-pointer"
                 >
                   <span>Need an Instant Rate Calculation?</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                </button>
               </div>
             </div>
           </div>
