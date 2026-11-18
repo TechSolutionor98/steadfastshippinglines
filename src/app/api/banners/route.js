@@ -53,8 +53,12 @@ export async function GET(request) {
 
     let query = all ? {} : { active: { $ne: false } };
 
-    if (pageParam && pageParam !== 'all') {
-      if (pageParam === '/') {
+    // Public requests default strictly to Home ('/') if no page is specified
+    const effectivePage = pageParam || (all ? null : '/');
+
+    if (effectivePage && effectivePage !== 'all') {
+      const clean = effectivePage.startsWith('/') ? effectivePage : '/' + effectivePage;
+      if (clean === '/') {
         query = {
           ...query,
           $or: [
@@ -65,7 +69,14 @@ export async function GET(request) {
           ]
         };
       } else {
-        query = { ...query, page: pageParam };
+        const withoutSlash = clean.replace(/^\//, '');
+        query = {
+          ...query,
+          $or: [
+            { page: clean },
+            { page: withoutSlash }
+          ]
+        };
       }
     }
 
@@ -105,6 +116,13 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const { title, subtitle, page, imageUrl, link, order, active, showText, textColor, textAlign } = body;
+
+    if (!page || typeof page !== 'string' || !page.trim()) {
+      return NextResponse.json(
+        { ok: false, error: 'Target page selection is mandatory. Please select a page first.' },
+        { status: 400, headers: CORS_HEADERS }
+      );
+    }
 
     if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.trim()) {
       return NextResponse.json(

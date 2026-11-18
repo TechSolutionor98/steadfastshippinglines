@@ -137,11 +137,11 @@ export default function BannersClient() {
   // Open Modal for Add
   const handleOpenAdd = () => {
     setEditingBanner(null);
-    const targetPage = selectedPageFilter === 'all' ? '/' : selectedPageFilter;
-    const samePageCount = banners.filter((b) => (b.page || '/') === targetPage).length;
+    const targetPage = selectedPageFilter === 'all' ? '' : selectedPageFilter;
+    const samePageCount = targetPage ? banners.filter((b) => (b.page || '/') === targetPage).length : 0;
     setFormData({
       page: targetPage,
-      title: `${getPageLabel(targetPage)} Banner`,
+      title: targetPage ? `${getPageLabel(targetPage)} Banner` : '',
       subtitle: '',
       imageUrl: '',
       link: '',
@@ -217,6 +217,10 @@ export default function BannersClient() {
   // Save Banner
   const handleSaveBanner = async (e) => {
     e.preventDefault();
+    if (!formData.page || !formData.page.trim()) {
+      toast.error('Pehle Target Page select karein! Page select karna lazmi hai.');
+      return;
+    }
     if (!formData.imageUrl.trim()) {
       toast.error('Please upload an image or provide an image URL');
       return;
@@ -782,16 +786,38 @@ export default function BannersClient() {
 
             {/* Modal Body Form */}
             <form onSubmit={handleSaveBanner} className="p-6 space-y-4 overflow-y-auto text-xs sm:text-sm">
-              {/* Target Page Selector */}
-              <div className="space-y-1.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                <label className="block text-xs font-bold text-[#141E36] uppercase tracking-wider">
-                  Target Website Page *
-                </label>
+              {/* Target Page Selector (Mandatory Step 1) */}
+              <div className={`space-y-1.5 p-4 rounded-2xl border transition-all ${
+                !formData.page ? 'bg-amber-50/70 border-amber-300' : 'bg-slate-50 border-slate-200'
+              }`}>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-[#141E36] uppercase tracking-wider">
+                    Step 1: Select Target Page <span className="text-red-500 font-black">*</span>
+                  </label>
+                  {!formData.page && (
+                    <span className="text-[11px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
+                      Page Selection Required
+                    </span>
+                  )}
+                </div>
                 <select
-                  value={formData.page || '/'}
-                  onChange={(e) => setFormData({ ...formData, page: e.target.value })}
-                  className="w-full px-3.5 py-2.5 text-xs bg-white border border-gray-300 rounded-xl text-gray-800 font-bold focus:outline-none focus:border-[#C59B24] cursor-pointer"
+                  value={formData.page || ''}
+                  onChange={(e) => {
+                    const newPage = e.target.value;
+                    const sameCount = banners.filter((b) => (b.page || '/') === newPage).length;
+                    setFormData({
+                      ...formData,
+                      page: newPage,
+                      title: (!formData.title || formData.title.endsWith('Banner')) ? `${getPageLabel(newPage)} Banner` : formData.title,
+                      order: sameCount + 1,
+                    });
+                  }}
+                  required
+                  className={`w-full px-3.5 py-2.5 text-xs bg-white rounded-xl text-gray-800 font-bold focus:outline-none cursor-pointer border ${
+                    !formData.page ? 'border-amber-400 ring-2 ring-amber-300/40' : 'border-gray-300 focus:border-[#C59B24]'
+                  }`}
                 >
+                  <option value="" disabled>-- Select Page First (Required) --</option>
                   <optgroup label="Core Pages">
                     {AVAILABLE_PAGES.filter((p) => p.group === 'Core Pages').map((p) => (
                       <option key={p.path} value={p.path}>
@@ -808,7 +834,7 @@ export default function BannersClient() {
                   </optgroup>
                 </select>
                 <p className="text-[11px] text-gray-500">
-                  Select which page will display this hero banner background / slider.
+                  Banner strictly usi page ke hero section me show hoga jo aap yahan select karein ge, kisi doosre page par show nahi hoga.
                 </p>
               </div>
 

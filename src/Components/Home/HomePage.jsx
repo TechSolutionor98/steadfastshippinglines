@@ -63,13 +63,16 @@ export default function HomePage({ cmsContent }) {
   const [heroBanners, setHeroBanners] = useState(defaultHeroSlides);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Fetch live banners from API
+  // Fetch live banners for homepage ONLY
   useEffect(() => {
-    fetch("/api/banners")
+    fetch("/api/banners?page=/")
       .then((res) => res.json())
       .then((data) => {
-        if (data.ok && Array.isArray(data.banners) && data.banners.length > 0) {
-          setHeroBanners(data.banners);
+        if (data.ok && Array.isArray(data.banners)) {
+          const homeOnly = data.banners.filter((b) => (b.page || '/') === '/');
+          if (homeOnly.length > 0) {
+            setHeroBanners(homeOnly);
+          }
         }
       })
       .catch((err) => console.log("Banners fetch error:", err));
