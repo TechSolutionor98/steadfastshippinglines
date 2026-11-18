@@ -207,24 +207,12 @@ export default function HomePage({ cmsContent }) {
     <div className="bg-white text-slate-800">
       {/* =========================================================================
           SECTION 1: HERO BANNER SLIDER (Steadfast Hero Banner)
-          Dynamic Image Slider Managed via Admin Panel (Pure Banner Images, No Text Overlay)
+          Dynamic Image Slider with Admin Title Heading & Live CMS Integration
       ========================================================================== */}
-      <section className="relative w-full h-[360px] sm:h-[440px] md:h-[500px] lg:h-[600px] xl:h-[660px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
+      <section className="relative w-full h-[380px] sm:h-[460px] md:h-[520px] lg:h-[620px] xl:h-[680px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
         {heroBanners.map((slide, idx) => {
           const isCurrent = idx === currentSlide;
           const bgUrl = slide.imageUrl || slide.bgImage;
-
-          const content = (
-            <div
-              className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url(${bgUrl})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
-          );
 
           return (
             <div
@@ -233,12 +221,39 @@ export default function HomePage({ cmsContent }) {
                 isCurrent ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               }`}
             >
-              {slide.link ? (
-                <Link href={slide.link} className="block w-full h-full cursor-pointer" aria-label={slide.title || "Banner"}>
-                  {content}
-                </Link>
-              ) : (
-                content
+              {/* Background Image */}
+              <div
+                className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+                style={{
+                  backgroundImage: `url(${bgUrl})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center center",
+                  backgroundRepeat: "no-repeat",
+                }}
+              />
+
+              {/* Dynamic Title Heading from Admin */}
+              {slide.title && (
+                <div className="relative z-20 w-full h-full flex flex-col items-center justify-center px-4 sm:px-8 text-center">
+                  <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4 animate-in fade-in duration-700">
+                    <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.15] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+                      {slide.title}
+                    </h1>
+                    <div className="w-16 sm:w-24 h-1 sm:h-1.5 bg-[#C59B24] mx-auto rounded-full shadow-lg shadow-[#C59B24]/40" />
+
+                    {slide.link && (
+                      <div className="pt-3">
+                        <Link
+                          href={slide.link}
+                          className="inline-flex items-center gap-2 px-6 sm:px-7 py-2.5 sm:py-3 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-xl transition-all hover:scale-105"
+                        >
+                          <span>Explore More</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           );
@@ -250,7 +265,7 @@ export default function HomePage({ cmsContent }) {
             {/* Prev Button */}
             <button
               onClick={() => setCurrentSlide((prev) => (prev === 0 ? heroBanners.length - 1 : prev - 1))}
-              className="absolute left-3 sm:left-6 z-20 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-black/40 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
+              className="absolute left-3 sm:left-6 z-30 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-black/40 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
               aria-label="Previous Slide"
             >
               <ChevronLeft className="w-5 sm:w-6 h-5 sm:h-6" />
@@ -259,14 +274,14 @@ export default function HomePage({ cmsContent }) {
             {/* Next Button */}
             <button
               onClick={() => setCurrentSlide((prev) => (prev + 1) % heroBanners.length)}
-              className="absolute right-3 sm:right-6 z-20 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-black/40 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
+              className="absolute right-3 sm:right-6 z-30 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-black/40 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
               aria-label="Next Slide"
             >
               <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6" />
             </button>
 
             {/* Indicator Dots */}
-            <div className="absolute bottom-4 sm:bottom-6 z-20 flex items-center justify-center gap-2 sm:gap-2.5">
+            <div className="absolute bottom-4 sm:bottom-6 z-30 flex items-center justify-center gap-2 sm:gap-2.5">
               {heroBanners.map((_, i) => (
                 <button
                   key={i}

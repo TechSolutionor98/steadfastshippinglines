@@ -321,7 +321,7 @@ export default function BannersClient() {
                 Live Homepage Slider Preview ({activeBanners.length} active slides)
               </h2>
             </div>
-            <span className="text-xs text-gray-500">Pure Image Mode (No Text Overlay)</span>
+            <span className="text-xs text-gray-500 font-medium">Dynamic Heading Preview</span>
           </div>
 
           <div className="relative w-full h-56 sm:h-72 md:h-80 rounded-xl overflow-hidden bg-[#141E36] border border-gray-200 shadow-inner group">
@@ -336,8 +336,19 @@ export default function BannersClient() {
                   className="w-full h-full bg-cover bg-center bg-no-repeat"
                   style={{ backgroundImage: `url(${slide.imageUrl})` }}
                 />
+
+                {/* Live Preview Heading */}
+                {slide.title && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center pointer-events-none">
+                    <h3 className="text-lg sm:text-2xl md:text-3xl font-black text-white uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] max-w-xl">
+                      {slide.title}
+                    </h3>
+                    <div className="w-12 h-1 bg-[#C59B24] mx-auto mt-2 rounded-full shadow" />
+                  </div>
+                )}
+
                 <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-md text-xs font-semibold">
-                  Slide {idx + 1} of {activeBanners.length}: {slide.title || 'Untitled Banner'}
+                  Slide {idx + 1} of {activeBanners.length}
                 </div>
               </div>
             ))}
