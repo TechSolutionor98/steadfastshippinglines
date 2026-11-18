@@ -7,8 +7,19 @@ async function getSubmissions() {
   return db.collection('contact_submissions').find().sort({ _id: -1 }).toArray();
 }
 
-async function saveSubmission({ name, email, phone, subject, service, comments, productName, productBarcode }) {
+function detectFormType(doc = {}) {
+  if (doc.formType) return doc.formType;
+  const sub = (doc.subject || '').toLowerCase();
+  const com = (doc.comments || '').toLowerCase();
+  if (sub.includes('quote') || com.includes('quote estimate request') || com.includes('freight service:')) {
+    return 'quote';
+  }
+  return 'contact';
+}
+
+async function saveSubmission({ name, email, phone, subject, service, comments, productName, productBarcode, formType }) {
   const db = await getDb();
+  const resolvedType = formType || detectFormType({ subject, comments });
   const doc = {
     name,
     email,
@@ -18,6 +29,7 @@ async function saveSubmission({ name, email, phone, subject, service, comments, 
     productName: productName || null,
     productBarcode: productBarcode || null,
     comments,
+    formType: resolvedType,
     createdAt: new Date().toISOString()
   };
   const res = await db.collection('contact_submissions').insertOne(doc);
@@ -47,6 +59,7 @@ export async function GET() {
       productName: s.productName,
       productBarcode: s.productBarcode,
       comments: s.comments,
+      formType: detectFormType(s),
       createdAt: s.createdAt
     })), { headers: CORS_HEADERS });
   } catch (err) {
@@ -58,7 +71,7 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, email, phone, subject, service, comments, productName, productBarcode } = body || {};
+    const { name, email, phone, subject, service, comments, productName, productBarcode, formType } = body || {};
     if (!name || !email || !phone || !subject || !service || !comments) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400, headers: CORS_HEADERS });
     }
@@ -73,8 +86,8 @@ export async function POST(request) {
       await db.collection('otps').deleteMany({ email });
     }
 
-    const entry = await saveSubmission({ name, email, phone, subject, service, comments, productName, productBarcode });
-    await logActivity(request, 'contact_submission', name, { email, subject, service, productName, productBarcode });
+    const entry = await saveSubmission({ name, email, phone, subject, service, comments, productName, productBarcode, formType });
+    await logActivity(request, 'contact_submission', name, { email, subject, service, productName, productBarcode, formType: entry.formType });
 
     return NextResponse.json({ ok: true, entry }, { status: 201, headers: CORS_HEADERS });
   } catch (err) {

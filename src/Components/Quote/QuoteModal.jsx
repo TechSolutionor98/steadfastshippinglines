@@ -123,6 +123,7 @@ Additional Notes: ${formData.comments || "None"}
           subject: `Rate Quote: ${formData.freightType} (${formData.origin} -> ${formData.destination})`,
           service: formData.freightType,
           comments: formattedComments,
+          formType: "quote",
         }),
       });
 

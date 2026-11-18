@@ -108,6 +108,7 @@ export default function HomePage({ cmsContent }) {
           subject: `Quote Request for ${quoteFreight} (${quoteOrigin} -> ${quoteDestination})`,
           service: quoteFreight,
           comments: `Origin: ${quoteOrigin}, Destination: ${quoteDestination}, Requested via Home Quote Banner`,
+          formType: "quote",
         }),
       });
       setQuoteSuccess(true);
