@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { FiPlus, FiUsers, FiEdit2, FiTrash2, FiShield, FiX, FiUserCheck, FiUserX, FiChevronDown, FiCheck } from 'react-icons/fi';
