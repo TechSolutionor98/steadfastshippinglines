@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
 import QuoteButton from "@/Components/Quote/QuoteButton";
+import PageHeroBackground from "@/Components/Banner/PageHeroBackground";
 
 export const metadata = {
   title: "About Us | Steadfast Shipping Lines",
@@ -30,8 +31,9 @@ export default function AboutUsPage() {
   return (
     <div className="bg-white min-h-screen text-slate-800">
       {/* Hero Header */}
-      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-16 sm:py-24 px-4 overflow-hidden border-b border-[#D7DCE0]/15">
-        <div className="max-w-7xl mx-auto relative z-10 text-center">
+      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-24 sm:py-32 md:py-36 min-h-[420px] sm:min-h-[480px] flex items-center justify-center px-4 overflow-hidden border-b border-[#D7DCE0]/15">
+        <PageHeroBackground page="/about-us" />
+        <div className="max-w-7xl mx-auto relative z-10 text-center w-full">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
             <ShieldCheck className="w-4 h-4 text-[#C59B24]" />
             <span>Global Transport & Logistics Service Provider</span>

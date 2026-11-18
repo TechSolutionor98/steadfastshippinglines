@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import {
@@ -8,7 +8,6 @@ import {
   FiEdit2,
   FiTrash2,
   FiUploadCloud,
-  FiMove,
   FiArrowUp,
   FiArrowDown,
   FiCheck,
@@ -21,19 +20,42 @@ import {
   FiAlignLeft,
   FiAlignCenter,
   FiAlignRight,
-  FiType
+  FiType,
+  FiLayers,
+  FiFilter,
 } from 'react-icons/fi';
+
+export const AVAILABLE_PAGES = [
+  { path: '/', label: 'Home Page (Hero Slider)', group: 'Core Pages' },
+  { path: '/about-us', label: 'About Us', group: 'Core Pages' },
+  { path: '/services', label: 'Our Services Overview', group: 'Core Pages' },
+  { path: '/contact', label: 'Contact Us', group: 'Core Pages' },
+  { path: '/blogs', label: 'Blogs Page', group: 'Core Pages' },
+  { path: '/ocean-freight', label: 'Ocean Freight', group: 'Freight Services' },
+  { path: '/air-freight', label: 'Air Freight', group: 'Freight Services' },
+  { path: '/road-freight', label: 'Road Freight', group: 'Freight Services' },
+  { path: '/warehousing-service', label: 'Warehousing Service', group: 'Freight Services' },
+  { path: '/cargo-services', label: 'Cargo Services', group: 'Freight Services' },
+  { path: '/customs-clearance-service', label: 'Customs Clearance Service', group: 'Freight Services' },
+  { path: '/break-bulk-cargo-service', label: 'Break Bulk Cargo Service', group: 'Freight Services' },
+  { path: '/cross-stuffing-service', label: 'Cross-Stuffing Service', group: 'Freight Services' },
+  { path: '/transportation-service', label: 'Transportation Service', group: 'Freight Services' },
+  { path: '/door-to-door-delievery', label: 'Door to Door Delivery', group: 'Freight Services' },
+];
 
 export default function BannersClient() {
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedPageFilter, setSelectedPageFilter] = useState('all');
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBanner, setEditingBanner] = useState(null);
   const [formData, setFormData] = useState({
+    page: '/',
     title: '',
+    subtitle: '',
     imageUrl: '',
     link: '',
     order: 1,
@@ -80,14 +102,50 @@ export default function BannersClient() {
     fetchBanners();
   }, []);
 
+  const getPageLabel = (pagePath) => {
+    const found = AVAILABLE_PAGES.find((p) => p.path === (pagePath || '/'));
+    return found ? found.label : pagePath || '/';
+  };
+
+  // Filtered banners by page
+  const filteredBanners = useMemo(() => {
+    if (selectedPageFilter === 'all') return banners;
+    return banners.filter((b) => (b.page || '/') === selectedPageFilter);
+  }, [banners, selectedPageFilter]);
+
+  // Page counts
+  const pageCounts = useMemo(() => {
+    const map = { all: banners.length };
+    AVAILABLE_PAGES.forEach((p) => {
+      map[p.path] = banners.filter((b) => (b.page || '/') === p.path).length;
+    });
+    return map;
+  }, [banners]);
+
+  // Active banners for preview
+  const previewBanners = useMemo(() => {
+    const pool = selectedPageFilter === 'all'
+      ? banners.filter((b) => (b.page || '/') === '/')
+      : filteredBanners;
+    return pool.filter((b) => b.active !== false);
+  }, [banners, filteredBanners, selectedPageFilter]);
+
+  useEffect(() => {
+    setPreviewSlide(0);
+  }, [selectedPageFilter, previewBanners.length]);
+
   // Open Modal for Add
   const handleOpenAdd = () => {
     setEditingBanner(null);
+    const targetPage = selectedPageFilter === 'all' ? '/' : selectedPageFilter;
+    const samePageCount = banners.filter((b) => (b.page || '/') === targetPage).length;
     setFormData({
-      title: `Hero Banner ${banners.length + 1}`,
+      page: targetPage,
+      title: `${getPageLabel(targetPage)} Banner`,
+      subtitle: '',
       imageUrl: '',
       link: '',
-      order: banners.length + 1,
+      order: samePageCount + 1,
       active: true,
       showText: true,
       textColor: '#ffffff',
@@ -100,7 +158,9 @@ export default function BannersClient() {
   const handleOpenEdit = (banner) => {
     setEditingBanner(banner);
     setFormData({
+      page: banner.page || '/',
       title: banner.title || '',
+      subtitle: banner.subtitle || '',
       imageUrl: banner.imageUrl || '',
       link: banner.link || '',
       order: banner.order || 1,
@@ -112,8 +172,8 @@ export default function BannersClient() {
     setIsModalOpen(true);
   };
 
-  // Handle File Upload
-  const handleFileUpload = async (e) => {
+  // Image Upload handler
+  const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -154,7 +214,7 @@ export default function BannersClient() {
     }
   };
 
-  // Save Banner (Create or Update)
+  // Save Banner
   const handleSaveBanner = async (e) => {
     e.preventDefault();
     if (!formData.imageUrl.trim()) {
@@ -175,7 +235,7 @@ export default function BannersClient() {
         });
         const data = await res.json();
         if (data.ok) {
-          toast.success('Banner updated!');
+          toast.success('Banner updated successfully!');
           setIsModalOpen(false);
           fetchBanners();
         } else {
@@ -190,7 +250,7 @@ export default function BannersClient() {
         });
         const data = await res.json();
         if (data.ok) {
-          toast.success('New banner added!');
+          toast.success('New banner added successfully!');
           setIsModalOpen(false);
           fetchBanners();
         } else {
@@ -220,104 +280,94 @@ export default function BannersClient() {
         setBanners((prev) =>
           prev.map((b) => (b._id === banner._id ? { ...b, active: updatedStatus } : b))
         );
-        toast.success(updatedStatus ? 'Banner activated' : 'Banner paused');
+        toast.success(`Banner ${updatedStatus ? 'activated' : 'deactivated'}`);
       } else {
-        toast.error('Failed to update status');
+        toast.error(data.error || 'Status update failed');
       }
     } catch (err) {
-      console.error(err);
-      toast.error('Failed to update banner status');
+      toast.error('Failed to change status');
     }
   };
 
-  // Move Order (Up or Down)
+  // Move Order
   const handleMoveOrder = async (index, direction) => {
+    const targetList = filteredBanners;
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= banners.length) return;
+    if (targetIndex < 0 || targetIndex >= targetList.length) return;
 
-    const newBanners = [...banners];
-    const currentItem = newBanners[index];
-    const targetItem = newBanners[targetIndex];
+    const currentBanner = targetList[index];
+    const targetBanner = targetList[targetIndex];
 
-    // Swap orders
-    const currentOrder = currentItem.order || index + 1;
-    const targetOrder = targetItem.order || targetIndex + 1;
-
-    // Optimistic UI update
-    newBanners[index] = { ...targetItem, order: currentOrder };
-    newBanners[targetIndex] = { ...currentItem, order: targetOrder };
-    setBanners(newBanners);
+    const newCurrentOrder = targetBanner.order || targetIndex + 1;
+    const newTargetOrder = currentBanner.order || index + 1;
 
     try {
       await Promise.all([
         fetch('/api/banners', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: currentItem._id, order: targetOrder }),
+          body: JSON.stringify({ id: currentBanner._id, order: newCurrentOrder }),
         }),
         fetch('/api/banners', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: targetItem._id, order: currentOrder }),
+          body: JSON.stringify({ id: targetBanner._id, order: newTargetOrder }),
         }),
       ]);
       fetchBanners();
+      toast.success('Order updated!');
     } catch (err) {
-      console.error('Order update error:', err);
       toast.error('Failed to update order');
-      fetchBanners();
     }
   };
 
   // Delete Banner
-  const handleDelete = async () => {
-    if (!deleteConfirmId) return;
+  const handleDelete = async (id) => {
     setDeleting(true);
     try {
-      const res = await fetch(`/api/banners?id=${deleteConfirmId}`, {
+      const res = await fetch(`/api/banners?id=${id}`, {
         method: 'DELETE',
       });
       const data = await res.json();
       if (data.ok) {
-        toast.success('Banner deleted');
+        setBanners((prev) => prev.filter((b) => b._id !== id));
+        toast.success('Banner deleted successfully');
         setDeleteConfirmId(null);
-        fetchBanners();
       } else {
         toast.error(data.error || 'Failed to delete banner');
       }
     } catch (err) {
-      console.error('Delete error:', err);
-      toast.error('Failed to delete banner');
+      toast.error('Error deleting banner');
     } finally {
       setDeleting(false);
     }
   };
 
-  const activeBanners = banners.filter((b) => b.active !== false);
-
   return (
-    <div className="space-y-8 pb-16">
-      {/* Page Header */}
+    <div className="space-y-6">
+      {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200">
         <div>
-          <h1 className="text-2xl font-black text-[#141E36] tracking-tight">Hero Banners Slider</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Manage the full-width image slider on the homepage hero section. Upload images, reorder slides, or toggle display status.
+          <h1 className="text-2xl font-black text-[#141E36] tracking-tight uppercase">
+            Hero Banners Management
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">
+            Configure dynamic hero section banners and background sliders for all website pages.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => fetchBanners(true)}
             disabled={refreshing}
-            className="p-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors shadow-sm"
+            className="p-2.5 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 transition cursor-pointer"
             title="Refresh Banners"
           >
-            <FiRefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            <FiRefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin text-[#C59B24]' : ''}`} />
           </button>
           <button
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#141E36] hover:bg-[#1D2A4C] text-white text-sm font-bold shadow-md transition-all hover:scale-[1.02]"
+            className="px-4 py-2.5 rounded-xl bg-[#141E36] hover:bg-[#1D2A4C] text-white text-xs sm:text-sm font-bold flex items-center gap-2 shadow-sm transition cursor-pointer"
           >
             <FiPlus className="w-4 h-4 text-[#C59B24]" />
             <span>Add New Banner</span>
@@ -325,25 +375,98 @@ export default function BannersClient() {
         </div>
       </div>
 
-      {/* Live Preview Box */}
-      {activeBanners.length > 0 && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FiEye className="text-[#C59B24] w-4 h-4" />
-              <h2 className="text-sm font-bold text-[#141E36] uppercase tracking-wider">
-                Live Homepage Slider Preview ({activeBanners.length} active slides)
-              </h2>
-            </div>
-            <span className="text-xs text-gray-500 font-medium">Dynamic Heading Preview</span>
+      {/* Page Filter Toolbar & Quick Tabs */}
+      <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-xs space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <FiLayers className="w-4 h-4 text-[#C59B24]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-gray-700">
+              Filter By Target Page:
+            </span>
           </div>
 
-          <div className="relative w-full h-56 sm:h-72 md:h-80 rounded-xl overflow-hidden bg-[#141E36] border border-gray-200 shadow-inner group">
-            {activeBanners.map((slide, idx) => (
+          {/* Page Dropdown for Quick Jump */}
+          <div className="flex items-center gap-2">
+            <select
+              value={selectedPageFilter}
+              onChange={(e) => setSelectedPageFilter(e.target.value)}
+              className="border border-[#D7DCE0] rounded-xl px-3 py-1.5 text-xs font-semibold text-gray-800 bg-white focus:outline-none focus:border-[#C59B24] cursor-pointer"
+            >
+              <option value="all">All Pages ({pageCounts.all || 0})</option>
+              <optgroup label="Core Pages">
+                {AVAILABLE_PAGES.filter((p) => p.group === 'Core Pages').map((p) => (
+                  <option key={p.path} value={p.path}>
+                    {p.label} ({pageCounts[p.path] || 0})
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="Freight Services">
+                {AVAILABLE_PAGES.filter((p) => p.group === 'Freight Services').map((p) => (
+                  <option key={p.path} value={p.path}>
+                    {p.label} ({pageCounts[p.path] || 0})
+                  </option>
+                ))}
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        {/* Quick Filter Pill Buttons */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-gray-100">
+          <button
+            onClick={() => setSelectedPageFilter('all')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+              selectedPageFilter === 'all'
+                ? 'bg-[#141E36] text-white shadow-xs'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            <span>All Pages</span>
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20">
+              {pageCounts.all || 0}
+            </span>
+          </button>
+
+          {AVAILABLE_PAGES.slice(0, 5).map((p) => (
+            <button
+              key={p.path}
+              onClick={() => setSelectedPageFilter(p.path)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                selectedPageFilter === p.path
+                  ? 'bg-[#C59B24] text-white shadow-xs'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <span>{p.label.replace(' Page', '').replace(' (Hero Slider)', '')}</span>
+              <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
+                selectedPageFilter === p.path ? 'bg-white/20' : 'bg-gray-200 text-gray-800'
+              }`}>
+                {pageCounts[p.path] || 0}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Live Preview Section */}
+      {previewBanners.length > 0 && (
+        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-bold uppercase tracking-wider text-[#141E36]">
+                Live Preview: {selectedPageFilter === 'all' ? 'Home Slider' : getPageLabel(selectedPageFilter)} ({previewBanners.length} Active Slide{previewBanners.length > 1 ? 's' : ''})
+              </span>
+            </div>
+            <span className="text-[11px] text-gray-400 font-mono">Dynamic Live Rendering</span>
+          </div>
+
+          <div className="relative w-full h-48 sm:h-64 rounded-xl overflow-hidden bg-slate-900 border border-gray-200 shadow-inner">
+            {previewBanners.map((slide, idx) => (
               <div
-                key={slide._id}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
-                  idx === previewSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                key={slide._id || idx}
+                className={`absolute inset-0 transition-opacity duration-700 ${
+                  idx === previewSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
                 }`}
               >
                 <div
@@ -351,99 +474,86 @@ export default function BannersClient() {
                   style={{ backgroundImage: `url(${slide.imageUrl})` }}
                 />
 
-                {/* Dynamic Vignette / Gradient Overlay */}
+                {/* Dark Vignette Overlay */}
+                <div
+                  className={`absolute inset-0 pointer-events-none ${
+                    slide.textAlign === 'left'
+                      ? 'bg-gradient-to-r from-black/85 via-black/50 to-transparent'
+                      : slide.textAlign === 'right'
+                      ? 'bg-gradient-to-l from-black/85 via-black/50 to-transparent'
+                      : 'bg-black/50'
+                  }`}
+                />
+
+                {/* Heading Text */}
                 {slide.showText !== false && slide.title && (
                   <div
-                    className={`absolute inset-0 pointer-events-none transition-all duration-500 ${
+                    className={`absolute inset-0 flex flex-col justify-center p-6 sm:p-10 pointer-events-none ${
                       slide.textAlign === 'left'
-                        ? 'bg-gradient-to-r from-black/85 via-black/50 to-transparent'
+                        ? 'items-start text-left'
                         : slide.textAlign === 'right'
-                        ? 'bg-gradient-to-l from-black/85 via-black/50 to-transparent'
-                        : 'bg-black/45'
+                        ? 'items-end text-right'
+                        : 'items-center text-center'
                     }`}
-                  />
-                )}
-
-                {/* Live Preview Heading - Uniform Style Matching Client Side */}
-                {slide.showText !== false && slide.title && (() => {
-                  const align = slide.textAlign || 'center';
-                  return (
-                    <div
-                      className={`absolute inset-0 flex flex-col justify-center p-6 sm:p-10 pointer-events-none ${
-                        align === 'left'
-                          ? 'items-start text-left'
-                          : align === 'right'
-                          ? 'items-end text-right'
-                          : 'items-center text-center'
-                      }`}
-                    >
+                  >
+                    <div className="max-w-xl space-y-2">
+                      <h3
+                        className="text-base sm:text-2xl font-black uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
+                        style={{ color: slide.textColor || '#ffffff' }}
+                      >
+                        {slide.title}
+                      </h3>
+                      {slide.subtitle && (
+                        <p className="text-xs sm:text-sm text-gray-200 drop-shadow">
+                          {slide.subtitle}
+                        </p>
+                      )}
                       <div
-                        className={`max-w-md space-y-2 ${
-                          align === 'left'
+                        className={`w-12 h-1 rounded-full shadow ${
+                          slide.textAlign === 'left'
                             ? 'mr-auto'
-                            : align === 'right'
+                            : slide.textAlign === 'right'
                             ? 'ml-auto'
                             : 'mx-auto'
                         }`}
-                      >
-                        <h3
-                          className="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
-                          style={{
-                            color: slide.textColor || '#ffffff',
-                            textWrap: 'balance',
-                          }}
-                        >
-                          {slide.title}
-                        </h3>
-                        <div
-                          className={`w-12 h-1 rounded-full shadow ${
-                            align === 'left'
-                              ? 'mr-auto'
-                              : align === 'right'
-                              ? 'ml-auto'
-                              : 'mx-auto'
-                          }`}
-                          style={{
-                            backgroundColor:
-                              slide.textColor && slide.textColor.toLowerCase() === '#c59b24'
-                                ? '#ffffff'
-                                : '#C59B24',
-                          }}
-                        />
-                      </div>
+                        style={{
+                          backgroundColor:
+                            slide.textColor?.toLowerCase() === '#c59b24' ? '#ffffff' : '#C59B24',
+                        }}
+                      />
                     </div>
-                  );
-                })()}
+                  </div>
+                )}
 
-                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-md text-xs font-semibold">
-                  Slide {idx + 1} of {activeBanners.length}
+                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white px-2.5 py-1 rounded text-[11px] font-bold">
+                  Slide {idx + 1} of {previewBanners.length}
                 </div>
               </div>
             ))}
 
-            {/* Preview Navigation */}
-            {activeBanners.length > 1 && (
+            {/* Slider Navigation Buttons */}
+            {previewBanners.length > 1 && (
               <>
                 <button
                   onClick={() =>
-                    setPreviewSlide((prev) => (prev === 0 ? activeBanners.length - 1 : prev - 1))
+                    setPreviewSlide((prev) => (prev === 0 ? previewBanners.length - 1 : prev - 1))
                   }
-                  className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-[#C59B24] text-white flex items-center justify-center transition cursor-pointer"
                 >
                   ❮
                 </button>
                 <button
-                  onClick={() => setPreviewSlide((prev) => (prev + 1) % activeBanners.length)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all"
+                  onClick={() => setPreviewSlide((prev) => (prev + 1) % previewBanners.length)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-[#C59B24] text-white flex items-center justify-center transition cursor-pointer"
                 >
                   ❯
                 </button>
-                <div className="absolute bottom-3 left-1/2 -translate-y-0 -translate-x-1/2 z-20 flex gap-2">
-                  {activeBanners.map((_, i) => (
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                  {previewBanners.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => setPreviewSlide(i)}
-                      className={`h-2 rounded-full transition-all ${
+                      className={`h-2 rounded-full transition-all cursor-pointer ${
                         i === previewSlide ? 'w-6 bg-[#C59B24]' : 'w-2 bg-white/60 hover:bg-white'
                       }`}
                     />
@@ -455,199 +565,311 @@ export default function BannersClient() {
         </div>
       )}
 
-      {/* Banners Grid / List */}
-      <div className="space-y-4">
-        <h2 className="text-base font-bold text-[#141E36]">Current Slider Banners ({banners.length})</h2>
+      {/* Banners Table Section (Replaces Old Cards UI) */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-bold text-[#141E36]">
+              Configured Hero Banners ({filteredBanners.length})
+            </h2>
+            <p className="text-xs text-gray-500">
+              Showing banners for: <span className="font-bold text-[#C59B24]">{selectedPageFilter === 'all' ? 'All Pages' : getPageLabel(selectedPageFilter)}</span>
+            </p>
+          </div>
+
+          {selectedPageFilter !== 'all' && (
+            <button
+              onClick={() => setSelectedPageFilter('all')}
+              className="text-xs font-semibold text-[#141E36] hover:underline cursor-pointer"
+            >
+              Reset to All Pages
+            </button>
+          )}
+        </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[1, 2].map((i) => (
-              <div key={i} className="h-64 rounded-2xl bg-gray-100 animate-pulse border border-gray-200" />
-            ))}
-          </div>
-        ) : banners.length === 0 ? (
-          <div className="p-12 text-center rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 space-y-4">
-            <FiImage className="w-12 h-12 text-gray-400 mx-auto" />
+          <div className="py-16 text-center text-gray-400">Loading banners...</div>
+        ) : filteredBanners.length === 0 ? (
+          <div className="p-10 text-center rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 space-y-3">
+            <FiImage className="w-10 h-10 text-gray-400 mx-auto" />
             <div>
-              <p className="text-base font-bold text-gray-700">No banners found</p>
-              <p className="text-xs text-gray-500 mt-1">Get started by creating your first hero slider banner.</p>
+              <p className="text-sm font-bold text-gray-700">No banners configured for this page</p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Add a banner to display a custom hero background on {selectedPageFilter === 'all' ? 'any page' : getPageLabel(selectedPageFilter)}.
+              </p>
             </div>
             <button
               onClick={handleOpenAdd}
-              className="px-4 py-2 rounded-lg bg-[#141E36] hover:bg-[#1D2A4C] text-white text-xs font-bold transition"
+              className="px-4 py-2 rounded-xl bg-[#141E36] hover:bg-[#1D2A4C] text-white text-xs font-bold transition cursor-pointer"
             >
-              Add First Banner
+              Add Banner For This Page
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {banners.map((banner, index) => (
-              <div
-                key={banner._id}
-                className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden shadow-sm hover:shadow-md flex flex-col justify-between ${
-                  banner.active ? 'border-gray-200' : 'border-gray-200 opacity-60 bg-gray-50/70'
-                }`}
-              >
-                {/* Banner Thumbnail */}
-                <div className="relative w-full h-44 bg-gray-100 overflow-hidden group">
-                  <div
-                    className="w-full h-full bg-cover bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${banner.imageUrl})` }}
-                  />
+          <div className="overflow-x-auto rounded-xl border border-gray-200">
+            <table className="w-full text-xs sm:text-sm text-left">
+              <thead className="bg-[#141E36] text-white">
+                <tr>
+                  <th className="px-4 py-3 font-bold text-center w-20">Order</th>
+                  <th className="px-4 py-3 font-bold w-24">Thumbnail</th>
+                  <th className="px-4 py-3 font-bold">Target Page</th>
+                  <th className="px-4 py-3 font-bold">Banner Title / Heading</th>
+                  <th className="px-4 py-3 font-bold">Text Overlay</th>
+                  <th className="px-4 py-3 font-bold text-center">Status</th>
+                  <th className="px-4 py-3 font-bold">Link URL</th>
+                  <th className="px-4 py-3 font-bold text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {filteredBanners.map((banner, index) => {
+                  const targetPageObj = AVAILABLE_PAGES.find((p) => p.path === (banner.page || '/'));
+                  return (
+                    <tr key={banner._id} className="hover:bg-slate-50 transition-colors">
+                      {/* Order & Move buttons */}
+                      <td className="px-4 py-3 align-middle text-center">
+                        <div className="flex items-center justify-center gap-1">
+                          <span className="font-bold text-gray-700 w-4">{index + 1}</span>
+                          <div className="flex flex-col">
+                            <button
+                              onClick={() => handleMoveOrder(index, 'up')}
+                              disabled={index === 0}
+                              className="p-0.5 text-gray-400 hover:text-black disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed"
+                              title="Move Up"
+                            >
+                              <FiArrowUp className="w-3 h-3" />
+                            </button>
+                            <button
+                              onClick={() => handleMoveOrder(index, 'down')}
+                              disabled={index === filteredBanners.length - 1}
+                              className="p-0.5 text-gray-400 hover:text-black disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed"
+                              title="Move Down"
+                            >
+                              <FiArrowDown className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                      </td>
 
-                  {/* Order Badge */}
-                  <div className="absolute top-3 left-3 bg-[#141E36]/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-xs font-bold flex items-center gap-1 shadow">
-                    <FiMove className="w-3 h-3 text-[#C59B24]" />
-                    <span>Slide #{index + 1}</span>
-                  </div>
-
-                  {/* Active / Inactive Badge */}
-                  <div className="absolute top-3 right-3">
-                    <button
-                      onClick={() => handleToggleActive(banner)}
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider shadow backdrop-blur-sm transition ${
-                        banner.active
-                          ? 'bg-emerald-500 text-white hover:bg-emerald-600'
-                          : 'bg-gray-700 text-white hover:bg-gray-800'
-                      }`}
-                    >
-                      {banner.active ? 'Active' : 'Inactive'}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Banner Details */}
-                <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
-                  <div className="space-y-1.5">
-                    <h3 className="font-bold text-sm text-[#141E36] line-clamp-1">
-                      {banner.title || `Hero Banner #${index + 1}`}
-                    </h3>
-
-                    {/* Text Status & Styling Badges */}
-                    <div className="flex items-center flex-wrap gap-1.5 pt-0.5">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        banner.showText !== false
-                          ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                          : 'bg-gray-100 text-gray-500 border border-gray-200'
-                      }`}>
-                        {banner.showText !== false ? 'Text ON' : 'Image Only'}
-                      </span>
-                      {banner.showText !== false && (
-                        <>
-                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 capitalize border border-slate-200">
-                            {banner.textAlign || 'center'}
-                          </span>
-                          <span
-                            className="inline-block w-3.5 h-3.5 rounded-full border border-gray-300 shadow-xs"
-                            style={{ backgroundColor: banner.textColor || '#ffffff' }}
-                            title={`Text Color: ${banner.textColor || '#ffffff'}`}
+                      {/* Thumbnail Preview */}
+                      <td className="px-4 py-3 align-middle">
+                        <div className="w-20 h-12 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden relative group shrink-0">
+                          <div
+                            className="w-full h-full bg-cover bg-center transition-transform duration-200 group-hover:scale-110"
+                            style={{ backgroundImage: `url(${banner.imageUrl})` }}
                           />
-                        </>
-                      )}
-                    </div>
+                        </div>
+                      </td>
 
-                    {banner.link ? (
-                      <p className="text-xs text-[#C59B24] flex items-center gap-1.5 truncate pt-0.5">
-                        <FiLink className="w-3 h-3 shrink-0" />
-                        <span className="truncate">{banner.link}</span>
-                      </p>
-                    ) : (
-                      <p className="text-[11px] text-gray-400 italic">No click link configured</p>
-                    )}
-                    <p className="text-[10px] text-gray-400 truncate">URL: {banner.imageUrl}</p>
-                  </div>
+                      {/* Target Page Badge */}
+                      <td className="px-4 py-3 align-middle">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-[#FDF9EE] text-[#141E36] border border-[#E2C876]">
+                          {targetPageObj ? targetPageObj.label : banner.page || '/'}
+                        </span>
+                        <span className="block text-[10px] text-gray-400 font-mono mt-0.5">
+                          {banner.page || '/'}
+                        </span>
+                      </td>
 
-                  {/* Actions Bar */}
-                  <div className="pt-3 border-t border-gray-150 flex items-center justify-between">
-                    {/* Move Up / Down */}
-                    <div className="flex items-center gap-1">
-                      <button
-                        onClick={() => handleMoveOrder(index, 'up')}
-                        disabled={index === 0}
-                        className="p-1.5 rounded border border-gray-200 text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition"
-                        title="Move Earlier in Slider"
-                      >
-                        <FiArrowUp className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={() => handleMoveOrder(index, 'down')}
-                        disabled={index === banners.length - 1}
-                        className="p-1.5 rounded border border-gray-200 text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition"
-                        title="Move Later in Slider"
-                      >
-                        <FiArrowDown className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
+                      {/* Title & Subtitle */}
+                      <td className="px-4 py-3 align-middle max-w-xs">
+                        <p className="font-bold text-gray-900 line-clamp-1">{banner.title || 'Untitled Banner'}</p>
+                        {banner.subtitle && (
+                          <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">{banner.subtitle}</p>
+                        )}
+                      </td>
 
-                    {/* Edit & Delete */}
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleOpenEdit(banner)}
-                        className="px-3 py-1.5 bg-[#141E36] hover:bg-[#1D2A4C] text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 transition"
-                      >
-                        <FiEdit2 className="w-3 h-3 text-[#C59B24]" />
-                        <span>Edit</span>
-                      </button>
-                      <button
-                        onClick={() => setDeleteConfirmId(banner._id)}
-                        className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition"
-                        title="Delete Banner"
-                      >
-                        <FiTrash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+                      {/* Text Display Badges */}
+                      <td className="px-4 py-3 align-middle">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              banner.showText !== false
+                                ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                : 'bg-gray-100 text-gray-500'
+                            }`}
+                          >
+                            {banner.showText !== false ? 'Text ON' : 'Image Only'}
+                          </span>
+                          {banner.showText !== false && (
+                            <span
+                              className="w-3 h-3 rounded-full border border-gray-300 shadow-2xs"
+                              style={{ backgroundColor: banner.textColor || '#ffffff' }}
+                              title={`Text Color: ${banner.textColor || '#ffffff'}`}
+                            />
+                          )}
+                        </div>
+                      </td>
+
+                      {/* Status Toggle */}
+                      <td className="px-4 py-3 align-middle text-center">
+                        <button
+                          onClick={() => handleToggleActive(banner)}
+                          className={`px-2.5 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
+                            banner.active
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
+                              : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'
+                          }`}
+                        >
+                          {banner.active ? 'Active' : 'Inactive'}
+                        </button>
+                      </td>
+
+                      {/* Link URL */}
+                      <td className="px-4 py-3 align-middle text-xs text-gray-600 max-w-[120px] truncate">
+                        {banner.link ? (
+                          <span className="text-[#C59B24] font-medium flex items-center gap-1 truncate" title={banner.link}>
+                            <FiLink className="w-3 h-3 shrink-0" />
+                            <span className="truncate">{banner.link}</span>
+                          </span>
+                        ) : (
+                          <span className="text-gray-400">—</span>
+                        )}
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-4 py-3 align-middle text-center">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <button
+                            onClick={() => handleOpenEdit(banner)}
+                            className="p-1.5 rounded-lg bg-gray-100 hover:bg-[#141E36] hover:text-white text-gray-700 transition cursor-pointer"
+                            title="Edit Banner"
+                          >
+                            <FiEdit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteConfirmId(banner._id)}
+                            className="p-1.5 rounded-lg bg-red-50 hover:bg-red-600 hover:text-white text-red-600 transition cursor-pointer"
+                            title="Delete Banner"
+                          >
+                            <FiTrash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
 
       {/* Add / Edit Banner Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-gray-150 space-y-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-200">
-              <h3 className="text-xl font-bold text-[#141E36]">
-                {editingBanner ? 'Edit Hero Banner' : 'Add New Hero Banner'}
-              </h3>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-3xl shadow-2xl w-full max-w-xl max-h-[92vh] overflow-hidden flex flex-col border border-gray-200 animate-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-[#141E36] px-6 py-4 flex items-center justify-between text-white shrink-0 border-b border-[#C59B24]/40">
+              <div className="flex items-center gap-2">
+                <FiImage className="w-5 h-5 text-[#C59B24]" />
+                <h3 className="text-base sm:text-lg font-bold">
+                  {editingBanner ? 'Edit Hero Banner' : 'Add New Hero Banner'}
+                </h3>
+              </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition"
+                className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg font-bold cursor-pointer transition"
               >
-                <FiX className="w-5 h-5" />
+                ×
               </button>
             </div>
 
-            <form onSubmit={handleSaveBanner} className="space-y-5">
-              {/* Image Upload Area */}
+            {/* Modal Body Form */}
+            <form onSubmit={handleSaveBanner} className="p-6 space-y-4 overflow-y-auto text-xs sm:text-sm">
+              {/* Target Page Selector */}
+              <div className="space-y-1.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                <label className="block text-xs font-bold text-[#141E36] uppercase tracking-wider">
+                  Target Website Page *
+                </label>
+                <select
+                  value={formData.page || '/'}
+                  onChange={(e) => setFormData({ ...formData, page: e.target.value })}
+                  className="w-full px-3.5 py-2.5 text-xs bg-white border border-gray-300 rounded-xl text-gray-800 font-bold focus:outline-none focus:border-[#C59B24] cursor-pointer"
+                >
+                  <optgroup label="Core Pages">
+                    {AVAILABLE_PAGES.filter((p) => p.group === 'Core Pages').map((p) => (
+                      <option key={p.path} value={p.path}>
+                        {p.label} ({p.path})
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Freight Services">
+                    {AVAILABLE_PAGES.filter((p) => p.group === 'Freight Services').map((p) => (
+                      <option key={p.path} value={p.path}>
+                        {p.label} ({p.path})
+                      </option>
+                    ))}
+                  </optgroup>
+                </select>
+                <p className="text-[11px] text-gray-500">
+                  Select which page will display this hero banner background / slider.
+                </p>
+              </div>
+
+              {/* Title / Heading */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Banner Heading / Title
+                </label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  placeholder="e.g. RELIABLE FREIGHT SOLUTIONS"
+                  className="w-full px-3.5 py-2 text-xs bg-white border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:border-[#C59B24]"
+                />
+              </div>
+
+              {/* Subtitle / Tagline */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Banner Subtitle / Tagline (Optional)
+                </label>
+                <input
+                  type="text"
+                  value={formData.subtitle}
+                  onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                  placeholder="e.g. Delivering excellence across borders with innovative multimodal logistics..."
+                  className="w-full px-3.5 py-2 text-xs bg-white border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:border-[#C59B24]"
+                />
+              </div>
+
+              {/* Image Upload / Direct URL */}
               <div className="space-y-2">
                 <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
                   Banner Image *
                 </label>
 
-                {/* Drag and Drop / Choose File */}
+                {/* Upload box */}
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-gray-300 hover:border-[#141E36] rounded-2xl p-6 text-center cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors group"
+                  className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer transition ${
+                    uploading
+                      ? 'border-[#C59B24] bg-amber-50/50'
+                      : 'border-gray-300 hover:border-[#141E36] hover:bg-gray-50'
+                  }`}
                 >
                   <input
                     ref={fileInputRef}
                     type="file"
                     accept="image/*"
-                    onChange={handleFileUpload}
+                    onChange={handleFileChange}
                     className="hidden"
                   />
-                  <FiUploadCloud className="w-10 h-10 text-gray-400 group-hover:text-[#C59B24] mx-auto transition-colors" />
-                  <p className="text-sm font-bold text-gray-700 mt-2">
-                    {uploading ? 'Uploading Image...' : 'Click to upload banner image'}
+                  <FiUploadCloud className="w-8 h-8 text-[#C59B24] mx-auto mb-1" />
+                  <p className="text-xs font-bold text-gray-800">
+                    {uploading ? 'Uploading image...' : 'Click to upload image'}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Supports PNG, JPG, WEBP. Recommended size: 1920x800 or 1920x900px.
-                  </p>
+                  <p className="text-[11px] text-gray-500">PNG, JPG, or WEBP (Recommended: 1920x800)</p>
+
                   {uploading && (
-                    <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3 overflow-hidden">
+                    <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2 overflow-hidden">
                       <div
                         className="bg-[#C59B24] h-1.5 rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
@@ -656,42 +878,39 @@ export default function BannersClient() {
                   )}
                 </div>
 
-                {/* Or enter Direct Image URL */}
-                <div className="pt-2">
-                  <span className="text-[11px] text-gray-400 block mb-1">Or paste direct image URL / path:</span>
+                {/* Direct Image URL input */}
+                <div>
+                  <span className="text-[11px] text-gray-500 block mb-1">Or paste image URL / local path:</span>
                   <input
                     type="text"
                     value={formData.imageUrl}
                     onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                     placeholder="e.g. /images/home/banner-1.webp or https://..."
                     required
-                    className="w-full px-4 py-2.5 text-xs bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36]"
+                    className="w-full px-3.5 py-2 text-xs bg-white border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:border-[#C59B24]"
                   />
                 </div>
 
-                {/* Thumbnail Preview with Live Text Overlay */}
+                {/* Thumbnail Preview with Heading */}
                 {formData.imageUrl && (
-                  <div className="mt-3 relative w-full h-36 rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-[#141E36]">
+                  <div className="relative w-full h-32 rounded-xl overflow-hidden border border-gray-200 shadow-xs bg-[#141E36] mt-2">
                     <div
                       className="w-full h-full bg-cover bg-center bg-no-repeat"
                       style={{ backgroundImage: `url(${formData.imageUrl})` }}
                     />
                     {formData.showText && formData.title && (
                       <div
-                        className={`absolute inset-0 flex flex-col justify-center p-3 pointer-events-none ${
+                        className={`absolute inset-0 flex flex-col justify-center p-4 pointer-events-none ${
                           formData.textAlign === 'left'
                             ? 'items-start text-left bg-gradient-to-r from-black/80 via-black/40 to-transparent'
                             : formData.textAlign === 'right'
                             ? 'items-end text-right bg-gradient-to-l from-black/80 via-black/40 to-transparent'
-                            : 'items-center text-center bg-black/40'
+                            : 'items-center text-center bg-black/50'
                         }`}
                       >
                         <p
                           className="text-xs sm:text-sm font-black uppercase tracking-tight drop-shadow max-w-[85%]"
-                          style={{
-                            color: formData.textColor || '#ffffff',
-                            textWrap: 'balance',
-                          }}
+                          style={{ color: formData.textColor || '#ffffff' }}
                         >
                           {formData.title}
                         </p>
@@ -705,43 +924,27 @@ export default function BannersClient() {
                           }`}
                           style={{
                             backgroundColor:
-                              formData.textColor && formData.textColor.toLowerCase() === '#c59b24'
-                                ? '#ffffff'
-                                : '#C59B24',
+                              formData.textColor?.toLowerCase() === '#c59b24' ? '#ffffff' : '#C59B24',
                           }}
                         />
                       </div>
                     )}
                     <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded font-mono">
-                      Image Preview
+                      Preview
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Title */}
-              <div className="space-y-1">
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
-                  Banner Title / Label
-                </label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="e.g. Ocean Logistics Banner"
-                  className="w-full px-4 py-2.5 text-xs bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36]"
-                />
-              </div>
-
-              {/* Text Management: Show/Hide, Color & Alignment Options */}
-              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 space-y-4">
+              {/* Text Management (Show/Hide, Color, Alignment) */}
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
                       Show Text On Banner
                     </label>
                     <p className="text-[11px] text-gray-500">
-                      Enable to display title heading on client website
+                      Enable heading text display on the website
                     </p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -751,68 +954,40 @@ export default function BannersClient() {
                       onChange={(e) => setFormData({ ...formData, showText: e.target.checked })}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#141E36]"></div>
+                    <div className="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#141E36]"></div>
                   </label>
                 </div>
 
-                {/* If showText is ON: Color & Alignment Controls */}
                 {formData.showText && (
-                  <div className="pt-3 border-t border-gray-200 grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in duration-200">
-                    {/* Text Color Selection */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-gray-700">
-                        Text Color
-                      </label>
+                  <div className="pt-3 border-t border-gray-200 grid grid-cols-2 gap-4">
+                    {/* Text Color */}
+                    <div className="space-y-1">
+                      <label className="block text-[11px] font-bold text-gray-700">Text Color</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="color"
                           value={formData.textColor || '#ffffff'}
                           onChange={(e) => setFormData({ ...formData, textColor: e.target.value })}
-                          className="w-10 h-9 p-0.5 rounded border border-gray-300 cursor-pointer bg-white"
+                          className="w-8 h-8 p-0.5 rounded border border-gray-300 cursor-pointer bg-white"
                         />
                         <input
                           type="text"
                           value={formData.textColor || '#ffffff'}
                           onChange={(e) => setFormData({ ...formData, textColor: e.target.value })}
                           placeholder="#ffffff"
-                          className="w-full px-3 py-1.5 text-xs font-mono bg-white border border-gray-300 rounded-lg text-gray-800"
+                          className="w-full px-2.5 py-1 text-xs font-mono bg-white border border-gray-300 rounded-lg text-gray-800"
                         />
-                      </div>
-                      {/* Color Presets */}
-                      <div className="flex items-center gap-1.5 pt-1">
-                        {[
-                          { name: 'White', color: '#ffffff' },
-                          { name: 'Gold', color: '#C59B24' },
-                          { name: 'Navy', color: '#141E36' },
-                          { name: 'Yellow', color: '#FACC15' },
-                          { name: 'Black', color: '#000000' },
-                        ].map((preset) => (
-                          <button
-                            key={preset.color}
-                            type="button"
-                            onClick={() => setFormData({ ...formData, textColor: preset.color })}
-                            className={`w-6 h-6 rounded-full border shadow-sm transition-transform hover:scale-110 ${
-                              formData.textColor?.toLowerCase() === preset.color.toLowerCase()
-                                ? 'ring-2 ring-offset-1 ring-[#141E36]'
-                                : 'border-gray-300'
-                            }`}
-                            style={{ backgroundColor: preset.color }}
-                            title={preset.name}
-                          />
-                        ))}
                       </div>
                     </div>
 
                     {/* Text Alignment */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-gray-700">
-                        Text Alignment
-                      </label>
-                      <div className="grid grid-cols-3 gap-1.5 bg-white p-1 rounded-lg border border-gray-300">
+                    <div className="space-y-1">
+                      <label className="block text-[11px] font-bold text-gray-700">Text Alignment</label>
+                      <div className="grid grid-cols-3 gap-1 bg-white p-1 rounded-lg border border-gray-300">
                         {[
-                          { id: 'left', label: 'Left', icon: FiAlignLeft },
-                          { id: 'center', label: 'Center', icon: FiAlignCenter },
-                          { id: 'right', label: 'Right', icon: FiAlignRight },
+                          { id: 'left', icon: FiAlignLeft },
+                          { id: 'center', icon: FiAlignCenter },
+                          { id: 'right', icon: FiAlignRight },
                         ].map((align) => {
                           const Icon = align.icon;
                           const isSelected = (formData.textAlign || 'center') === align.id;
@@ -821,14 +996,11 @@ export default function BannersClient() {
                               key={align.id}
                               type="button"
                               onClick={() => setFormData({ ...formData, textAlign: align.id })}
-                              className={`py-2 px-1 text-xs font-bold rounded flex flex-col items-center gap-1 transition ${
-                                isSelected
-                                  ? 'bg-[#141E36] text-white shadow-sm'
-                                  : 'text-gray-600 hover:bg-gray-100'
+                              className={`py-1.5 rounded flex items-center justify-center transition cursor-pointer ${
+                                isSelected ? 'bg-[#141E36] text-white' : 'text-gray-600 hover:bg-gray-100'
                               }`}
                             >
-                              <Icon className="w-4 h-4" />
-                              <span className="text-[10px]">{align.label}</span>
+                              <Icon className="w-3.5 h-3.5" />
                             </button>
                           );
                         })}
@@ -847,56 +1019,58 @@ export default function BannersClient() {
                   type="text"
                   value={formData.link}
                   onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-                  placeholder="e.g. /services or /quote or leave blank"
-                  className="w-full px-4 py-2.5 text-xs bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36]"
+                  placeholder="e.g. /services or /contact"
+                  className="w-full px-3.5 py-2 text-xs bg-white border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:border-[#C59B24]"
                 />
-                <p className="text-[11px] text-gray-400">If provided, clicking on the slide will navigate to this link.</p>
               </div>
 
-              {/* Order & Active Toggle */}
-              <div className="grid grid-cols-2 gap-4 pt-2">
+              {/* Order & Active Switch */}
+              <div className="grid grid-cols-2 gap-4 pt-1">
                 <div className="space-y-1">
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
-                    Slide Order #
+                    Display Order
                   </label>
                   <input
                     type="number"
-                    min="1"
                     value={formData.order}
-                    onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 1 })}
-                    className="w-full px-4 py-2 text-xs bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#141E36]"
+                    onChange={(e) => setFormData({ ...formData, order: Number(e.target.value) })}
+                    className="w-full px-3.5 py-2 text-xs bg-white border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:border-[#C59B24]"
                   />
                 </div>
 
-                <div className="flex flex-col justify-end">
-                  <label className="flex items-center gap-2 cursor-pointer pb-2">
-                    <input
-                      type="checkbox"
-                      checked={formData.active}
-                      onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                      className="w-4 h-4 rounded text-[#141E36] focus:ring-[#141E36]"
-                    />
-                    <span className="text-xs font-bold text-gray-700">Display in Slider</span>
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                    Display Status
                   </label>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, active: !formData.active })}
+                    className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 ${
+                      formData.active
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-300'
+                        : 'bg-gray-100 text-gray-600 border border-gray-300'
+                    }`}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${formData.active ? 'bg-emerald-500' : 'bg-gray-400'}`} />
+                    <span>{formData.active ? 'Active (Visible)' : 'Inactive (Hidden)'}</span>
+                  </button>
                 </div>
               </div>
 
-              {/* Buttons */}
+              {/* Submit Buttons */}
               <div className="pt-4 border-t border-gray-200 flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-xs font-bold hover:bg-gray-100 transition"
+                  className="px-4 py-2.5 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-bold transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={uploading}
-                  className="px-6 py-2.5 rounded-lg bg-[#141E36] hover:bg-[#1D2A4C] text-white text-xs font-bold transition shadow-md flex items-center gap-2"
+                  className="px-6 py-2.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white text-xs font-bold shadow-md shadow-[#C59B24]/20 transition cursor-pointer"
                 >
-                  <FiCheck className="w-4 h-4 text-[#C59B24]" />
-                  <span>{editingBanner ? 'Save Changes' : 'Create Banner'}</span>
+                  {editingBanner ? 'Save Changes' : 'Create Banner'}
                 </button>
               </div>
             </form>
@@ -906,28 +1080,34 @@ export default function BannersClient() {
 
       {/* Delete Confirmation Modal */}
       {deleteConfirmId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-xl border border-gray-150">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
+          onClick={() => setDeleteConfirmId(null)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl p-6 max-w-sm w-full space-y-4 border border-gray-200"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto">
               <FiTrash2 className="w-6 h-6" />
             </div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-800">Delete Banner?</h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Are you sure you want to remove this banner from the slider? This action cannot be undone.
+            <div className="text-center space-y-1">
+              <h3 className="text-base font-bold text-gray-900">Delete Hero Banner?</h3>
+              <p className="text-xs text-gray-500">
+                Are you sure you want to permanently delete this banner? This action cannot be undone.
               </p>
             </div>
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="flex items-center gap-2 pt-2">
               <button
                 onClick={() => setDeleteConfirmId(null)}
-                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-xs font-bold hover:bg-gray-100 transition"
+                className="flex-1 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-bold transition cursor-pointer"
               >
                 Cancel
               </button>
               <button
-                onClick={handleDelete}
+                onClick={() => handleDelete(deleteConfirmId)}
                 disabled={deleting}
-                className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition shadow-sm"
+                className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition cursor-pointer disabled:opacity-50"
               >
                 {deleting ? 'Deleting...' : 'Yes, Delete'}
               </button>
@@ -938,4 +1118,3 @@ export default function BannersClient() {
     </div>
   );
 }
-

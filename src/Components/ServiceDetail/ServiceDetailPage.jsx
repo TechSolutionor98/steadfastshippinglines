@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
 import { openQuoteModal } from "@/Components/Quote/QuoteModal";
+import PageHeroBackground from "@/Components/Banner/PageHeroBackground";
 
 const iconMap = {
   Ship: Ship,
@@ -48,8 +49,9 @@ export default function ServiceDetailPage({ service }) {
   return (
     <div className="bg-white min-h-screen text-slate-800">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-16 sm:py-24 px-4 overflow-hidden border-b border-[#D7DCE0]/15">
-        <div className="max-w-7xl mx-auto relative z-10">
+      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-24 sm:py-32 md:py-36 min-h-[420px] sm:min-h-[480px] flex items-center px-4 overflow-hidden border-b border-[#D7DCE0]/15">
+        <PageHeroBackground page={`/${service.slug}`} />
+        <div className="max-w-7xl mx-auto relative z-10 w-full">
           <div className="flex items-center gap-2 text-xs font-semibold text-[#D7DCE0] mb-4 tracking-wider uppercase">
             <Link href="/" className="hover:text-[#C59B24] transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
@@ -58,67 +60,32 @@ export default function ServiceDetailPage({ service }) {
             <span className="text-[#C59B24] font-bold">{service.shortTitle}</span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
-                <IconComp className="w-4 h-4 text-[#C59B24]" />
-                <span>Steadfast Specialized Freight</span>
-              </div>
-              <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight uppercase">
-                {service.title}
-              </h1>
-              <p className="text-base sm:text-lg text-[#D7DCE0] mt-4 max-w-3xl leading-relaxed">
-                {service.tagline}
-              </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <button
-                  onClick={() => openQuoteModal(service.title)}
-                  className="px-6 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#C59B24]/20 flex items-center gap-2 transition-all cursor-pointer"
-                >
-                  <span>Request Instant Rate</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-                <a
-                  href={`tel:${companyDetails.phone.replace(/[\s+,]/g, "")}`}
-                  className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 flex items-center gap-2 transition-all backdrop-blur-sm"
-                >
-                  <Phone className="w-4 h-4 text-[#C59B24]" />
-                  <span>Call Operations Desk</span>
-                </a>
-              </div>
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
+              <IconComp className="w-4 h-4 text-[#C59B24]" />
+              <span>Steadfast Specialized Freight</span>
             </div>
-
-            {/* Quick Feature Badges */}
-            <div className="lg:col-span-4 bg-white/5 border border-[#D7DCE0]/15 backdrop-blur-md p-6 rounded-2xl space-y-4">
-              <div className="flex items-center gap-3 text-white">
-                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs text-[#D7DCE0]">Reliability Guarantee</div>
-                  <div className="text-sm font-bold">100% Safe Handling</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-white">
-                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center shrink-0">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs text-[#D7DCE0]">Response Window</div>
-                  <div className="text-sm font-bold">24/7 Live Monitoring</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-white">
-                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center shrink-0">
-                  <Globe className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs text-[#D7DCE0]">Network Reach</div>
-                  <div className="text-sm font-bold">120+ Global Ports</div>
-                </div>
-              </div>
+            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight uppercase">
+              {service.title}
+            </h1>
+            <p className="text-base sm:text-lg text-[#D7DCE0] mt-4 max-w-3xl leading-relaxed">
+              {service.tagline}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <button
+                onClick={() => openQuoteModal(service.title)}
+                className="px-6 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#C59B24]/20 flex items-center gap-2 transition-all cursor-pointer"
+              >
+                <span>Request Instant Rate</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <a
+                href={`tel:${companyDetails.phone.replace(/[\s+,]/g, "")}`}
+                className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 flex items-center gap-2 transition-all backdrop-blur-sm"
+              >
+                <Phone className="w-4 h-4 text-[#C59B24]" />
+                <span>Call Operations Desk</span>
+              </a>
             </div>
           </div>
         </div>

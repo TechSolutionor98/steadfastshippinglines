@@ -36,21 +36,39 @@ const DEFAULT_BANNERS = [
   },
 ];
 
-// GET /api/banners - fetch all or active banners
+// GET /api/banners - fetch all or active banners (optional ?page=/about-us or ?all=true)
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const all = searchParams.get('all') === 'true'; // Admin fetches all, public fetches active
+    const pageParam = searchParams.get('page');
 
     const db = await getDb();
     const collection = db.collection('hero_banners');
 
     const count = await collection.countDocuments();
     if (count === 0) {
-      await collection.insertMany(DEFAULT_BANNERS);
+      await collection.insertMany(DEFAULT_BANNERS.map(b => ({ ...b, page: '/' })));
     }
 
-    const query = all ? {} : { active: { $ne: false } };
+    let query = all ? {} : { active: { $ne: false } };
+
+    if (pageParam && pageParam !== 'all') {
+      if (pageParam === '/') {
+        query = {
+          ...query,
+          $or: [
+            { page: '/' },
+            { page: { $exists: false } },
+            { page: null },
+            { page: '' }
+          ]
+        };
+      } else {
+        query = { ...query, page: pageParam };
+      }
+    }
+
     const banners = await collection
       .find(query)
       .sort({ order: 1, createdAt: 1 })
@@ -58,7 +76,9 @@ export async function GET(request) {
 
     const formatted = banners.map((b) => ({
       _id: b._id.toString(),
+      page: b.page || '/',
       title: b.title || '',
+      subtitle: b.subtitle || '',
       imageUrl: b.imageUrl,
       link: b.link || '',
       order: typeof b.order === 'number' ? b.order : 0,
@@ -84,7 +104,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { title, imageUrl, link, order, active, showText, textColor, textAlign } = body;
+    const { title, subtitle, page, imageUrl, link, order, active, showText, textColor, textAlign } = body;
 
     if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.trim()) {
       return NextResponse.json(
@@ -98,7 +118,9 @@ export async function POST(request) {
 
     const total = await collection.countDocuments();
     const newDoc = {
+      page: (page || '/').trim(),
       title: (title || '').trim(),
+      subtitle: (subtitle || '').trim(),
       imageUrl: imageUrl.trim(),
       link: (link || '').trim(),
       order: typeof order === 'number' ? order : total + 1,
@@ -129,7 +151,7 @@ export async function POST(request) {
 export async function PATCH(request) {
   try {
     const body = await request.json();
-    const { id, title, imageUrl, link, order, active, showText, textColor, textAlign } = body;
+    const { id, title, subtitle, page, imageUrl, link, order, active, showText, textColor, textAlign } = body;
 
     if (!id || !ObjectId.isValid(id)) {
       return NextResponse.json(
@@ -145,7 +167,9 @@ export async function PATCH(request) {
       updatedAt: new Date().toISOString(),
     };
 
+    if (typeof page !== 'undefined') updateFields.page = (page || '/').trim();
     if (typeof title !== 'undefined') updateFields.title = title.trim();
+    if (typeof subtitle !== 'undefined') updateFields.subtitle = subtitle.trim();
     if (typeof imageUrl !== 'undefined') updateFields.imageUrl = imageUrl.trim();
     if (typeof link !== 'undefined') updateFields.link = link.trim();
     if (typeof order !== 'undefined') updateFields.order = Number(order);
