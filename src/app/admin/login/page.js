@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -51,17 +50,7 @@ export default function LoginPage() {
           alignItems: "center"
         }}
       >
-        <div style={{ marginBottom: 4 }}>
-          <Image
-            src="/images/logo.png"
-            alt="Steadfast Shipping Lines"
-            width={180}
-            height={55}
-            priority
-            style={{ objectFit: "contain" }}
-          />
-        </div>
-        <h2 style={{ textAlign: "center", color: "#141E36", margin: "0 0 8px 0", fontSize: "20px", fontWeight: "700" }}>Admin Login</h2>
+        <h2 style={{ textAlign: "center", color: "#141E36", margin: "0 0 8px 0", fontSize: "22px", fontWeight: "700" }}>Admin Login</h2>
         <input
           type="email"
           placeholder="Email"
