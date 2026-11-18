@@ -23,7 +23,8 @@ export default function LoginPage() {
       localStorage.setItem("user", JSON.stringify(user ?? {}));
       window.location.href = "/admin"; // Force reload and navigate to admin
     } else {
-      setError("Invalid email or password");
+      const errData = await res.json().catch(() => ({}));
+      setError(errData.error || "Invalid email or password");
     }
   }
 

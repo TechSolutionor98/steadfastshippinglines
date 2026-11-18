@@ -10,7 +10,7 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET || 'bxbrN76auL9pNUINMVdKJwqv6Uo',
 });
 
-const MONGO_URI = process.env.MONGODB_URI || 'mongodb+srv://admin:admin@cluster0.ac1fznk.mongodb.net';
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb+srv://techsolutionor44_db_user:techsolutionor44_db_user@cluster0.72pay1u.mongodb.net/';
 const DB_NAME = process.env.MONGODB_DB || 'steadfastadmin';
 const COLLECTION = 'settings';
 

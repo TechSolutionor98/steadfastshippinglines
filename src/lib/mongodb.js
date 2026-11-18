@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 // Uses NEXT_PUBLIC or server env var MONGODB_URI and optional MONGODB_DB
-const uri = process.env.MONGODB_URI || 'mongodb+srv://admin:admin@cluster0.ac1fznk.mongodb.net';
+const uri = process.env.MONGODB_URI || 'mongodb+srv://techsolutionor44_db_user:techsolutionor44_db_user@cluster0.72pay1u.mongodb.net/';
 const dbName = process.env.MONGODB_DB || 'steadfastadmin';
 
 if (!uri) {

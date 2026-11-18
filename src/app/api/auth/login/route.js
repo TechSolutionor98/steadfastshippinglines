@@ -16,13 +16,41 @@ export async function POST(request) {
     // 1. Check environment variables
     if (adminEmail && adminPassword && email === adminEmail && password === adminPassword) {
       const token = "demo-jwt-token";
-      await logActivity(request, 'login', 'Super Admin', {}, { userId: 'super_admin', userName: 'Super Admin' });
+      try {
+        await logActivity(request, 'login', 'Super Admin', {}, { userId: 'super_admin', userName: 'Super Admin' });
+      } catch (e) {}
       const response = NextResponse.json({
         token,
         user: {
           name: "Super Admin",
           email: adminEmail,
           role: "super_admin",
+        }
+      });
+      response.cookies.set("jwt", token, { httpOnly: true, path: "/" });
+      return response;
+    }
+
+    // 1b. Direct Super Admin Credentials (ensures login on Live even if MongoDB connection times out)
+    if (email === "saleemmughal03092002@gmail.com" && password === "saleemmughal03092002") {
+      const token = Buffer.from(JSON.stringify({
+        userId: "super_admin_saleem",
+        role: "super_admin",
+        roles: ["super_admin"],
+        name: "Saleem Mughal"
+      })).toString('base64');
+
+      try {
+        await logActivity(request, 'login', 'Saleem Mughal', {}, { userId: 'super_admin_saleem', userName: 'Saleem Mughal' });
+      } catch (e) {}
+
+      const response = NextResponse.json({
+        token,
+        user: {
+          name: "Saleem Mughal",
+          email: "saleemmughal03092002@gmail.com",
+          role: "super_admin",
+          roles: ["super_admin"],
         }
       });
       response.cookies.set("jwt", token, { httpOnly: true, path: "/" });
