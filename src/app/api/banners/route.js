@@ -63,6 +63,9 @@ export async function GET(request) {
       link: b.link || '',
       order: typeof b.order === 'number' ? b.order : 0,
       active: b.active !== false,
+      showText: b.showText !== false,
+      textColor: b.textColor || '#ffffff',
+      textAlign: b.textAlign || 'center',
       createdAt: b.createdAt || new Date().toISOString(),
       updatedAt: b.updatedAt || new Date().toISOString(),
     }));
@@ -81,7 +84,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { title, imageUrl, link, order, active } = body;
+    const { title, imageUrl, link, order, active, showText, textColor, textAlign } = body;
 
     if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.trim()) {
       return NextResponse.json(
@@ -100,6 +103,9 @@ export async function POST(request) {
       link: (link || '').trim(),
       order: typeof order === 'number' ? order : total + 1,
       active: active !== false,
+      showText: typeof showText === 'boolean' ? showText : true,
+      textColor: (textColor || '#ffffff').trim(),
+      textAlign: ['left', 'center', 'right'].includes(textAlign) ? textAlign : 'center',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -123,7 +129,7 @@ export async function POST(request) {
 export async function PATCH(request) {
   try {
     const body = await request.json();
-    const { id, title, imageUrl, link, order, active } = body;
+    const { id, title, imageUrl, link, order, active, showText, textColor, textAlign } = body;
 
     if (!id || !ObjectId.isValid(id)) {
       return NextResponse.json(
@@ -144,6 +150,11 @@ export async function PATCH(request) {
     if (typeof link !== 'undefined') updateFields.link = link.trim();
     if (typeof order !== 'undefined') updateFields.order = Number(order);
     if (typeof active !== 'undefined') updateFields.active = Boolean(active);
+    if (typeof showText !== 'undefined') updateFields.showText = Boolean(showText);
+    if (typeof textColor !== 'undefined') updateFields.textColor = textColor.trim();
+    if (typeof textAlign !== 'undefined' && ['left', 'center', 'right'].includes(textAlign)) {
+      updateFields.textAlign = textAlign;
+    }
 
     const res = await collection.findOneAndUpdate(
       { _id: new ObjectId(id) },

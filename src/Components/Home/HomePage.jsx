@@ -233,13 +233,47 @@ export default function HomePage({ cmsContent }) {
               />
 
               {/* Dynamic Title Heading from Admin */}
-              {slide.title && (
-                <div className="relative z-20 w-full h-full flex flex-col items-center justify-center px-4 sm:px-8 text-center">
-                  <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4 animate-in fade-in duration-700">
-                    <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.15] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+              {slide.showText !== false && slide.title && (
+                <div
+                  className={`relative z-20 w-full h-full flex flex-col justify-center px-6 sm:px-12 md:px-20 ${
+                    slide.textAlign === 'left'
+                      ? 'items-start text-left'
+                      : slide.textAlign === 'right'
+                      ? 'items-end text-right'
+                      : 'items-center text-center'
+                  }`}
+                >
+                  <div
+                    className={`max-w-4xl space-y-3 sm:space-y-4 animate-in fade-in duration-700 ${
+                      slide.textAlign === 'left'
+                        ? 'mr-auto'
+                        : slide.textAlign === 'right'
+                        ? 'ml-auto'
+                        : 'mx-auto'
+                    }`}
+                  >
+                    <h1
+                      className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[1.15] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]"
+                      style={{ color: slide.textColor || '#ffffff' }}
+                    >
                       {slide.title}
                     </h1>
-                    <div className="w-16 sm:w-24 h-1 sm:h-1.5 bg-[#C59B24] mx-auto rounded-full shadow-lg shadow-[#C59B24]/40" />
+
+                    <div
+                      className={`w-16 sm:w-24 h-1 sm:h-1.5 rounded-full shadow-lg ${
+                        slide.textAlign === 'left'
+                          ? 'mr-auto'
+                          : slide.textAlign === 'right'
+                          ? 'ml-auto'
+                          : 'mx-auto'
+                      }`}
+                      style={{
+                        backgroundColor:
+                          slide.textColor && slide.textColor.toLowerCase() === '#c59b24'
+                            ? '#ffffff'
+                            : '#C59B24',
+                      }}
+                    />
 
                     {slide.link && (
                       <div className="pt-3">

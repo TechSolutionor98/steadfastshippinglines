@@ -14,9 +14,14 @@ import {
   FiCheck,
   FiX,
   FiEye,
+  FiEyeOff,
   FiLink,
   FiImage,
-  FiRefreshCw
+  FiRefreshCw,
+  FiAlignLeft,
+  FiAlignCenter,
+  FiAlignRight,
+  FiType
 } from 'react-icons/fi';
 
 export default function BannersClient() {
@@ -33,6 +38,9 @@ export default function BannersClient() {
     link: '',
     order: 1,
     active: true,
+    showText: true,
+    textColor: '#ffffff',
+    textAlign: 'center',
   });
 
   // Upload State
@@ -81,6 +89,9 @@ export default function BannersClient() {
       link: '',
       order: banners.length + 1,
       active: true,
+      showText: true,
+      textColor: '#ffffff',
+      textAlign: 'center',
     });
     setIsModalOpen(true);
   };
@@ -94,6 +105,9 @@ export default function BannersClient() {
       link: banner.link || '',
       order: banner.order || 1,
       active: banner.active !== false,
+      showText: banner.showText !== false,
+      textColor: banner.textColor || '#ffffff',
+      textAlign: banner.textAlign || 'center',
     });
     setIsModalOpen(true);
   };
@@ -338,12 +352,41 @@ export default function BannersClient() {
                 />
 
                 {/* Live Preview Heading */}
-                {slide.title && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center pointer-events-none">
-                    <h3 className="text-lg sm:text-2xl md:text-3xl font-black text-white uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] max-w-xl">
-                      {slide.title}
-                    </h3>
-                    <div className="w-12 h-1 bg-[#C59B24] mx-auto mt-2 rounded-full shadow" />
+                {slide.showText !== false && slide.title && (
+                  <div
+                    className={`absolute inset-0 flex flex-col justify-center p-6 sm:p-10 pointer-events-none ${
+                      slide.textAlign === 'left'
+                        ? 'items-start text-left'
+                        : slide.textAlign === 'right'
+                        ? 'items-end text-right'
+                        : 'items-center text-center'
+                    }`}
+                  >
+                    <div
+                      className={`max-w-md ${
+                        slide.textAlign === 'left'
+                          ? 'mr-auto'
+                          : slide.textAlign === 'right'
+                          ? 'ml-auto'
+                          : 'mx-auto'
+                      }`}
+                    >
+                      <h3
+                        className="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
+                        style={{ color: slide.textColor || '#ffffff' }}
+                      >
+                        {slide.title}
+                      </h3>
+                      <div
+                        className={`w-12 h-1 bg-[#C59B24] mt-2 rounded-full shadow ${
+                          slide.textAlign === 'left'
+                            ? 'mr-auto'
+                            : slide.textAlign === 'right'
+                            ? 'ml-auto'
+                            : 'mx-auto'
+                        }`}
+                      />
+                    </div>
                   </div>
                 )}
 
@@ -454,8 +497,32 @@ export default function BannersClient() {
                     <h3 className="font-bold text-sm text-[#141E36] line-clamp-1">
                       {banner.title || `Hero Banner #${index + 1}`}
                     </h3>
+
+                    {/* Text Status & Styling Badges */}
+                    <div className="flex items-center flex-wrap gap-1.5 pt-0.5">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        banner.showText !== false
+                          ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                          : 'bg-gray-100 text-gray-500 border border-gray-200'
+                      }`}>
+                        {banner.showText !== false ? 'Text ON' : 'Image Only'}
+                      </span>
+                      {banner.showText !== false && (
+                        <>
+                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 capitalize border border-slate-200">
+                            {banner.textAlign || 'center'}
+                          </span>
+                          <span
+                            className="inline-block w-3.5 h-3.5 rounded-full border border-gray-300 shadow-xs"
+                            style={{ backgroundColor: banner.textColor || '#ffffff' }}
+                            title={`Text Color: ${banner.textColor || '#ffffff'}`}
+                          />
+                        </>
+                      )}
+                    </div>
+
                     {banner.link ? (
-                      <p className="text-xs text-[#C59B24] flex items-center gap-1.5 truncate">
+                      <p className="text-xs text-[#C59B24] flex items-center gap-1.5 truncate pt-0.5">
                         <FiLink className="w-3 h-3 shrink-0" />
                         <span className="truncate">{banner.link}</span>
                       </p>
@@ -603,6 +670,111 @@ export default function BannersClient() {
                   placeholder="e.g. Ocean Logistics Banner"
                   className="w-full px-4 py-2.5 text-xs bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#141E36] focus:ring-1 focus:ring-[#141E36]"
                 />
+              </div>
+
+              {/* Text Management: Show/Hide, Color & Alignment Options */}
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
+                      Show Text On Banner
+                    </label>
+                    <p className="text-[11px] text-gray-500">
+                      Enable to display title heading on client website
+                    </p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.showText}
+                      onChange={(e) => setFormData({ ...formData, showText: e.target.checked })}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#141E36]"></div>
+                  </label>
+                </div>
+
+                {/* If showText is ON: Color & Alignment Controls */}
+                {formData.showText && (
+                  <div className="pt-3 border-t border-gray-200 grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in duration-200">
+                    {/* Text Color Selection */}
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-bold text-gray-700">
+                        Text Color
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="color"
+                          value={formData.textColor || '#ffffff'}
+                          onChange={(e) => setFormData({ ...formData, textColor: e.target.value })}
+                          className="w-10 h-9 p-0.5 rounded border border-gray-300 cursor-pointer bg-white"
+                        />
+                        <input
+                          type="text"
+                          value={formData.textColor || '#ffffff'}
+                          onChange={(e) => setFormData({ ...formData, textColor: e.target.value })}
+                          placeholder="#ffffff"
+                          className="w-full px-3 py-1.5 text-xs font-mono bg-white border border-gray-300 rounded-lg text-gray-800"
+                        />
+                      </div>
+                      {/* Color Presets */}
+                      <div className="flex items-center gap-1.5 pt-1">
+                        {[
+                          { name: 'White', color: '#ffffff' },
+                          { name: 'Gold', color: '#C59B24' },
+                          { name: 'Navy', color: '#141E36' },
+                          { name: 'Yellow', color: '#FACC15' },
+                          { name: 'Black', color: '#000000' },
+                        ].map((preset) => (
+                          <button
+                            key={preset.color}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, textColor: preset.color })}
+                            className={`w-6 h-6 rounded-full border shadow-sm transition-transform hover:scale-110 ${
+                              formData.textColor?.toLowerCase() === preset.color.toLowerCase()
+                                ? 'ring-2 ring-offset-1 ring-[#141E36]'
+                                : 'border-gray-300'
+                            }`}
+                            style={{ backgroundColor: preset.color }}
+                            title={preset.name}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Text Alignment */}
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-bold text-gray-700">
+                        Text Alignment
+                      </label>
+                      <div className="grid grid-cols-3 gap-1.5 bg-white p-1 rounded-lg border border-gray-300">
+                        {[
+                          { id: 'left', label: 'Left', icon: FiAlignLeft },
+                          { id: 'center', label: 'Center', icon: FiAlignCenter },
+                          { id: 'right', label: 'Right', icon: FiAlignRight },
+                        ].map((align) => {
+                          const Icon = align.icon;
+                          const isSelected = (formData.textAlign || 'center') === align.id;
+                          return (
+                            <button
+                              key={align.id}
+                              type="button"
+                              onClick={() => setFormData({ ...formData, textAlign: align.id })}
+                              className={`py-2 px-1 text-xs font-bold rounded flex flex-col items-center gap-1 transition ${
+                                isSelected
+                                  ? 'bg-[#141E36] text-white shadow-sm'
+                                  : 'text-gray-600 hover:bg-gray-100'
+                              }`}
+                            >
+                              <Icon className="w-4 h-4" />
+                              <span className="text-[10px]">{align.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Click Link */}
