@@ -619,7 +619,6 @@ export default function UsersClient({ initialUsers = [], websites = [], apiBase 
                   group: '⚙️ Management',
                   rows: [
                     { label: 'Dashboard',             super_admin:true,  admin:true,  client:true,  seo:true,  blog:true,  editor:true,  viewer:true  },
-                    { label: 'Job Applications',       super_admin:true,  admin:true,  client:true,  seo:false, blog:false, editor:false, viewer:false },
                     { label: 'Inquiry Form (Contact)', super_admin:true,  admin:true,  client:true,  seo:false, blog:false, editor:false, viewer:false },
                     { label: 'Reviews',                super_admin:true,  admin:true,  client:true,  seo:false, blog:false, editor:false, viewer:false },
                     { label: 'Business Settings',      super_admin:true,  admin:true,  client:true,  seo:false, blog:false, editor:false, viewer:false },

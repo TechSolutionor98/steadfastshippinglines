@@ -16,7 +16,6 @@ const ROLE_ALLOWED_ROUTES = {
   admin: [
     "/admin",
     "/admin/banners",
-    "/admin/applications",
     "/admin/contact-submissions",
     "/admin/reviews",
     "/admin/settings",
@@ -34,7 +33,6 @@ const ROLE_ALLOWED_ROUTES = {
   client: [
     "/admin",
     "/admin/banners",
-    "/admin/applications",
     "/admin/contact-submissions",
     "/admin/reviews",
     "/admin/settings",
@@ -151,7 +149,6 @@ export default function AdminLayout({ children, title = '' }) {
   };
 
   const navLinks = [
-    { href: "/admin/applications", label: "Job Applications", group: "Management" },
     { href: "/admin/contact-submissions", label: "Inquiry Form", group: "Management" },
     { href: "/admin/reviews", label: "Reviews", group: "Management" },
     { href: "/admin/settings", label: "Business Settings", group: "Management" },
