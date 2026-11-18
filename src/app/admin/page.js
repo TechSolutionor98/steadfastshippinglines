@@ -136,6 +136,11 @@ export default async function AdminDashboard() {
       <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">CMS Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <a href="/admin/banners" className="block p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors border border-amber-200">
+            <h3 className="font-semibold text-amber-900">🖼️ Hero Banners</h3>
+            <p className="text-sm text-amber-700">Homepage hero slider images & slides</p>
+          </a>
+
           <a href="/admin/pages" className="block p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors border border-emerald-200">
             <h3 className="font-semibold text-emerald-900">📄 Pages & Routes</h3>
             <p className="text-sm text-emerald-700">Scan routes, manage pages, edit content</p>

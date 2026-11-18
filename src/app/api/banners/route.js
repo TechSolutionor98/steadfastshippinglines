@@ -1,0 +1,207 @@
+import { NextResponse } from 'next/server';
+import { getDb } from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
+
+export const dynamic = 'force-dynamic';
+
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
+}
+
+// Initial default banners if none exist
+const DEFAULT_BANNERS = [
+  {
+    title: 'Global Maritime & Ocean Logistics',
+    imageUrl: '/images/home/banner-1.webp',
+    link: '/services',
+    order: 1,
+    active: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    title: 'Container Terminal & Air Cargo Hub',
+    imageUrl: '/images/home/banner-2.webp',
+    link: '/services',
+    order: 2,
+    active: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+// GET /api/banners - fetch all or active banners
+export async function GET(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const all = searchParams.get('all') === 'true'; // Admin fetches all, public fetches active
+
+    const db = await getDb();
+    const collection = db.collection('hero_banners');
+
+    const count = await collection.countDocuments();
+    if (count === 0) {
+      await collection.insertMany(DEFAULT_BANNERS);
+    }
+
+    const query = all ? {} : { active: { $ne: false } };
+    const banners = await collection
+      .find(query)
+      .sort({ order: 1, createdAt: 1 })
+      .toArray();
+
+    const formatted = banners.map((b) => ({
+      _id: b._id.toString(),
+      title: b.title || '',
+      imageUrl: b.imageUrl,
+      link: b.link || '',
+      order: typeof b.order === 'number' ? b.order : 0,
+      active: b.active !== false,
+      createdAt: b.createdAt || new Date().toISOString(),
+      updatedAt: b.updatedAt || new Date().toISOString(),
+    }));
+
+    return NextResponse.json({ ok: true, banners: formatted }, { headers: CORS_HEADERS });
+  } catch (error) {
+    console.error('Error fetching banners:', error);
+    return NextResponse.json(
+      { ok: false, error: 'Failed to fetch banners' },
+      { status: 500, headers: CORS_HEADERS }
+    );
+  }
+}
+
+// POST /api/banners - add a new banner
+export async function POST(request) {
+  try {
+    const body = await request.json();
+    const { title, imageUrl, link, order, active } = body;
+
+    if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.trim()) {
+      return NextResponse.json(
+        { ok: false, error: 'Banner image URL is required' },
+        { status: 400, headers: CORS_HEADERS }
+      );
+    }
+
+    const db = await getDb();
+    const collection = db.collection('hero_banners');
+
+    const total = await collection.countDocuments();
+    const newDoc = {
+      title: (title || '').trim(),
+      imageUrl: imageUrl.trim(),
+      link: (link || '').trim(),
+      order: typeof order === 'number' ? order : total + 1,
+      active: active !== false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const res = await collection.insertOne(newDoc);
+
+    return NextResponse.json(
+      { ok: true, banner: { ...newDoc, _id: res.insertedId.toString() } },
+      { status: 201, headers: CORS_HEADERS }
+    );
+  } catch (error) {
+    console.error('Error creating banner:', error);
+    return NextResponse.json(
+      { ok: false, error: error.message || 'Failed to create banner' },
+      { status: 500, headers: CORS_HEADERS }
+    );
+  }
+}
+
+// PATCH /api/banners - update an existing banner
+export async function PATCH(request) {
+  try {
+    const body = await request.json();
+    const { id, title, imageUrl, link, order, active } = body;
+
+    if (!id || !ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { ok: false, error: 'Valid Banner ID is required' },
+        { status: 400, headers: CORS_HEADERS }
+      );
+    }
+
+    const db = await getDb();
+    const collection = db.collection('hero_banners');
+
+    const updateFields = {
+      updatedAt: new Date().toISOString(),
+    };
+
+    if (typeof title !== 'undefined') updateFields.title = title.trim();
+    if (typeof imageUrl !== 'undefined') updateFields.imageUrl = imageUrl.trim();
+    if (typeof link !== 'undefined') updateFields.link = link.trim();
+    if (typeof order !== 'undefined') updateFields.order = Number(order);
+    if (typeof active !== 'undefined') updateFields.active = Boolean(active);
+
+    const res = await collection.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: updateFields },
+      { returnDocument: 'after' }
+    );
+
+    if (!res) {
+      return NextResponse.json(
+        { ok: false, error: 'Banner not found' },
+        { status: 404, headers: CORS_HEADERS }
+      );
+    }
+
+    return NextResponse.json(
+      { ok: true, banner: { ...res, _id: res._id.toString() } },
+      { headers: CORS_HEADERS }
+    );
+  } catch (error) {
+    console.error('Error updating banner:', error);
+    return NextResponse.json(
+      { ok: false, error: error.message || 'Failed to update banner' },
+      { status: 500, headers: CORS_HEADERS }
+    );
+  }
+}
+
+// DELETE /api/banners - delete a banner by ID
+export async function DELETE(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id || !ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { ok: false, error: 'Valid Banner ID is required' },
+        { status: 400, headers: CORS_HEADERS }
+      );
+    }
+
+    const db = await getDb();
+    const collection = db.collection('hero_banners');
+
+    const res = await collection.deleteOne({ _id: new ObjectId(id) });
+    if (res.deletedCount === 0) {
+      return NextResponse.json(
+        { ok: false, error: 'Banner not found' },
+        { status: 404, headers: CORS_HEADERS }
+      );
+    }
+
+    return NextResponse.json({ ok: true, deletedId: id }, { headers: CORS_HEADERS });
+  } catch (error) {
+    console.error('Error deleting banner:', error);
+    return NextResponse.json(
+      { ok: false, error: error.message || 'Failed to delete banner' },
+      { status: 500, headers: CORS_HEADERS }
+    );
+  }
+}
+

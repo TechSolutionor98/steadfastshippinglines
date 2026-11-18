@@ -15,6 +15,7 @@ const ROLE_ALLOWED_ROUTES = {
   // ── Admin: everything except User Management ──────────────────────────────
   admin: [
     "/admin",
+    "/admin/banners",
     "/admin/applications",
     "/admin/contact-submissions",
     "/admin/reviews",
@@ -34,6 +35,7 @@ const ROLE_ALLOWED_ROUTES = {
   // ── Client: own website management ───────────────────────────────────────
   client: [
     "/admin",
+    "/admin/banners",
     "/admin/applications",
     "/admin/contact-submissions",
     "/admin/reviews",
@@ -63,6 +65,7 @@ const ROLE_ALLOWED_ROUTES = {
   // ── Editor: Pages, Redirects & Media only ────────────────────────────────
   editor: [
     "/admin",
+    "/admin/banners",
     "/admin/pages",
     "/admin/wholesale-landing-page",
     "/admin/product-catalog-cards",
@@ -160,6 +163,7 @@ export default function AdminLayout({ children, title = '' }) {
     { href: "/admin/reviews", label: "Reviews", group: "Management" },
     { href: "/admin/settings", label: "Business Settings", group: "Management" },
     { href: "/admin/pages", label: "Pages & Routes", group: "CMS" },
+    { href: "/admin/banners", label: "Hero Banners", group: "CMS" },
     { href: "/admin/wholesale-landing-page", label: "Wholesale Landing Page", group: "CMS" },
     { href: "/admin/product-catalog-cards", label: "Product Catalog Cards", group: "CMS" },
     { href: "/admin/seo", label: "SEO Manager", group: "CMS" },

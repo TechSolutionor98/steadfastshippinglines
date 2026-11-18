@@ -43,30 +43,45 @@ import {
 import { companyDetails, servicesData } from "@/data/steadfastData";
 
 export default function HomePage({ cmsContent }) {
-  // Hero Slider state - User-uploaded banners
-  const heroSlides = [
+  // Dynamic Hero Banners State - Managed via Admin Panel
+  const defaultHeroSlides = [
     {
-      title: "RELIABLE FREIGHT SOLUTIONS",
-      subtitle: "Welcome to Steadfast Shipping Lines (Pvt) Ltd",
-      description: "Providing innovative and reliable transportation solutions worldwide with seamless air, sea, and road freight management.",
-      bgImage: "/images/home/banner-1.webp",
+      _id: "default-1",
+      title: "Global Maritime & Ocean Logistics",
+      imageUrl: "/images/home/banner-1.webp",
+      link: "",
     },
     {
-      title: "Tailored Logistics Services for Every Need",
-      subtitle: "Air, Ocean & Ground Transportation",
-      description: "From warehousing and packaging to air, sea, and road freight, we provide a full spectrum of logistics services to streamline your supply chain.",
-      bgImage: "/images/home/banner-2.webp",
+      _id: "default-2",
+      title: "Container Terminal & Air Cargo Hub",
+      imageUrl: "/images/home/banner-2.webp",
+      link: "",
     },
   ];
 
+  const [heroBanners, setHeroBanners] = useState(defaultHeroSlides);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Fetch live banners from API
   useEffect(() => {
+    fetch("/api/banners")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && Array.isArray(data.banners) && data.banners.length > 0) {
+          setHeroBanners(data.banners);
+        }
+      })
+      .catch((err) => console.log("Banners fetch error:", err));
+  }, []);
+
+  // Auto-advance slider
+  useEffect(() => {
+    if (heroBanners.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 6000);
+      setCurrentSlide((prev) => (prev + 1) % heroBanners.length);
+    }, 5500);
     return () => clearInterval(timer);
-  }, [heroSlides.length]);
+  }, [heroBanners.length]);
 
   // Quote Form State in Section 10
   const [quoteFreight, setQuoteFreight] = useState("Air Freight");
@@ -192,72 +207,79 @@ export default function HomePage({ cmsContent }) {
     <div className="bg-white text-slate-800">
       {/* =========================================================================
           SECTION 1: HERO BANNER SLIDER (Steadfast Hero Banner)
-          Clean & Crisp Background Images with Full Cover & No Cut / No Overflow
+          Dynamic Image Slider Managed via Admin Panel (Pure Banner Images, No Text Overlay)
       ========================================================================== */}
-      <section className="relative w-full min-h-[420px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[580px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
-        {heroSlides.map((slide, idx) => (
-          <div
-            key={idx}
-            className={`absolute inset-0 w-full h-full overflow-hidden transition-opacity duration-1000 ease-in-out ${
-              idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-            }`}
-          >
-            {/* Background Image - Full Cover, No Overflow, No Cut */}
+      <section className="relative w-full h-[360px] sm:h-[440px] md:h-[500px] lg:h-[600px] xl:h-[660px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
+        {heroBanners.map((slide, idx) => {
+          const isCurrent = idx === currentSlide;
+          const bgUrl = slide.imageUrl || slide.bgImage;
+
+          const content = (
             <div
               className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url(${slide.bgImage})`,
+                backgroundImage: `url(${bgUrl})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center center",
                 backgroundRepeat: "no-repeat",
               }}
             />
-          </div>
-        ))}
+          );
 
-        <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-8 text-center space-y-4 sm:space-y-6 py-12 sm:py-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1D2A4C]/85 border border-[#C59B24] text-[#C59B24] text-xs sm:text-sm font-bold tracking-wider uppercase animate-in fade-in duration-500 shadow-lg backdrop-blur-sm">
-            <Ship className="w-4 h-4 text-[#C59B24]" />
-            <span>{heroSlides[currentSlide].subtitle}</span>
-          </div>
-
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight uppercase leading-[1.15] max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
-            {heroSlides[currentSlide].title}
-          </h1>
-
-          <p className="text-xs sm:text-base text-white font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-            {heroSlides[currentSlide].description}
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
-            <Link
-              href="/services"
-              className="px-7 sm:px-8 py-3 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-xl shadow-black/40 transition-all hover:scale-105"
+          return (
+            <div
+              key={slide._id || idx}
+              className={`absolute inset-0 w-full h-full overflow-hidden transition-opacity duration-1000 ease-in-out ${
+                isCurrent ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
             >
-              SEE SERVICES
-            </Link>
-            <Link
-              href="/contact"
-              className="px-7 sm:px-8 py-3 rounded-md bg-[#1D2A4C] hover:bg-[#15203A] text-white font-bold text-xs uppercase tracking-wider border-2 border-[#C59B24] shadow-xl shadow-black/40 transition-all hover:scale-105"
-            >
-              CONTACT US
-            </Link>
-          </div>
+              {slide.link ? (
+                <Link href={slide.link} className="block w-full h-full cursor-pointer" aria-label={slide.title || "Banner"}>
+                  {content}
+                </Link>
+              ) : (
+                content
+              )}
+            </div>
+          );
+        })}
 
-          {/* Slider Controls */}
-          <div className="flex items-center justify-center gap-3 pt-4 sm:pt-6">
-            {heroSlides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentSlide(i)}
-                className={`h-2.5 rounded-full transition-all shadow-md ${
-                  i === currentSlide ? "w-8 bg-[#C59B24]" : "w-2.5 bg-white/60 hover:bg-white"
-                }`}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
-        </div>
+        {/* Slider Controls: Prev/Next Arrows and Dots */}
+        {heroBanners.length > 1 && (
+          <>
+            {/* Prev Button */}
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev === 0 ? heroBanners.length - 1 : prev - 1))}
+              className="absolute left-3 sm:left-6 z-20 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-black/40 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft className="w-5 sm:w-6 h-5 sm:h-6" />
+            </button>
+
+            {/* Next Button */}
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev + 1) % heroBanners.length)}
+              className="absolute right-3 sm:right-6 z-20 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-black/40 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
+              aria-label="Next Slide"
+            >
+              <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6" />
+            </button>
+
+            {/* Indicator Dots */}
+            <div className="absolute bottom-4 sm:bottom-6 z-20 flex items-center justify-center gap-2 sm:gap-2.5">
+              {heroBanners.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentSlide(i)}
+                  className={`h-2 sm:h-2.5 rounded-full transition-all shadow-md ${
+                    i === currentSlide ? "w-7 sm:w-9 bg-[#C59B24]" : "w-2 sm:w-2.5 bg-white/60 hover:bg-white"
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       {/* =========================================================================
