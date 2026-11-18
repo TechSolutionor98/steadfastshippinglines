@@ -42,40 +42,6 @@ import {
 } from "lucide-react";
 import { companyDetails, servicesData } from "@/data/steadfastData";
 
-// Calculate responsive typography & layout constraints based on word count & length
-function getBannerHeadingStyle(text = "") {
-  const clean = (text || "").trim();
-  const words = clean ? clean.split(/\s+/) : [];
-  const wordCount = words.length;
-  const charCount = clean.length;
-
-  if (wordCount <= 4 && charCount <= 26) {
-    // Short punchy headline (e.g. "OCEAN FREIGHT", "GLOBAL LOGISTICS")
-    return {
-      sizeClass: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.12]",
-      badge: "Global Logistics Network",
-    };
-  } else if (wordCount <= 8 && charCount <= 55) {
-    // Medium headline (e.g. "TAILORED LOGISTICS SERVICES FOR EVERY NEED")
-    return {
-      sizeClass: "text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.18]",
-      badge: "Steadfast Shipping Lines",
-    };
-  } else if (wordCount <= 14 && charCount <= 90) {
-    // Long headline (e.g. multi-word or repeated slogan)
-    return {
-      sizeClass: "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-[1.24]",
-      badge: "Worldwide Freight Solutions",
-    };
-  } else {
-    // Extra long headline (> 14 words or > 90 chars)
-    return {
-      sizeClass: "text-base sm:text-xl md:text-2xl lg:text-3xl font-bold leading-snug",
-      badge: "Reliable Shipping Partners",
-    };
-  }
-}
-
 export default function HomePage({ cmsContent }) {
   // Dynamic Hero Banners State - Managed via Admin Panel
   const defaultHeroSlides = [
@@ -247,7 +213,6 @@ export default function HomePage({ cmsContent }) {
         {heroBanners.map((slide, idx) => {
           const isCurrent = idx === currentSlide;
           const bgUrl = slide.imageUrl || slide.bgImage;
-          const headingStyle = getBannerHeadingStyle(slide.title);
           const align = slide.textAlign || 'center';
 
           return (
@@ -281,36 +246,22 @@ export default function HomePage({ cmsContent }) {
                 />
               )}
 
-              {/* Dynamic Title Heading inside Standard Column Grid Container */}
+              {/* Dynamic Title Heading inside Standard Column Grid Container - Uniform Font Style Across All Banners */}
               {slide.showText !== false && slide.title && (
                 <div className="relative z-20 w-full h-full max-w-7xl mx-auto px-4 sm:px-8 flex items-center">
                   <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                     <div
                       className={`animate-in fade-in duration-700 flex flex-col space-y-3 sm:space-y-4 ${
                         align === 'left'
-                          ? 'md:col-span-8 lg:col-span-7 items-start text-left mr-auto'
+                          ? 'md:col-span-8 lg:col-span-8 items-start text-left mr-auto'
                           : align === 'right'
-                          ? 'md:col-start-5 md:col-span-8 lg:col-start-6 lg:col-span-7 items-end text-right ml-auto'
-                          : 'md:col-start-2 md:col-span-10 lg:col-start-3 lg:col-span-8 items-center text-center mx-auto'
+                          ? 'md:col-start-5 md:col-span-8 lg:col-start-5 lg:col-span-8 items-end text-right ml-auto'
+                          : 'md:col-start-2 md:col-span-10 lg:col-start-2 lg:col-span-10 items-center text-center mx-auto'
                       }`}
                     >
-                      {/* Pill Badge */}
-                      <div
-                        className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#141E36]/80 border border-[#C59B24]/60 text-[#C59B24] text-[11px] sm:text-xs font-bold tracking-wider uppercase backdrop-blur-sm shadow-md ${
-                          align === 'left'
-                            ? 'self-start'
-                            : align === 'right'
-                            ? 'self-end'
-                            : 'self-center'
-                        }`}
-                      >
-                        <Ship className="w-3.5 h-3.5 text-[#C59B24]" />
-                        <span>{headingStyle.badge}</span>
-                      </div>
-
-                      {/* Main Dynamic Heading with Adaptive Size & Balanced Wrap */}
+                      {/* Uniform Title Heading - Identical Premium Bold Style On All Slides */}
                       <h1
-                        className={`${headingStyle.sizeClass} tracking-tight uppercase drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]`}
+                        className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[1.12] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]"
                         style={{
                           color: slide.textColor || '#ffffff',
                           textWrap: 'balance',

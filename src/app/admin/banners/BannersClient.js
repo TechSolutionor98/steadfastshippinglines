@@ -24,40 +24,6 @@ import {
   FiType
 } from 'react-icons/fi';
 
-// Calculate responsive typography & layout constraints for admin live preview
-function getAdminPreviewHeadingStyle(text = "") {
-  const clean = (text || "").trim();
-  const words = clean ? clean.split(/\s+/) : [];
-  const wordCount = words.length;
-  const charCount = clean.length;
-
-  if (wordCount <= 4 && charCount <= 26) {
-    return {
-      sizeClass: "text-lg sm:text-2xl md:text-3xl font-black leading-tight",
-      containerClass: "max-w-xs sm:max-w-md",
-      badge: "Global Logistics Network",
-    };
-  } else if (wordCount <= 8 && charCount <= 55) {
-    return {
-      sizeClass: "text-base sm:text-xl md:text-2xl font-extrabold leading-snug",
-      containerClass: "max-w-xs sm:max-w-lg",
-      badge: "Steadfast Shipping Lines",
-    };
-  } else if (wordCount <= 14 && charCount <= 90) {
-    return {
-      sizeClass: "text-sm sm:text-base md:text-lg font-bold leading-normal",
-      containerClass: "max-w-xs sm:max-w-md",
-      badge: "Worldwide Freight Solutions",
-    };
-  } else {
-    return {
-      sizeClass: "text-xs sm:text-sm md:text-base font-bold leading-normal",
-      containerClass: "max-w-xs sm:max-w-sm",
-      badge: "Reliable Shipping Partners",
-    };
-  }
-}
-
 export default function BannersClient() {
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -398,9 +364,8 @@ export default function BannersClient() {
                   />
                 )}
 
-                {/* Live Preview Heading */}
+                {/* Live Preview Heading - Uniform Style Matching Client Side */}
                 {slide.showText !== false && slide.title && (() => {
-                  const pStyle = getAdminPreviewHeadingStyle(slide.title);
                   const align = slide.textAlign || 'center';
                   return (
                     <div
@@ -413,7 +378,7 @@ export default function BannersClient() {
                       }`}
                     >
                       <div
-                        className={`${pStyle.containerClass} space-y-2 ${
+                        className={`max-w-md space-y-2 ${
                           align === 'left'
                             ? 'mr-auto'
                             : align === 'right'
@@ -421,19 +386,8 @@ export default function BannersClient() {
                             : 'mx-auto'
                         }`}
                       >
-                        <div
-                          className={`inline-block px-2.5 py-0.5 rounded-full bg-[#141E36]/80 border border-[#C59B24]/50 text-[#C59B24] text-[10px] font-bold tracking-wider uppercase ${
-                            align === 'left'
-                              ? 'self-start'
-                              : align === 'right'
-                              ? 'self-end'
-                              : 'self-center'
-                          }`}
-                        >
-                          {pStyle.badge}
-                        </div>
                         <h3
-                          className={`${pStyle.sizeClass} uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]`}
+                          className="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
                           style={{
                             color: slide.textColor || '#ffffff',
                             textWrap: 'balance',
