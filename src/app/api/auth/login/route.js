@@ -13,26 +13,11 @@ export async function POST(request) {
     const adminEmail = process.env.ADMIN_EMAIL;
     const adminPassword = process.env.ADMIN_PASSWORD;
 
-    // 1. Check environment variables
-    if (adminEmail && adminPassword && email === adminEmail && password === adminPassword) {
-      const token = "demo-jwt-token";
-      try {
-        await logActivity(request, 'login', 'Super Admin', {}, { userId: 'super_admin', userName: 'Super Admin' });
-      } catch (e) {}
-      const response = NextResponse.json({
-        token,
-        user: {
-          name: "Super Admin",
-          email: adminEmail,
-          role: "super_admin",
-        }
-      });
-      response.cookies.set("jwt", token, { httpOnly: true, path: "/" });
-      return response;
-    }
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const cleanPass = (password || '').trim();
 
-    // 1b. Direct Super Admin Credentials (ensures login on Live even if MongoDB connection times out)
-    if (email === "saleemmughal03092002@gmail.com" && password === "saleemmughal03092002") {
+    // 1. Direct Super Admin Credentials (Instant login failover)
+    if (cleanEmail === "saleemmughal03092002@gmail.com" && cleanPass === "saleemmughal03092002") {
       const token = Buffer.from(JSON.stringify({
         userId: "super_admin_saleem",
         role: "super_admin",
@@ -40,9 +25,8 @@ export async function POST(request) {
         name: "Saleem Mughal"
       })).toString('base64');
 
-      try {
-        await logActivity(request, 'login', 'Saleem Mughal', {}, { userId: 'super_admin_saleem', userName: 'Saleem Mughal' });
-      } catch (e) {}
+      // Non-blocking activity log (does not block or delay login response)
+      logActivity(request, 'login', 'Saleem Mughal', {}, { userId: 'super_admin_saleem', userName: 'Saleem Mughal' }).catch(() => {});
 
       const response = NextResponse.json({
         token,
@@ -51,6 +35,22 @@ export async function POST(request) {
           email: "saleemmughal03092002@gmail.com",
           role: "super_admin",
           roles: ["super_admin"],
+        }
+      });
+      response.cookies.set("jwt", token, { httpOnly: true, path: "/" });
+      return response;
+    }
+
+    // 2. Check environment variables
+    if (adminEmail && adminPassword && cleanEmail === adminEmail.toLowerCase() && cleanPass === adminPassword) {
+      const token = "demo-jwt-token";
+      logActivity(request, 'login', 'Super Admin', {}, { userId: 'super_admin', userName: 'Super Admin' }).catch(() => {});
+      const response = NextResponse.json({
+        token,
+        user: {
+          name: "Super Admin",
+          email: adminEmail,
+          role: "super_admin",
         }
       });
       response.cookies.set("jwt", token, { httpOnly: true, path: "/" });
