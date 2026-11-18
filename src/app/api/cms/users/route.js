@@ -134,19 +134,7 @@ export async function GET() {
     return jsonResponse({ total: normalized.length, users: normalized });
   } catch (err) {
     console.error('GET /api/cms/users error:', err);
-    // Return fallback super admin so AdminLayout doesn't break
-    const fallbackUsers = [
-      {
-        _id: 'super_admin_saleem',
-        name: 'Saleem Mughal',
-        email: 'saleemmughal03092002@gmail.com',
-        role: 'super_admin',
-        roles: ['super_admin'],
-        status: 'active',
-        assignedWebsites: [],
-      },
-    ];
-    return jsonResponse({ total: fallbackUsers.length, users: fallbackUsers, offline: true });
+    return jsonResponse({ total: 0, users: [] });
   }
 }
 

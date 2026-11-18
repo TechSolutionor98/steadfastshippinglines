@@ -16,33 +16,8 @@ export async function POST(request) {
     const cleanEmail = (email || '').trim().toLowerCase();
     const cleanPass = (password || '').trim();
 
-    // 1. Direct Super Admin Credentials (Instant login failover)
-    if (cleanEmail === "saleemmughal03092002@gmail.com" && cleanPass === "saleemmughal03092002") {
-      const token = Buffer.from(JSON.stringify({
-        userId: "super_admin_saleem",
-        role: "super_admin",
-        roles: ["super_admin"],
-        name: "Saleem Mughal"
-      })).toString('base64');
-
-      // Non-blocking activity log (does not block or delay login response)
-      logActivity(request, 'login', 'Saleem Mughal', {}, { userId: 'super_admin_saleem', userName: 'Saleem Mughal' }).catch(() => {});
-
-      const response = NextResponse.json({
-        token,
-        user: {
-          name: "Saleem Mughal",
-          email: "saleemmughal03092002@gmail.com",
-          role: "super_admin",
-          roles: ["super_admin"],
-        }
-      });
-      response.cookies.set("jwt", token, { httpOnly: true, path: "/" });
-      return response;
-    }
-
-    // 2. Check environment variables
-    if (adminEmail && adminPassword && cleanEmail === adminEmail.toLowerCase() && cleanPass === adminPassword) {
+    // 1. Check environment variables (.env)
+    if (adminEmail && adminPassword && cleanEmail === adminEmail.trim().toLowerCase() && cleanPass === adminPassword.trim()) {
       const token = "demo-jwt-token";
       logActivity(request, 'login', 'Super Admin', {}, { userId: 'super_admin', userName: 'Super Admin' }).catch(() => {});
       const response = NextResponse.json({
@@ -51,15 +26,21 @@ export async function POST(request) {
           name: "Super Admin",
           email: adminEmail,
           role: "super_admin",
+          roles: ["super_admin"]
         }
       });
       response.cookies.set("jwt", token, { httpOnly: true, path: "/" });
       return response;
     }
 
-    // 2. Check Database users
+    // 2. Check Database users (MongoDB cms_users collection)
     const db = await getDb();
-    const user = await db.collection("cms_users").findOne({ email });
+    const user = await db.collection("cms_users").findOne({
+      $or: [
+        { email: cleanEmail },
+        { email: { $regex: new RegExp(`^${cleanEmail.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') } }
+      ]
+    });
 
     if (user) {
       // Check status
@@ -68,7 +49,7 @@ export async function POST(request) {
       }
 
       // Check password
-      const calculatedHash = hashPassword(password);
+      const calculatedHash = hashPassword(cleanPass);
       if (user.passwordHash === calculatedHash) {
         const uRoles = Array.isArray(user.roles) && user.roles.length > 0
           ? user.roles
@@ -80,7 +61,7 @@ export async function POST(request) {
           roles: uRoles,
           name: user.name
         })).toString('base64');
-        await logActivity(request, 'login', user.name, {}, { userId: user._id.toString(), userName: user.name });
+        logActivity(request, 'login', user.name, {}, { userId: user._id.toString(), userName: user.name }).catch(() => {});
         const response = NextResponse.json({
           token,
           user: {
@@ -98,6 +79,6 @@ export async function POST(request) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   } catch (err) {
     console.error("Login error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error: " + (err.message || "") }, { status: 500 });
   }
 }
