@@ -32,26 +32,27 @@ export default async function ClientBlogsPage() {
 
   return (
     <main className="min-h-screen bg-[#FFFFFF] text-gray-800">
-      {/* Hero Header (Exact 1920 x 600 px Standard Banner Dimensions, Zero Dark Opacity) */}
-      <section className="relative w-full bg-[#141E36] overflow-hidden border-b border-[#D7DCE0]/15 flex items-center justify-center">
-        <div
-          className="relative w-full max-w-[1920px] mx-auto aspect-[1920/600] flex items-center justify-center overflow-hidden"
-          style={{ aspectRatio: '1920 / 600' }}
-        >
-          <PageHeroBackground page="/blogs" darkOverlay={false}>
-            <div className="max-w-6xl mx-auto text-center relative z-10 space-y-4 px-4 py-8">
-              <span className="inline-block px-4 py-1.5 bg-[#C59B24]/15 border border-[#C59B24]/30 text-[#C59B24] rounded-full text-xs font-bold uppercase tracking-wider">
+      {/* Hero Header — same height/pattern as other pages; admin banner acts as background behind code text */}
+      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
+        <PageHeroBackground page="/blogs" darkOverlay={false}>
+          {/* light readability gradient — left only, banner colors stay vivid */}
+          <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#0A1224]/70 via-[#0A1224]/25 to-transparent" aria-hidden="true" />
+          <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0D1424]/60 via-transparent to-transparent" aria-hidden="true" />
+
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+            <div className="max-w-3xl space-y-5">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#E2C876]/30 bg-white/5 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-md">
                 Industry Insights
               </span>
-              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight max-w-4xl mx-auto uppercase">
-                Steadfast Logistics Insights & News
+              <h1 className="font-anton uppercase leading-[0.98] tracking-tight text-white text-[clamp(2.2rem,1.3rem+4.2vw,4.4rem)]">
+                Steadfast Logistics <span className="text-[#E2C876]">Insights & News</span>
               </h1>
-              <p className="text-[#D7DCE0] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+              <p className="max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base">
                 Expert analysis, shipping industry updates, and global freight forwarding guides.
               </p>
             </div>
-          </PageHeroBackground>
-        </div>
+          </div>
+        </PageHeroBackground>
       </section>
 
       {/* Real-time Client-side Blog Listing & Sidebar Widgets */}

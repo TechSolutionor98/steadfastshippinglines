@@ -31,7 +31,7 @@ export default function ServiceDetailPage({ service }) {
   return (
     <div className="min-h-screen bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
       {/* ============ HERO ============ */}
-      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424]">
+      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
         <PageHeroBackground page={`/${service.slug}`} darkOverlay={false}>
           {/* light readability gradients — banner stays vivid */}
           <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#0A1224]/70 via-[#0A1224]/25 to-transparent" aria-hidden="true" />

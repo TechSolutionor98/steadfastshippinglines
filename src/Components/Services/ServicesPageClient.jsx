@@ -32,7 +32,7 @@ export default function ServicesPageClient({ initialBanners = [] }) {
   return (
     <div className="min-h-screen bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
       {/* ============ HERO ============ */}
-      <section className="relative flex min-h-[500px] items-center overflow-hidden bg-[#0D1424]">
+      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
         <PageHeroBackground page="/services" initialBanners={initialBanners} darkOverlay={false}>
           <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#0A1224]/70 via-[#0A1224]/25 to-transparent" aria-hidden="true" />
           <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0D1424]/60 via-transparent to-transparent" aria-hidden="true" />

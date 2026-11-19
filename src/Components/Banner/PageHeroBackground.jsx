@@ -36,7 +36,6 @@ export default function PageHeroBackground({
 
   const current = banners[currentSlide] || banners[0];
   const hasBanner = Boolean(current?.imageUrl);
-  const showText = hasBanner ? current.showText !== false : true;
 
   return (
     <>
@@ -50,15 +49,15 @@ export default function PageHeroBackground({
               }`}
               style={{
                 backgroundImage: `url(${b.imageUrl})`,
-                backgroundSize: "100% 100%",
+                backgroundSize: "cover",
                 backgroundPosition: "center center",
                 backgroundRepeat: "no-repeat",
               }}
             />
           ))}
 
-          {/* Readability Overlay: Active ONLY when text is ON, title exists, AND darkOverlay is enabled */}
-          {darkOverlay && showText && current?.title && (
+          {/* Readability Overlay: Active ONLY when darkOverlay is enabled */}
+          {darkOverlay && (
             <div
               className={`absolute inset-0 pointer-events-none transition-all duration-500 ${
                 current?.textAlign === "left"
@@ -72,12 +71,8 @@ export default function PageHeroBackground({
         </div>
       )}
 
-      {/* When showText is false (e.g. Graphic Banner), hide children so no text overlaps, filling exact parent container proportions */}
-      {showText ? (
-        children
-      ) : (
-        <div className="w-full h-full pointer-events-none" />
-      )}
+      {/* Page content (text) always renders on top — admin only controls the banner image */}
+      {children}
     </>
   );
 }
