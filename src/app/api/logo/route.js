@@ -58,7 +58,7 @@ export async function GET() {
       { key: 'logo' },
       { projection: { value: 1 } }
     );
-    const logo = settings?.value || '/file.svg';
+    const logo = settings?.value || '/images/logo.png';
 
     // update cache
     cachedLogo = logo;
@@ -68,7 +68,7 @@ export async function GET() {
   } catch (err) {
     // On error return fallback quickly
     console.error('GET /api/logo error:', err);
-    return jsonWithCache({ logo: '/file.svg' });
+    return jsonWithCache({ logo: '/images/logo.png' });
   }
 }
 

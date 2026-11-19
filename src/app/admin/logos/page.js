@@ -8,13 +8,13 @@ export const revalidate = 0;
 
 export default async function LogosPage() {
   const apiBase = getApiBase();
-  let currentLogo = '/Images/footerlogo.png';
+  let currentLogo = '/images/logo.png';
   
   try {
     const res = await fetch(`${apiBase}/api/logo`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
-      currentLogo = data.logo || '/Images/footerlogo.png';
+      currentLogo = data.logo || '/images/logo.png';
     }
   } catch (err) {
     console.error('Failed to fetch current logo', err);

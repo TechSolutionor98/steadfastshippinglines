@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 import React, { useEffect, useState } from 'react';
 
 export default function LogoUploader() {
-  const [logoUrl, setLogoUrl] = useState('/file.svg');
+  const [logoUrl, setLogoUrl] = useState('/images/logo.png');
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

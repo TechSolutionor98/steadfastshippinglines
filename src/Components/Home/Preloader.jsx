@@ -107,11 +107,11 @@ export default function Preloader({ onComplete }) {
       >
         <div className="relative mb-4 h-16 w-16 overflow-hidden rounded-2xl border-2 border-[#E2C876]/60 bg-white p-2 shadow-xl shadow-[#1D2A4C]/10 ring-4 ring-[#FDF9EE]">
           <Image
-            src="/images/logo-emblem.png"
+            src="/images/logo-emblem-main.png"
             alt="Steadfast Logo"
             fill
+            unoptimized
             className="object-contain p-2"
-            sizes="64px"
             priority
           />
         </div>

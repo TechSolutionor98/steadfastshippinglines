@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   X,
   Calculator,
   Send,
   CheckCircle2,
+  AlertCircle,
+  ChevronDown,
   Phone,
   Mail,
   ShieldCheck,
@@ -15,6 +18,11 @@ import {
   Warehouse,
 } from "lucide-react";
 import { companyDetails } from "@/data/steadfastData";
+
+const EASE = [0.22, 1, 0.36, 1];
+const fieldCls =
+  "w-full rounded-xl border border-[#D7DCE0] bg-slate-50 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 transition-all focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C59B24]";
+const labelCls = "mb-1.5 block text-[11px] font-black uppercase tracking-wider text-[#1D2A4C]";
 
 // Helper function to trigger quote modal from anywhere in the application
 export function openQuoteModal(service = "Ocean Freight") {
@@ -43,6 +51,16 @@ export default function QuoteModal() {
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({ type: "", msg: "" });
+  const reduce = useReducedMotion();
+  const panelRef = useRef(null);
+
+  // Focus the modal panel when opened; restore focus to opener on close
+  useEffect(() => {
+    if (!isOpen) return;
+    const opener = document.activeElement;
+    panelRef.current?.focus();
+    return () => opener?.focus?.();
+  }, [isOpen]);
 
   useEffect(() => {
     const handleOpen = (e) => {
@@ -165,256 +183,221 @@ Additional Notes: ${formData.comments || "None"}
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-      onClick={() => setIsOpen(false)}
-      role="dialog"
-      aria-modal="true"
-    >
-      <div
-        className="relative bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-[#D7DCE0] overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-200"
-        onClick={(e) => e.stopPropagation()}
+    <AnimatePresence>
+      <motion.div
+        key="quote-backdrop"
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-3 backdrop-blur-sm sm:p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        onClick={() => setIsOpen(false)}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quote-modal-title"
       >
+        <motion.div
+          ref={panelRef}
+          tabIndex={-1}
+          className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-[#D7DCE0] bg-white shadow-2xl outline-none"
+          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 32, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 24, scale: 0.97, transition: { duration: 0.2 } }}
+          transition={{ duration: 0.35, ease: EASE }}
+          onClick={(e) => e.stopPropagation()}
+        >
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#141E36] via-[#1D2A4C] to-[#141E36] px-6 py-5 text-white flex items-center justify-between border-b border-[#C59B24]/30 shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#C59B24]/20 border border-[#C59B24]/40 flex items-center justify-center text-[#C59B24]">
-              <Calculator className="w-5 h-5" />
+        <div className="relative shrink-0 overflow-hidden border-b border-[#C59B24]/30 bg-gradient-to-r from-[#141E36] via-[#1D2A4C] to-[#141E36] px-6 py-5 text-white">
+          <div className="sf-dots absolute inset-0 opacity-30" aria-hidden="true" />
+          <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#C59B24]/20 blur-[60px]" aria-hidden="true" />
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center gap-3.5">
+              <motion.span
+                initial={reduce ? {} : { rotate: -12, scale: 0.8 }}
+                animate={{ rotate: 0, scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 260, damping: 16 }}
+                className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#C59B24]/40 bg-[#C59B24]/20 text-[#E2C876]"
+              >
+                <Calculator className="h-5 w-5" />
+              </motion.span>
+              <div>
+                <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-[#E2C876]">
+                  Instant Rate Calculation
+                </span>
+                <h3 id="quote-modal-title" className="font-anton text-lg uppercase tracking-wide text-white sm:text-xl">
+                  Request a Freight Quote
+                </h3>
+              </div>
             </div>
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#C59B24] block">
-                Instant Rate Calculation
-              </span>
-              <h3 className="text-lg sm:text-xl font-black text-white tracking-tight uppercase">
-                Request a Freight Quote
-              </h3>
-            </div>
-          </div>
 
-          <button
-            onClick={() => setIsOpen(false)}
-            className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white/80 hover:text-white flex items-center justify-center transition-colors"
-            aria-label="Close quote modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white/80 transition-all hover:rotate-90 hover:bg-white/20 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C59B24]"
+              aria-label="Close quote modal"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
 
         {/* Scrollable Form Body */}
-        <div className="overflow-y-auto p-5 sm:p-7 space-y-5 text-slate-800">
-          {status.msg && (
-            <div
-              className={`p-4 rounded-xl text-xs sm:text-sm font-medium flex items-center gap-2.5 ${
-                status.type === "success"
-                  ? "bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]"
-                  : "bg-red-50 text-red-800 border border-red-200"
-              }`}
-            >
-              {status.type === "success" && (
-                <CheckCircle2 className="w-5 h-5 text-[#C59B24] shrink-0" />
-              )}
-              <span>{status.msg}</span>
-            </div>
-          )}
+        <div className="space-y-5 overflow-y-auto p-5 text-slate-800 sm:p-7">
+          <AnimatePresence>
+            {status.msg && (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                role={status.type === "error" ? "alert" : "status"}
+                className={`flex items-start gap-2.5 rounded-xl border p-4 text-xs font-medium sm:text-sm ${
+                  status.type === "success"
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                    : "border-red-200 bg-red-50 text-red-800"
+                }`}
+              >
+                {status.type === "success" ? (
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />
+                ) : (
+                  <AlertCircle className="h-5 w-5 shrink-0 text-red-600" />
+                )}
+                <span>{status.msg}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Freight Service Selection */}
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1.5">
-                Freight Service Required *
-              </label>
-              <select
-                name="freightType"
-                value={formData.freightType}
-                onChange={handleChange}
-                className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24] font-medium text-slate-800"
-              >
-                <option value="Ocean Freight">Ocean Freight (FCL / LCL Container)</option>
-                <option value="Air Freight">Air Freight (Express & Consolidated)</option>
-                <option value="Road Freight">Road Freight (FTL & LTL Trucking)</option>
-                <option value="Warehousing">Warehousing & Storage Solution</option>
-                <option value="Cargo Services">Specialized Cargo Services</option>
-                <option value="Door to door delivery">Door to Door Delivery</option>
-                <option value="Cross Stuffing">Cross-Stuffing / Transshipment</option>
-                <option value="Break Bulk Cargo">Break Bulk & Heavy Lift Cargo</option>
-                <option value="Transportation">Multimodal Transportation</option>
-                <option value="Customs Clearance">Customs Clearance & Brokerage</option>
-              </select>
+              <label htmlFor="qm-freight" className={labelCls}>Freight Service Required *</label>
+              <div className="relative">
+                <select
+                  id="qm-freight"
+                  name="freightType"
+                  value={formData.freightType}
+                  onChange={handleChange}
+                  className={`${fieldCls} cursor-pointer appearance-none font-semibold`}
+                >
+                  <option value="Ocean Freight">Ocean Freight (FCL / LCL Container)</option>
+                  <option value="Air Freight">Air Freight (Express & Consolidated)</option>
+                  <option value="Road Freight">Road Freight (FTL & LTL Trucking)</option>
+                  <option value="Warehousing">Warehousing & Storage Solution</option>
+                  <option value="Cargo Services">Specialized Cargo Services</option>
+                  <option value="Door to door delivery">Door to Door Delivery</option>
+                  <option value="Cross Stuffing">Cross-Stuffing / Transshipment</option>
+                  <option value="Break Bulk Cargo">Break Bulk & Heavy Lift Cargo</option>
+                  <option value="Transportation">Multimodal Transportation</option>
+                  <option value="Customs Clearance">Customs Clearance & Brokerage</option>
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+              </div>
             </div>
 
             {/* Origin & Destination */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
-                  Origin Port / City *
-                </label>
-                <input
-                  type="text"
-                  name="origin"
-                  required
-                  value={formData.origin}
-                  onChange={handleChange}
-                  placeholder="e.g. Shanghai Port or Dubai"
-                  className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                />
+                <label htmlFor="qm-origin" className={labelCls}>Origin Port / City *</label>
+                <input id="qm-origin" type="text" name="origin" required value={formData.origin}
+                  onChange={handleChange} placeholder="e.g. Shanghai Port or Dubai" className={fieldCls} />
               </div>
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
-                  Destination Port / City *
-                </label>
-                <input
-                  type="text"
-                  name="destination"
-                  required
-                  value={formData.destination}
-                  onChange={handleChange}
-                  placeholder="e.g. Karachi or Felixstowe"
-                  className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                />
+                <label htmlFor="qm-destination" className={labelCls}>Destination Port / City *</label>
+                <input id="qm-destination" type="text" name="destination" required value={formData.destination}
+                  onChange={handleChange} placeholder="e.g. Karachi or Felixstowe" className={fieldCls} />
               </div>
             </div>
 
             {/* Cargo Specs (Weight, Volume, Nature) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
-                  Weight (kg)
-                </label>
-                <input
-                  type="number"
-                  name="cargoWeight"
-                  value={formData.cargoWeight}
-                  onChange={handleChange}
-                  placeholder="e.g. 1500"
-                  className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                />
+                <label htmlFor="qm-weight" className={labelCls}>Weight (kg)</label>
+                <input id="qm-weight" type="number" min="0" name="cargoWeight" value={formData.cargoWeight}
+                  onChange={handleChange} placeholder="e.g. 1500" className={fieldCls} />
               </div>
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
-                  Volume (CBM)
-                </label>
-                <input
-                  type="text"
-                  name="cargoVolume"
-                  value={formData.cargoVolume}
-                  onChange={handleChange}
-                  placeholder="e.g. 12 CBM"
-                  className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                />
+                <label htmlFor="qm-volume" className={labelCls}>Volume (CBM)</label>
+                <input id="qm-volume" type="text" name="cargoVolume" value={formData.cargoVolume}
+                  onChange={handleChange} placeholder="e.g. 12" className={fieldCls} />
               </div>
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
-                  Cargo Type
-                </label>
-                <input
-                  type="text"
-                  name="cargoType"
-                  value={formData.cargoType}
-                  onChange={handleChange}
-                  placeholder="e.g. General, Reefer"
-                  className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                />
+                <label htmlFor="qm-cargotype" className={labelCls}>Cargo Type</label>
+                <input id="qm-cargotype" type="text" name="cargoType" value={formData.cargoType}
+                  onChange={handleChange} placeholder="e.g. General, Reefer" className={fieldCls} />
               </div>
             </div>
 
             {/* Contact Details */}
-            <div className="pt-3 border-t border-[#D7DCE0]/70">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1D2A4C] block mb-3">
+            <div className="border-t border-[#D7DCE0]/70 pt-4">
+              <span className="mb-3.5 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.18em] text-[#1D2A4C]">
+                <span className="h-[2px] w-5 bg-[#C59B24]" aria-hidden="true" />
                 Your Contact Information
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                 <div>
-                  <label className="text-xs font-semibold text-slate-700 block mb-1">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="e.g. Sarah Jenkins"
-                    className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                  />
+                  <label htmlFor="qm-name" className={labelCls}>Full Name *</label>
+                  <input id="qm-name" type="text" name="name" required autoComplete="name" value={formData.name}
+                    onChange={handleChange} placeholder="e.g. Sarah Jenkins" className={fieldCls} />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-slate-700 block mb-1">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="e.g. sarah@company.com"
-                    className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                  />
+                  <label htmlFor="qm-email" className={labelCls}>Email Address *</label>
+                  <input id="qm-email" type="email" name="email" required autoComplete="email" value={formData.email}
+                    onChange={handleChange} placeholder="e.g. sarah@company.com" className={fieldCls} />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-slate-700 block mb-1">
-                    Phone / WhatsApp *
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    required
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="e.g. +92 312 7777952"
-                    className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                  />
+                  <label htmlFor="qm-phone" className={labelCls}>Phone / WhatsApp *</label>
+                  <input id="qm-phone" type="tel" name="phone" required autoComplete="tel" value={formData.phone}
+                    onChange={handleChange} placeholder="e.g. +92 312 7777952" className={fieldCls} />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-slate-700 block mb-1">
-                    Company Name
-                  </label>
-                  <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    placeholder="e.g. Global Logistics LLC"
-                    className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-                  />
+                  <label htmlFor="qm-company" className={labelCls}>Company Name</label>
+                  <input id="qm-company" type="text" name="company" autoComplete="organization" value={formData.company}
+                    onChange={handleChange} placeholder="e.g. Global Logistics LLC" className={fieldCls} />
                 </div>
               </div>
             </div>
 
             {/* Additional Comments */}
             <div>
-              <label className="text-xs font-semibold text-slate-700 block mb-1">
-                Additional Instructions / Requirements
-              </label>
-              <textarea
-                rows={2}
-                name="comments"
-                value={formData.comments}
+              <label htmlFor="qm-comments" className={labelCls}>Additional Instructions / Requirements</label>
+              <textarea id="qm-comments" rows={2} name="comments" value={formData.comments}
                 onChange={handleChange}
                 placeholder="Mention customs clearance, target delivery date, or special cargo handling..."
-                className="w-full px-3.5 py-2 text-xs bg-[#F4F6F8] border border-[#D7DCE0] rounded-xl focus:outline-none focus:border-[#C59B24]"
-              />
+                className={`${fieldCls} resize-none`} />
             </div>
 
             {/* Submit Button */}
-            <button
+            <motion.button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-[#C59B24]/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+              whileTap={reduce ? {} : { scale: 0.98 }}
+              className="group relative w-full cursor-pointer overflow-hidden rounded-xl bg-[#C59B24] py-4 text-xs font-black uppercase tracking-[0.14em] text-white shadow-lg shadow-[#C59B24]/30 transition-all hover:bg-[#B0891E] hover:shadow-xl disabled:pointer-events-none disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D2A4C] focus-visible:ring-offset-2"
             >
-              <Send className="w-4 h-4" />
-              <span>{loading ? "Calculating & Submitting..." : "Submit Quote Request"}</span>
-            </button>
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" aria-hidden="true" />
+              <span className="relative z-10 flex items-center justify-center gap-2.5">
+                {loading ? (
+                  <>
+                    <motion.span
+                      className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white"
+                      animate={reduce ? {} : { rotate: 360 }}
+                      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                    />
+                    Calculating & Submitting…
+                  </>
+                ) : (
+                  <><Send className="h-4 w-4" /> Submit Quote Request</>
+                )}
+              </span>
+            </motion.button>
           </form>
 
           {/* Mini Guarantee Footer */}
-          <div className="pt-2 text-center text-[11px] text-slate-500 flex items-center justify-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#C59B24]" />
+          <div className="flex items-center justify-center gap-2 pt-2 text-center text-[11px] text-slate-500">
+            <ShieldCheck className="h-4 w-4 shrink-0 text-[#C59B24]" />
             <span>Guaranteed competitive rates within 2 hours • 24/7 Dispatch Desk</span>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
+    </AnimatePresence>
   );
 }
 
