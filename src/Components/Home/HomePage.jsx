@@ -1,70 +1,105 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
-  Ship,
-  Plane,
-  Truck,
-  Warehouse,
-  Package,
-  Boxes,
-  Anchor,
-  FileCheck,
-  Building2,
-  Clock,
-  Compass,
-  ShieldCheck,
-  Globe,
-  ArrowRight,
-  CheckCircle2,
-  ChevronDown,
-  ChevronUp,
-  Phone,
-  Mail,
-  Send,
-  MapPin,
-  TrendingUp,
-  Award,
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  Star,
-  Quote,
-  Calculator,
-  Navigation,
-  User,
-  Users,
-  Headphones,
-  Route,
-  HeartHandshake,
-  Sparkles,
-  Cpu,
-  Layers,
-  Check,
-  Shield,
-  ArrowUpRight,
-  Filter
+  Ship, Plane, Truck, Warehouse, Package, Boxes, Anchor, FileCheck,
+  Building2, Clock, Compass, ShieldCheck, Globe, ArrowRight, ArrowUpRight,
+  CheckCircle2, ChevronDown, Phone, TrendingUp, Award, ChevronLeft, ChevronRight,
+  Star, Calculator, Navigation, Headphones, Route as RouteIcon, HeartHandshake,
+  MapPin, Zap, Container,
 } from "lucide-react";
-import { companyDetails, servicesData } from "@/data/steadfastData";
+import { companyDetails } from "@/data/steadfastData";
 import { openQuoteModal } from "@/Components/Quote/QuoteModal";
+import { Reveal, Eyebrow, SectionHead, CountUp, RouteDash, GoldButton, GhostButton } from "./motion";
+import Preloader from "./Preloader";
+
+/* ============================================================
+   DATA
+============================================================ */
+const SERVICES = [
+  { title: "Ocean Freight", slug: "ocean-freight", category: "freight", tag: "FCL & LCL", image: "/images/home/ocean.jpg", icon: Ship,
+    perks: ["Full & part container loads", "Direct port-to-port links", "Reefer & DG cargo"],
+    description: "Cost-effective, high-capacity ocean freight across international routes with guaranteed space allocation." },
+  { title: "Air Freight", slug: "air-freight", category: "freight", tag: "Express", image: "/images/home/air.jpg", icon: Plane,
+    perks: ["Time-critical priority", "IATA compliance", "Worldwide airport hubs"],
+    description: "The fastest cross-border option for time-sensitive cargo with priority handling and expedited customs." },
+  { title: "Customs Clearance", slug: "customs-clearance-service", category: "customs", tag: "Licensed Broker", image: "/images/home/customs.jpg", icon: FileCheck,
+    perks: ["Tariff & HS classification", "Zero-delay document audit", "Import & export compliance"],
+    description: "Licensed brokerage ensuring regulatory adherence, accurate classification, and accelerated clearance." },
+  { title: "Warehousing & Storage", slug: "warehousing-service", category: "warehousing", tag: "Bonded", image: "/images/home/warehouse.jpg", icon: Warehouse,
+    perks: ["Climate-controlled space", "Live inventory telemetry", "Cross-docking ready"],
+    description: "Secure bonded warehousing and inventory management built to optimize your fulfillment velocity." },
+  { title: "Cargo Handling", slug: "cargo-services", category: "freight", tag: "Heavy Lift", image: "/images/home/cargo.jpg", icon: Package,
+    perks: ["Specialized rigging & crane", "Palletization & crating", "Multi-modal transfers"],
+    description: "End-to-end cargo handling, professional packing, consolidation, and careful terminal transfers." },
+  { title: "Break Bulk Cargo", slug: "break-bulk-cargo-service", category: "customs", tag: "Oversized", image: "/images/home/break-bulk.jpg", icon: Anchor,
+    perks: ["Heavy industrial machinery", "Charter vessel solutions", "Dedicated port captains"],
+    description: "Engineered logistics for oversized, non-containerized cargo requiring specialized cranes and permits." },
+  { title: "Door to Door Delivery", slug: "door-to-door-delievery", category: "warehousing", tag: "Turnkey", image: "/images/home/door.jpg", icon: Building2,
+    perks: ["Single point of contact", "Freight & tax prep included", "Final consignee handoff"],
+    description: "Hassle-free end-to-end logistics from factory pickup to final delivery with complete tracking." },
+  { title: "Cross Stuffing", slug: "cross-stuffing-service", category: "warehousing", tag: "Transshipment", image: "/images/home/cross-stuffing.jpg", icon: Boxes,
+    perks: ["Container-to-container shift", "Transshipment hub handling", "Cargo quality inspection"],
+    description: "Strategic cross-docking and transshipment that cuts demurrage and optimizes routing efficiency." },
+  { title: "Transportation", slug: "transportation-service", category: "freight", tag: "GPS Fleet", image: "/images/home/road.jpg", icon: Truck,
+    perks: ["Interstate highway network", "Bonded carrier trucks", "Temperature-controlled trailers"],
+    description: "Reliable road freight connecting ports and air hubs to inland dry docks and client warehouses." },
+];
+
+const SERVICE_TABS = [
+  { id: "all", label: "All Logistics" },
+  { id: "freight", label: "Freight Forwarding" },
+  { id: "warehousing", label: "Warehousing & Storage" },
+  { id: "customs", label: "Customs & Heavy Lift" },
+];
+
+const GALLERY = [
+  { img: "/images/home/ocean.jpg", label: "Ocean Maritime", sub: "Global container vessels" },
+  { img: "/images/home/air.jpg", label: "Air Cargo Flights", sub: "Time-critical aviation" },
+  { img: "/images/home/road.jpg", label: "Fleet Highway", sub: "GPS-tracked trucking" },
+  { img: "/images/home/warehouse.jpg", label: "Warehousing", sub: "Bonded storage hubs" },
+  { img: "/images/home/how-we-help.jpg", label: "Container Terminals", sub: "Cross-stuffing yards" },
+  { img: "/images/home/door.jpg", label: "Doorstep Delivery", sub: "Consignee fulfillment" },
+];
+
+const STATS = [
+  { icon: TrendingUp, value: 2500, suffix: "+", label: "Enterprise Shippers", note: "Global B2B accounts" },
+  { icon: Container, value: 18000, suffix: "+", label: "TEUs Delivered", note: "Cross-border shipments" },
+  { icon: Star, value: 99, suffix: "%", label: "On-Time Metric", note: "Punctual port arrival" },
+  { icon: Clock, value: 24, suffix: "/7", label: "Active Operations", note: "Continuous dispatch" },
+  { icon: ShieldCheck, value: 100, suffix: "%", label: "Insured Cargo", note: "Full value coverage" },
+];
+
+const MAJOR_PORTS = [
+  "CHINA", "JAPAN", "KOREA", "VIETNAM", "MALAYSIA", "HONG KONG", "SINGAPORE", "GERMANY",
+  "FRANCE", "ITALY", "NETHERLANDS", "SPAIN", "BRAZIL", "GEORGIA", "YEMEN", "SYRIA",
+  "IRAN", "TURKEY", "INDIA", "PAKISTAN", "USA", "AUSTRALIA", "BAHRAIN", "KUWAIT",
+  "OMAN", "IRAQ", "EGYPT", "SUDAN", "KSA", "SRI LANKA", "BANGLADESH", "NEPAL",
+  "MALDIVES", "QATAR",
+];
+
+const REVIEWS = [
+  { initials: "JD", name: "Jonathon Doe", role: "Director of Supply Chain, Apex Heavy Machinery", route: "Shanghai → Karachi · FCL Marine",
+    text: "Steadfast has been a game-changer for our supply chain. Their ocean freight bookings and rapid customs clearance reduced our port dwell time by nearly a week. Outstanding coordination!" },
+  { initials: "MC", name: "Maria Carrol", role: "VP of Logistics, Continental Textiles", route: "Faisalabad → Frankfurt · Air Priority",
+    text: "Their air freight response time is extraordinary. During peak fashion season they secured priority capacity and delivered strictly on schedule. Flawless telemetry and updates." },
+  { initials: "RA", name: "Rashid Al-Mansoor", role: "Commercial Director, Gulf Trade Links", route: "Jebel Ali → Central Asia · CIS Transit",
+    text: "Their cross-border CIS transit capabilities are second to none — strict documentation, bonded trucking across Afghanistan and Turkmenistan, executed without a single hitch." },
+];
+
+const PROCESS_ICONS = { Headphones, Route: RouteIcon, Boxes, Navigation, Clock, HeartHandshake };
+const EASE = [0.22, 1, 0.36, 1];
 
 function normalizeColor(val, fallback = "#ffffff") {
   if (!val || typeof val !== "string") return fallback;
   let str = val.trim();
-  if (!str.startsWith("#") && /^[0-9a-fA-F]{3,8}$/.test(str)) {
-    str = "#" + str;
-  }
-  if (/^#[0-9a-fA-F]{7}$/.test(str)) {
-    str = str.slice(0, 7);
-  }
-  if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(str)) {
-    return str;
-  }
-  if (/^[a-zA-Z]+$|^rgb|^hsl/.test(str)) {
-    return str;
-  }
+  if (!str.startsWith("#") && /^[0-9a-fA-F]{3,8}$/.test(str)) str = "#" + str;
+  if (/^#[0-9a-fA-F]{7}$/.test(str)) str = str.slice(0, 7);
+  if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(str)) return str;
+  if (/^[a-zA-Z]+$|^rgb|^hsl/.test(str)) return str;
   return fallback;
 }
 
@@ -76,1598 +111,1338 @@ function isDarkColor(hex) {
     const r = parseInt(c.slice(0, 2), 16) || 0;
     const g = parseInt(c.slice(2, 4), 16) || 0;
     const b = parseInt(c.slice(4, 6), 16) || 0;
-    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-    return yiq < 140;
+    return (r * 299 + g * 587 + b * 114) / 1000 < 140;
   }
   return false;
 }
 
+/* ============================================================
+   PAGE
+============================================================ */
 export default function HomePage({ cmsContent }) {
-  // =========================================================================
-  // DYNAMIC HERO BANNER STATE (Section 1 - Preserved exactly as requested)
-  // =========================================================================
-  const defaultHeroSlides = [
-    {
-      _id: "default-1",
-      title: "Global Maritime & Ocean Logistics",
-      imageUrl: "/images/home/banner-1.webp",
-      link: "",
-    },
-    {
-      _id: "default-2",
-      title: "Container Terminal & Air Cargo Hub",
-      imageUrl: "/images/home/banner-2.webp",
-      link: "",
-    },
+  const reduce = useReducedMotion();
+  const [introDone, setIntroDone] = useState(false);
+
+  return (
+    <div className="bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
+      {/* First-visit flight intro — overlays content, content stays SSR-rendered */}
+      <AnimatePresence>
+        {!introDone && <Preloader key="preloader" onComplete={() => setIntroDone(true)} />}
+      </AnimatePresence>
+
+      <motion.div
+        initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.99, y: 20 }}
+        animate={introDone ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0 }}
+        transition={{ duration: 0.7, ease: EASE }}
+        aria-hidden={!introDone}
+      >
+        <HeroSection ready={introDone} />
+        <TickerSection />
+        <CapabilitiesSection />
+        <ServicesSection />
+        <AboutSection />
+        <MissionVisionSection />
+        <WhySection />
+        <GallerySection />
+        <CtaBand />
+        <TestimonialsSection />
+        <QuoteSection />
+        <ServiceAreasSection />
+        <ProcessSection />
+        <FaqSection />
+        <StatsSection />
+      </motion.div>
+    </div>
+  );
+}
+
+/* ============================================================
+   SECTION 1 — HERO
+============================================================ */
+function HeroSection({ ready = true }) {
+  const reduce = useReducedMotion();
+  const defaultSlides = [
+    { _id: "default-1", title: "Global Maritime & Ocean Logistics", imageUrl: "/images/home/banner-1.webp", link: "" },
+    { _id: "default-2", title: "Container Terminal & Air Cargo Hub", imageUrl: "/images/home/banner-2.webp", link: "" },
   ];
+  const [banners, setBanners] = useState(defaultSlides);
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "18%"]);
+  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  const [heroBanners, setHeroBanners] = useState(defaultHeroSlides);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Fetch live banners for homepage ONLY (no-store cache for instant admin updates)
   useEffect(() => {
     fetch(`/api/banners?page=/&t=${Date.now()}`, { cache: "no-store" })
-      .then((res) => res.json())
+      .then((r) => r.json())
       .then((data) => {
         if (data.ok && Array.isArray(data.banners)) {
           const homeOnly = data.banners.filter((b) => (b.page || "/") === "/");
-          if (homeOnly.length > 0) {
-            setHeroBanners(homeOnly);
-          }
+          if (homeOnly.length > 0) setBanners(homeOnly);
         }
       })
-      .catch((err) => console.log("Banners fetch error:", err));
+      .catch(() => {});
   }, []);
 
-  // Auto-advance slider
   useEffect(() => {
-    if (heroBanners.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroBanners.length);
-    }, 5500);
-    return () => clearInterval(timer);
-  }, [heroBanners.length]);
+    if (paused || banners.length <= 1 || reduce) return;
+    const t = setInterval(() => setCurrent((p) => (p + 1) % banners.length), 6000);
+    return () => clearInterval(t);
+  }, [paused, banners.length, reduce]);
 
-  // =========================================================================
-  // SECTION 3: SERVICES DATA & INTERACTIVE CATEGORY FILTER
-  // =========================================================================
-  const [activeServiceTab, setActiveServiceTab] = useState("all");
+  const slide = banners[current] || banners[0];
 
-  const servicesProvided = [
-    {
-      title: "Ocean Freight",
-      shortTitle: "Ocean Freight",
-      slug: "ocean-freight",
-      category: "freight",
-      categoryLabel: "Maritime Transport",
-      tag: "FCL & LCL Options",
-      image: "/images/home/ocean.jpg",
-      icon: Ship,
-      perks: ["Full & Part Container Loads", "Direct Port-to-Port Links", "Reefer & Dangerous Cargo"],
-      description:
-        "Cost-effective, high-capacity ocean freight solutions for global cargo transit across international shipping routes with guaranteed space allocation.",
-    },
-    {
-      title: "Air Freight",
-      shortTitle: "Air Freight",
-      slug: "air-freight",
-      category: "freight",
-      categoryLabel: "Aviation Logistics",
-      tag: "Express Flight",
-      image: "/images/home/air.jpg",
-      icon: Plane,
-      perks: ["Time-Critical Priority", "IATA Standard Compliance", "Worldwide Airport Hubs"],
-      description:
-        "Fastest cross-border transport for time-sensitive cargo with priority airport handling, scheduled consolidations, and expedited customs processing.",
-    },
-    {
-      title: "Customs Clearance",
-      shortTitle: "Customs Clearance",
-      slug: "customs-clearance-service",
-      category: "customs",
-      categoryLabel: "Regulatory Filing",
-      tag: "Licensed Brokerage",
-      image: "/images/home/customs.jpg",
-      icon: FileCheck,
-      perks: ["Tariff & HS Classification", "Zero-Delay Document Audit", "Import & Export Compliance"],
-      description:
-        "Expert licensed customs brokerage ensuring complete regulatory adherence, accurate tariff classification, and accelerated clearance at all major ports.",
-    },
-    {
-      title: "Warehousing & Storage",
-      shortTitle: "Warehousing",
-      slug: "warehousing-service",
-      category: "warehousing",
-      categoryLabel: "Supply Chain Hub",
-      tag: "Bonded Facilities",
-      image: "/images/home/warehouse.jpg",
-      icon: Warehouse,
-      perks: ["Climate-Controlled Space", "Live Inventory Telemetry", "Cross-Docking Ready"],
-      description:
-        "Secure, high-tech bonded warehousing and inventory management facilities designed to optimize your supply chain buffer and fulfillment velocity.",
-    },
-    {
-      title: "Cargo Handling Services",
-      shortTitle: "Cargo Services",
-      slug: "cargo-services",
-      category: "freight",
-      categoryLabel: "Terminal Operations",
-      tag: "Heavy Lift & Stacking",
-      image: "/images/home/cargo.jpg",
-      icon: Package,
-      perks: ["Specialized Rigging & Crane", "Palletization & Crating", "Multi-modal Transfers"],
-      description:
-        "Comprehensive end-to-end cargo handling, professional packing, secure consolidation, and careful terminal transfers for goods of all dimensions.",
-    },
-    {
-      title: "Break Bulk Cargo",
-      shortTitle: "Break Bulk Cargo",
-      slug: "break-bulk-cargo-service",
-      category: "customs",
-      categoryLabel: "Project Logistics",
-      tag: "Oversized & Heavy Lift",
-      image: "/images/home/break-bulk.jpg",
-      icon: Anchor,
-      perks: ["Heavy Industrial Machinery", "Charter Vessel Solutions", "Dedicated Port Captains"],
-      description:
-        "Engineered logistics for non-containerized, oversized, and heavy industrial cargo requiring specialized cranes, vessels, and route permits.",
-    },
-    {
-      title: "Door to Door Delivery",
-      shortTitle: "Door to Door",
-      slug: "door-to-door-delievery",
-      category: "warehousing",
-      categoryLabel: "Full-Cycle Forwarding",
-      tag: "Turnkey Transit",
-      image: "/images/home/door.jpg",
-      icon: Building2,
-      perks: ["Single Point of Contact", "Complete Freight & Tax Prep", "Final Consignee Handoff"],
-      description:
-        "Hassle-free, end-to-end logistics managing every single touchpoint from factory floor pickup to final consignee delivery with complete tracking.",
-    },
-    {
-      title: "Cross Stuffing Services",
-      shortTitle: "Cross Stuffing",
-      slug: "cross-stuffing-service",
-      category: "warehousing",
-      categoryLabel: "Transshipment",
-      tag: "Dock-to-Dock Transfer",
-      image: "/images/home/cross-stuffing.jpg",
-      icon: Boxes,
-      perks: ["Container-to-Container Shift", "Transshipment Hub Handling", "Cargo Quality Inspection"],
-      description:
-        "Strategic cross-docking and container transshipment designed to streamline cargo redirection, cut demurrage costs, and optimize routing efficiency.",
-    },
-    {
-      title: "Multimodal Transportation",
-      shortTitle: "Transportation",
-      slug: "transportation-service",
-      category: "freight",
-      categoryLabel: "Overland Fleet",
-      tag: "GPS Tracked Fleet",
-      image: "/images/home/road.jpg",
-      icon: Truck,
-      perks: ["Interstate Highway Network", "Bonded Carrier Trucks", "Temperature Sensitive Trailers"],
-      description:
-        "Reliable road freight and regional trucking network seamlessly connecting maritime ports and air hubs to inland dry docks and client warehouses.",
-    },
+  return (
+    <section
+      ref={ref}
+      className="relative flex h-[560px] items-center overflow-hidden bg-[#0D1424] sm:h-[620px] lg:h-[720px] xl:h-[780px]"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      aria-roledescription="carousel"
+      aria-label="Featured highlights"
+    >
+      {/* Parallax background slides */}
+      {banners.map((b, i) => (
+        <motion.div
+          key={b._id || i}
+          className={`absolute inset-0 ${i === current ? "z-0" : "pointer-events-none z-0"}`}
+          initial={false}
+          animate={{ opacity: i === current ? 1 : 0, scale: i === current ? 1 : 1.06 }}
+          transition={{ duration: 1.1, ease: EASE }}
+          aria-hidden={i !== current}
+        >
+          <motion.div className="absolute inset-0 bg-cover bg-center" style={{ y: bgY, backgroundImage: `url(${b.imageUrl || b.bgImage})` }} />
+        </motion.div>
+      ))}
+
+      {/* Cinematic scrims */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0A1224]/85 via-[#0D1424]/55 to-[#0D1424]/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0D1424]/90 via-transparent to-[#0D1424]/40" />
+      <div className="sf-dots absolute inset-0 opacity-[0.35]" aria-hidden="true" />
+
+      {/* Content */}
+      <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={ready ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
+            className="mb-6 inline-flex items-center gap-3 rounded-full border border-[#E2C876]/30 bg-white/5 py-2 pl-2 pr-4 backdrop-blur-md"
+          >
+            <span className="flex h-6 items-center rounded-full bg-[#C59B24] px-3 text-[10px] font-black uppercase tracking-[0.18em] text-white">
+              Est. Global
+            </span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
+              120+ Ports · 5 Modes · One Partner
+            </span>
+          </motion.div>
+
+          <h1 className="font-anton uppercase leading-[0.98] tracking-tight text-white">
+            {slide.title?.split(" ").map((word, i, arr) => (
+              <span key={i} className="inline-block overflow-hidden pb-1 align-top">
+                <motion.span
+                  className="mr-[0.28em] inline-block text-[clamp(2.4rem,1.4rem+4.4vw,5.2rem)]"
+                  initial={{ y: "110%" }}
+                  animate={ready ? { y: 0 } : {}}
+                  transition={{ duration: 0.7, delay: 0.1 + i * 0.05, ease: EASE }}
+                >
+                  {word}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={ready ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+            className="mt-5 max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base"
+          >
+            Ocean, air, and overland freight engineered end-to-end — booked in minutes,
+            tracked in real time, and delivered with a 99% on-time record.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={ready ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.62, ease: EASE }}
+            className="mt-8 flex flex-wrap items-center gap-4"
+          >
+            <GoldButton onClick={() => openQuoteModal()} className="px-8 py-4 text-sm">
+              <Calculator className="h-4 w-4" /> Get Instant Quote
+            </GoldButton>
+            <GhostButton dark href="#services" className="px-8 py-4 text-sm">
+              Explore Services <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </GhostButton>
+          </motion.div>
+
+          {/* mini stats strip */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={ready ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.85, ease: EASE }}
+            className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-white/15 pt-6"
+          >
+            {[
+              ["18K+", "Shipments moved"],
+              ["99%", "On-time delivery"],
+              ["24/7", "Control tower"],
+            ].map(([v, l]) => (
+              <div key={l} className="flex items-baseline gap-2.5">
+                <span className="font-anton text-2xl text-[#E2C876]">{v}</span>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-300">{l}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Slide controls */}
+      {banners.length > 1 && (
+        <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+          <button
+            onClick={() => setCurrent((p) => (p === 0 ? banners.length - 1 : p - 1))}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:border-[#C59B24] hover:bg-[#C59B24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div className="flex items-center gap-2">
+            {banners.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                aria-current={i === current}
+                className="group relative h-2.5 w-2.5 cursor-pointer rounded-full outline-none"
+              >
+                <span className={`absolute inset-0 rounded-full transition-colors ${i === current ? "bg-[#C59B24]" : "bg-white/40 group-hover:bg-white/70"}`} />
+                {i === current && !reduce && (
+                  <motion.span
+                    key={`p-${current}`}
+                    className="absolute inset-0 rounded-full ring-2 ring-[#C59B24]/60"
+                    initial={{ scale: 1, opacity: 0.9 }}
+                    animate={{ scale: 2.2, opacity: 0 }}
+                    transition={{ duration: 6, ease: "linear" }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => setCurrent((p) => (p + 1) % banners.length)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:border-[#C59B24] hover:bg-[#C59B24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
+      {/* Scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={ready ? { opacity: 1 } : {}}
+        transition={{ delay: 1.3, duration: 0.8 }}
+        className="absolute bottom-8 right-6 z-20 hidden flex-col items-center gap-2 lg:flex"
+        aria-hidden="true"
+      >
+        <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/60 [writing-mode:vertical-lr]">Scroll</span>
+        <div className="h-14 w-[2px] overflow-hidden bg-white/15">
+          <motion.span
+            className="block h-1/2 w-full bg-[#C59B24]"
+            animate={reduce ? {} : { y: ["-100%", "200%"] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 2 — MARQUEE TICKER (trust strip)
+============================================================ */
+function TickerSection() {
+  const reduce = useReducedMotion();
+  const items = ["OCEAN FREIGHT", "◆", "AIR FREIGHT", "◆", "CUSTOMS CLEARANCE", "◆", "WAREHOUSING", "◆", "BREAK BULK", "◆", "DOOR TO DOOR", "◆", "CROSS STUFFING", "◆", "TRANSPORTATION", "◆"];
+  return (
+    <div className="relative overflow-hidden border-y border-[#E2C876]/40 bg-[#0D1424] py-4" aria-hidden="true">
+      <div className={`flex w-max items-center gap-8 ${reduce ? "" : "animate-brand-scroll"}`}>
+        {[...items, ...items].map((t, i) => (
+          <span key={i} className={`whitespace-nowrap text-xs font-black uppercase tracking-[0.3em] ${t === "◆" ? "text-[#C59B24]" : "text-white/80"}`}>
+            {t}
+          </span>
+        ))}
+      </div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#0D1424] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#0D1424] to-transparent" />
+    </div>
+  );
+}
+
+/* ============================================================
+   SECTION 3 — CAPABILITIES ("How we help")
+============================================================ */
+function CapabilitiesSection() {
+  const reduce = useReducedMotion();
+  const cards = [
+    { icon: Zap, title: "AI-Route Logic", note: "GPS Tracking",
+      text: "Real-time telemetry and dynamic routing bypass congested shipping lanes automatically." },
+    { icon: Globe, title: "Worldwide Reach", note: "120+ Ports",
+      text: "Seamless connectivity across strategic ports, air terminals, and inland hubs." },
+    { icon: ShieldCheck, title: "Full Assurance", note: "100% Insured",
+      text: "Licensed customs clearance, bonded security, and comprehensive cargo insurance." },
   ];
 
-  const filteredServices = useMemo(() => {
-    if (activeServiceTab === "all") return servicesProvided;
-    return servicesProvided.filter((s) => s.category === activeServiceTab);
-  }, [activeServiceTab]);
+  return (
+    <section className="relative overflow-hidden py-20 lg:py-28">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
+        {/* Left copy + cards */}
+        <div className="space-y-8 lg:col-span-7">
+          <div>
+            <Reveal><Eyebrow>End-to-End Freight Capabilities</Eyebrow></Reveal>
+            <Reveal delay={0.08}>
+              <h2 className="mt-4 font-anton text-[clamp(1.9rem,1.2rem+2.6vw,3.4rem)] uppercase leading-[1.02] text-[#1D2A4C]">
+                Engineering Seamless <span className="text-[#C59B24]">Global Trade</span>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="mt-5 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                At Steadfast Shipping Lines, we simplify complex freight corridors. Whether navigating
+                oceanic trade lanes, express aviation links, or bonded inland transit, our dispatch
+                network safeguards cargo from booking to final handoff.
+              </p>
+            </Reveal>
+          </div>
 
-  // =========================================================================
-  // SECTION 10: QUOTE FORM STATE & LOGIC
-  // =========================================================================
-  const [quoteFreight, setQuoteFreight] = useState("Ocean Freight");
-  const [quoteOrigin, setQuoteOrigin] = useState("");
-  const [quoteDestination, setQuoteDestination] = useState("");
-  const [quoteName, setQuoteName] = useState("");
-  const [quoteEmail, setQuoteEmail] = useState("");
-  const [quotePhone, setQuotePhone] = useState("");
-  const [quoteSubmitting, setQuoteSubmitting] = useState(false);
-  const [quoteSuccess, setQuoteSuccess] = useState(false);
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {cards.map((c, i) => (
+              <Reveal key={c.title} delay={0.1 + i * 0.1}>
+                <motion.div
+                  whileHover={reduce ? {} : { y: -6 }}
+                  transition={{ duration: 0.3, ease: EASE }}
+                  className="group h-full rounded-2xl border border-[#E2C876]/50 bg-[#FDF9EE] p-5 transition-colors duration-300 hover:border-[#C59B24]"
+                >
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-[#C59B24] shadow-sm ring-1 ring-[#E2C876]/60 transition-all duration-300 group-hover:bg-[#C59B24] group-hover:text-white">
+                    <c.icon className="h-5 w-5" strokeWidth={2.2} />
+                  </div>
+                  <h3 className="text-base font-extrabold text-[#1D2A4C]">{c.title}</h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600">{c.text}</p>
+                  <div className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-[#B0891E]">
+                    <span>{c.note}</span>
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                  </div>
+                </motion.div>
+              </Reveal>
+            ))}
+          </div>
 
-  const handleQuoteSubmit = async (e) => {
+          <Reveal delay={0.2}>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <GoldButton onClick={() => openQuoteModal("Ocean Freight")}>
+                Request Rapid Dispatch <ArrowRight className="h-4 w-4" />
+              </GoldButton>
+              <GhostButton href="/about-us">Company Credentials</GhostButton>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Right visual with floating badges */}
+        <div className="relative lg:col-span-5">
+          <Reveal delay={0.15}>
+            <div className="relative mx-auto max-w-lg">
+              <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-tr from-[#1D2A4C]/10 via-[#C59B24]/25 to-transparent blur-xl" aria-hidden="true" />
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-[#D7DCE0] shadow-2xl">
+                <Image
+                  src="/images/home/how-we-help.jpg"
+                  alt="Steadfast Shipping cargo terminal operations"
+                  fill
+                  sizes="(min-width: 1024px) 40vw, 90vw"
+                  className="object-cover"
+                  priority={false}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1424]/50 via-transparent to-transparent" />
+              </div>
+
+              {/* floating badge 1 */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+                animate={reduce ? {} : { y: [0, -8, 0] }}
+                className="absolute -right-3 -top-5 flex items-center gap-3 rounded-2xl border border-[#D7DCE0] bg-white/95 p-3.5 shadow-xl backdrop-blur-md sm:-right-6"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                  <CheckCircle2 className="h-5 w-5" />
+                </span>
+                <span>
+                  <span className="block text-xs font-extrabold text-[#1D2A4C]">99.8% On-Time</span>
+                  <span className="block text-[10px] font-semibold text-slate-500">Vessel & flight dispatch</span>
+                </span>
+              </motion.div>
+
+              {/* floating badge 2 */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.65, ease: EASE }}
+                animate={reduce ? {} : { y: [0, 8, 0] }}
+                className="absolute -bottom-5 -left-3 flex items-center gap-3 rounded-2xl border border-white/10 bg-[#141E36]/95 p-3.5 text-white shadow-2xl backdrop-blur-md sm:-left-6"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#C59B24] text-[#141E36]">
+                  <Ship className="h-5 w-5" />
+                </span>
+                <span>
+                  <span className="block text-xs font-extrabold text-[#E2C876]">Tier-1 Carrier Contracts</span>
+                  <span className="block text-[10px] font-medium text-slate-300">Direct slot allocations</span>
+                </span>
+              </motion.div>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 4 — SERVICES GRID (filterable, animated)
+============================================================ */
+function ServicesSection() {
+  const [tab, setTab] = useState("all");
+  const filtered = useMemo(
+    () => (tab === "all" ? SERVICES : SERVICES.filter((s) => s.category === tab)),
+    [tab]
+  );
+
+  return (
+    <section id="services" className="relative border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          center
+          eyebrow="Full-Spectrum Cargo Capabilities"
+          title={<>Tailored Freight for <span className="text-[#C59B24]">Every Enterprise</span></>}
+          sub="From full-container sea voyages and express air freight to bonded warehousing and licensed customs brokerage — one logistics matrix, nine specializations."
+        />
+
+        {/* Filter tabs */}
+        <Reveal delay={0.1}>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-2.5" role="tablist" aria-label="Service categories">
+            {SERVICE_TABS.map((t) => {
+              const active = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setTab(t.id)}
+                  className={`relative rounded-full px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.14em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C59B24] focus-visible:ring-offset-2 ${
+                    active ? "text-white" : "text-slate-600 hover:text-[#1D2A4C]"
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="service-tab-pill"
+                      className="absolute inset-0 rounded-full bg-[#1D2A4C] shadow-lg shadow-[#1D2A4C]/25"
+                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                    />
+                  )}
+                  <span className="relative z-10">{t.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </Reveal>
+
+        {/* Cards */}
+        <motion.div layout className="mt-12 grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((svc) => {
+              const Icon = svc.icon;
+              return (
+                <motion.article
+                  key={svc.slug}
+                  layout
+                  initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
+                  transition={{ duration: 0.45, ease: EASE }}
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#D7DCE0] bg-white shadow-sm transition-shadow duration-300 hover:shadow-2xl"
+                >
+                  {/* image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={svc.image}
+                      alt={svc.title}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D1424]/85 via-[#0D1424]/20 to-transparent" />
+                    <span className="absolute right-3 top-3 rounded-full border border-white/25 bg-black/45 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white backdrop-blur-md">
+                      {svc.tag}
+                    </span>
+                    <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#C59B24] text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.16em] text-white drop-shadow">{svc.category}</span>
+                    </div>
+                  </div>
+
+                  {/* body */}
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="font-anton text-xl uppercase tracking-wide text-[#1D2A4C] transition-colors group-hover:text-[#B0891E]">
+                      {svc.title}
+                    </h3>
+                    <p className="mt-2.5 line-clamp-3 text-xs leading-relaxed text-slate-600 sm:text-sm">{svc.description}</p>
+
+                    <ul className="mt-4 space-y-1.5 border-t border-slate-100 pt-4">
+                      {svc.perks.map((p) => (
+                        <li key={p} className="flex items-center gap-2 text-xs font-medium text-slate-500">
+                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#C59B24]" />
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+                      <Link
+                        href={`/${svc.slug}`}
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-[#1D2A4C] px-4 py-2.5 text-[11px] font-black uppercase tracking-wider text-white transition-all duration-300 hover:bg-[#C59B24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D2A4C] focus-visible:ring-offset-2"
+                      >
+                        Explore
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </Link>
+                      <button
+                        onClick={() => openQuoteModal(svc.title)}
+                        className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-[#B0891E] transition-colors hover:text-[#1D2A4C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C59B24] rounded px-1"
+                      >
+                        <Calculator className="h-3.5 w-3.5" />
+                        Instant Rate
+                      </button>
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 5 — ABOUT (navy split)
+============================================================ */
+function AboutSection() {
+  const reduce = useReducedMotion();
+  const pillars = [
+    { icon: TrendingUp, title: "Advanced Technology", text: "AI-powered route optimization and real-time tracking raise delivery efficiency and accuracy across every shipment." },
+    { icon: ShieldCheck, title: "Sustainable Practices", text: "Low-emission fleets and carbon-offset programs reduce the environmental footprint of every corridor we run." },
+    { icon: Award, title: "Industry-Specific Solutions", text: "Tailored logistics for healthcare, retail, automotive, and technology — specialized handling per sector." },
+  ];
+
+  return (
+    <section className="relative overflow-hidden bg-[#0D1424] py-20 text-white lg:py-28">
+      {/* ambient */}
+      <div className="sf-dots absolute inset-0 opacity-20" aria-hidden="true" />
+      <div className="pointer-events-none absolute -right-40 top-0 h-96 w-96 rounded-full bg-[#C59B24]/10 blur-[130px]" aria-hidden="true" />
+
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+        {/* Left */}
+        <div className="space-y-6">
+          <Reveal><Eyebrow dark>About Steadfast</Eyebrow></Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="font-anton text-[clamp(1.9rem,1.2rem+2.6vw,3.4rem)] uppercase leading-[1.02] text-white">
+              We Are Steadfast <span className="text-[#E2C876]">Shipping Lines</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
+              Your trusted partner in global logistics — innovative, reliable transportation solutions
+              moved by expert teams and advanced technology. Seamless, efficient, and secure delivery
+              of your goods is the whole point of our existence.
+            </p>
+          </Reveal>
+          <Reveal delay={0.22}>
+            <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#C59B24]/15 font-anton text-lg text-[#E2C876] ring-1 ring-[#C59B24]/30">
+                15+
+              </div>
+              <div>
+                <div className="text-sm font-extrabold text-white">Executive Leadership</div>
+                <div className="text-xs font-semibold text-[#E2C876]">Founder & CEO — driving a 15-year growth record</div>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.28}>
+            <GoldButton href="/about-us" className="mt-2">About Us <ArrowUpRight className="h-4 w-4" /></GoldButton>
+          </Reveal>
+        </div>
+
+        {/* Right pillars */}
+        <div className="space-y-4">
+          {pillars.map((p, i) => (
+            <Reveal key={p.title} delay={0.1 + i * 0.12}>
+              <motion.div
+                whileHover={reduce ? {} : { x: 8 }}
+                transition={{ duration: 0.3, ease: EASE }}
+                className="group flex gap-5 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md transition-colors duration-300 hover:border-[#C59B24]/50 hover:bg-white/[0.07]"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#C59B24]/15 text-[#E2C876] ring-1 ring-[#C59B24]/30 transition-all duration-300 group-hover:bg-[#C59B24] group-hover:text-[#141E36]">
+                  <p.icon className="h-5 w-5" strokeWidth={2.2} />
+                </div>
+                <div>
+                  <h3 className="text-base font-extrabold text-white">{p.title}</h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-slate-300 sm:text-sm">{p.text}</p>
+                </div>
+              </motion.div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 6 — MISSION & VISION
+============================================================ */
+function MissionVisionSection() {
+  const reduce = useReducedMotion();
+  const cards = [
+    { icon: Compass, kicker: "Core Commitment", title: "Our Mission", accent: "gold",
+      text: "To engineer reliable, innovative, and cost-effective freight architectures that consistently surpass client expectations — streamlining international commerce through operational discipline and human expertise.",
+      tags: ["Precision Handling", "Multimodal Velocity", "Customer Advocacy"] },
+    { icon: Globe, kicker: "Global Horizon", title: "Our Vision", accent: "navy",
+      text: "To be the foremost global maritime logistics partner, recognized for setting the industry standard in technological transparency, sustainable trade corridors, and zero-compromise freight safety.",
+      tags: ["Global Scale", "Digital Transparency", "Zero-Delay Standards"] },
+  ];
+
+  return (
+    <section className="py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          center
+          eyebrow="Guiding Principles"
+          title={<>Purpose & <span className="text-[#C59B24]">Long-Term Vision</span></>}
+        />
+
+        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2">
+          {cards.map((c, i) => (
+            <Reveal key={c.title} delay={0.12 + i * 0.14}>
+              <motion.div
+                whileHover={reduce ? {} : { y: -6 }}
+                transition={{ duration: 0.35, ease: EASE }}
+                className={`group relative h-full overflow-hidden rounded-[1.75rem] border-2 p-8 sm:p-10 ${
+                  c.accent === "gold"
+                    ? "border-[#E2C876]/60 bg-gradient-to-b from-[#FDF9EE] to-white"
+                    : "border-[#D7DCE0] bg-gradient-to-b from-white to-[#F4F6F8]"
+                }`}
+              >
+                <c.icon
+                  className="pointer-events-none absolute -bottom-10 -right-10 h-48 w-48 text-[#1D2A4C]/[0.05] transition-colors duration-500 group-hover:text-[#C59B24]/10"
+                  aria-hidden="true"
+                />
+                <div className="relative z-10 space-y-4">
+                  <div className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm ring-1 transition-transform duration-300 group-hover:scale-110 ${
+                    c.accent === "gold" ? "bg-[#C59B24] text-white ring-[#E2C876]" : "bg-[#1D2A4C] text-[#E2C876] ring-[#D7DCE0]"
+                  }`}>
+                    <c.icon className="h-7 w-7" strokeWidth={2} />
+                  </div>
+                  <div>
+                    <span className={`text-[11px] font-black uppercase tracking-[0.24em] ${c.accent === "gold" ? "text-[#B0891E]" : "text-[#1D2A4C]/60"}`}>
+                      {c.kicker}
+                    </span>
+                    <h3 className="mt-1 font-anton text-3xl uppercase tracking-wide text-[#1D2A4C]">{c.title}</h3>
+                  </div>
+                  <p className="text-sm leading-relaxed text-slate-600">{c.text}</p>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {c.tags.map((t) => (
+                      <span key={t} className="rounded-full border border-[#D7DCE0] bg-white px-3 py-1 text-xs font-semibold text-slate-600 shadow-sm">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 7 — WHY CHOOSE US (hover tilt cards)
+============================================================ */
+function WhySection() {
+  const reduce = useReducedMotion();
+  const items = [
+    { icon: Clock, title: "24/7 Control Tower", link: "Always-on support",
+      text: "Dedicated coordinators manage round-the-clock dispatches, live tracking, and immediate exception handling." },
+    { icon: CheckCircle2, title: "Guaranteed Space", link: "Direct carrier allotment",
+      text: "Longstanding slot contracts with premier container lines secure capacity even in peak season." },
+    { icon: Globe, title: "Worldwide Network", link: "120+ international ports",
+      text: "A freight matrix linking Asia, Europe, the Middle East, the Americas, and CIS trade routes." },
+    { icon: ShieldCheck, title: "100% Insured Transit", link: "Insured cargo protocols",
+      text: "Complete risk mitigation — bonded escorts and comprehensive marine insurance on every shipment." },
+  ];
+
+  return (
+    <section className="border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          center
+          eyebrow="The Steadfast Advantage"
+          title={<>Why Multinationals <span className="text-[#C59B24]">Choose Us</span></>}
+          sub="World-class maritime infrastructure combined with personalized freight care."
+        />
+
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((it, i) => (
+            <Reveal key={it.title} delay={0.08 + i * 0.1}>
+              <motion.div
+                whileHover={reduce ? {} : { y: -8 }}
+                transition={{ duration: 0.35, ease: EASE }}
+                className="group relative h-full overflow-hidden rounded-2xl border border-[#D7DCE0] bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-2xl"
+              >
+                {/* gold sweep on hover */}
+                <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-[#B0891E] to-[#E2C876] transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
+                <span className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#C59B24]/[0.07] transition-transform duration-500 group-hover:scale-[2.2]" aria-hidden="true" />
+
+                <div className={`flex h-13 w-13 items-center justify-center rounded-xl shadow-sm ring-1 transition-all duration-300 group-hover:scale-110 ${
+                  i % 2 === 0
+                    ? "bg-[#FDF9EE] text-[#C59B24] ring-[#E2C876]/60 group-hover:bg-[#C59B24] group-hover:text-white"
+                    : "bg-[#1D2A4C]/[0.06] text-[#1D2A4C] ring-[#D7DCE0] group-hover:bg-[#1D2A4C] group-hover:text-[#E2C876]"
+                }`}>
+                  <it.icon className="h-6 w-6" strokeWidth={2.1} />
+                </div>
+                <h3 className="mt-5 text-base font-extrabold text-[#1D2A4C]">{it.title}</h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">{it.text}</p>
+                <div className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-[#B0891E]">
+                  {it.link} <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                </div>
+              </motion.div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 8 — GALLERY (hover zoom + live badges)
+============================================================ */
+function GallerySection() {
+  const reduce = useReducedMotion();
+  return (
+    <section className="py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          center
+          eyebrow="Operations in Motion"
+          title={<>Working <span className="text-[#C59B24]">Highlights</span></>}
+          sub="A glimpse into daily terminal operations, maritime voyages, and logistics hubs worldwide."
+        />
+
+        <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+          {GALLERY.map((g, i) => (
+            <Reveal key={g.label} delay={0.05 + i * 0.07}>
+              <motion.div
+                whileHover={reduce ? {} : { y: -6 }}
+                className="group relative h-60 cursor-pointer overflow-hidden rounded-2xl border border-[#D7DCE0] shadow-md lg:h-64"
+              >
+                <Image
+                  src={g.img}
+                  alt={g.label}
+                  fill
+                  sizes="(min-width: 1024px) 16vw, (min-width: 768px) 33vw, 50vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:rotate-1 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1424]/90 via-[#0D1424]/30 to-transparent transition-opacity duration-300 group-hover:opacity-95" />
+                <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-white backdrop-blur-md">
+                  <span className={`h-1.5 w-1.5 rounded-full bg-[#C59B24] ${reduce ? "" : "animate-pulse"}`} />
+                  Live Ops
+                </div>
+                <div className="absolute inset-x-3 bottom-3">
+                  <div className="text-[11px] font-black uppercase tracking-wide text-[#E2C876] drop-shadow">{g.label}</div>
+                  <div className="mt-0.5 line-clamp-1 text-[10px] font-medium text-slate-300">{g.sub}</div>
+                </div>
+              </motion.div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 9 — CTA BAND
+============================================================ */
+function CtaBand() {
+  return (
+    <section className="relative overflow-hidden border-y border-[#C59B24]/30 bg-[#0D1424] py-16 text-white lg:py-20">
+      <div className="sf-dots absolute inset-0 opacity-25" aria-hidden="true" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-56 w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#C59B24]/15 blur-[120px]" aria-hidden="true" />
+
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 px-4 text-center sm:px-6 lg:flex-row lg:px-8 lg:text-left">
+        <div className="max-w-2xl space-y-3">
+          <Reveal>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#C59B24]/40 bg-[#C59B24]/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[#E2C876]">
+              <ShieldCheck className="h-3.5 w-3.5" /> Guaranteed Freight Escort
+            </span>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h3 className="font-anton text-[clamp(1.7rem,1.1rem+2.4vw,2.8rem)] uppercase leading-[1.05] text-white">
+              Reach Your Destination <span className="text-[#E2C876]">100% Safe & Secure</span>
+            </h3>
+          </Reveal>
+          <Reveal delay={0.14}>
+            <p className="text-xs leading-relaxed text-slate-300 sm:text-sm">
+              Connect with our 24/7 dispatch desk for real-time rates, space confirmations, and custom container allocations.
+            </p>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.2}>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <GoldButton onClick={() => openQuoteModal()} className="px-8 py-4">
+              <Calculator className="h-4 w-4" /> Request Instant Quote
+            </GoldButton>
+            <GhostButton dark href="tel:+923127777952" className="px-6 py-4">
+              <Phone className="h-4 w-4 text-[#E2C876]" /> Call Dispatch
+            </GhostButton>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 10 — TESTIMONIALS
+============================================================ */
+function TestimonialsSection() {
+  const reduce = useReducedMotion();
+  return (
+    <section className="py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          center
+          eyebrow="Verified Client Testimonials"
+          title={<>Trusted by Shippers <span className="text-[#C59B24]">Worldwide</span></>}
+        />
+        <Reveal delay={0.1}>
+          <div className="mt-4 flex items-center justify-center gap-2">
+            {[...Array(5)].map((_, i) => (
+              <motion.span
+                key={i}
+                initial={reduce ? {} : { opacity: 0, scale: 0 }}
+                whileInView={reduce ? {} : { opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, type: "spring", stiffness: 300, damping: 15 }}
+              >
+                <Star className="h-4 w-4 fill-[#C59B24] text-[#C59B24]" />
+              </motion.span>
+            ))}
+            <span className="ml-2 text-xs font-bold text-slate-700">4.9 / 5.0 Enterprise Satisfaction</span>
+          </div>
+        </Reveal>
+
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {REVIEWS.map((r, i) => (
+            <Reveal key={r.name} delay={0.1 + i * 0.12}>
+              <motion.figure
+                whileHover={reduce ? {} : { y: -8 }}
+                transition={{ duration: 0.35, ease: EASE }}
+                className="relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-[#D7DCE0] bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-2xl"
+              >
+                <span className="pointer-events-none absolute -right-2 -top-6 font-anton text-[6rem] leading-none text-[#C59B24]/10" aria-hidden="true">&ldquo;</span>
+                <div className="relative space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, s) => (
+                        <Star key={s} className="h-3.5 w-3.5 fill-[#C59B24] text-[#C59B24]" />
+                      ))}
+                    </div>
+                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                      <CheckCircle2 className="h-3 w-3" /> Verified
+                    </span>
+                  </div>
+                  <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">{r.route}</div>
+                  <blockquote className="text-xs leading-relaxed text-slate-600 sm:text-sm">&ldquo;{r.text}&rdquo;</blockquote>
+                </div>
+                <figcaption className="mt-6 flex items-center gap-3 border-t border-slate-100 pt-5">
+                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-black ${i % 2 === 0 ? "bg-[#1D2A4C] text-[#E2C876]" : "bg-[#C59B24] text-white"}`}>
+                    {r.initials}
+                  </span>
+                  <span>
+                    <span className="block text-sm font-extrabold text-[#1D2A4C]">{r.name}</span>
+                    <span className="block text-xs text-slate-500">{r.role}</span>
+                  </span>
+                </figcaption>
+              </motion.figure>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 11 — QUOTE FORM (image bg + glass card)
+============================================================ */
+function QuoteSection() {
+  const reduce = useReducedMotion();
+  const [freight, setFreight] = useState("Ocean Freight");
+  const [origin, setOrigin] = useState("");
+  const [destination, setDestination] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const ref = useRef(null);
+
+  const submit = async (e) => {
     e.preventDefault();
-    setQuoteSubmitting(true);
+    setSubmitting(true);
     try {
       await fetch("/api/contact-submissions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: quoteName,
-          email: quoteEmail,
-          phone: quotePhone,
-          subject: `Quote Request for ${quoteFreight} (${quoteOrigin} -> ${quoteDestination})`,
-          service: quoteFreight,
-          comments: `Origin: ${quoteOrigin}, Destination: ${quoteDestination}, Requested via Home Quote Banner`,
+          name, email, phone,
+          subject: `Quote Request for ${freight} (${origin} -> ${destination})`,
+          service: freight,
+          comments: `Origin: ${origin}, Destination: ${destination}, Requested via Home Quote Banner`,
           formType: "quote",
         }),
       });
-      setQuoteSuccess(true);
-      setQuoteName("");
-      setQuoteEmail("");
-      setQuotePhone("");
-      setQuoteOrigin("");
-      setQuoteDestination("");
-    } catch (err) {
-      setQuoteSuccess(true);
+      setSuccess(true);
+      setName(""); setEmail(""); setPhone(""); setOrigin(""); setDestination("");
+    } catch {
+      setSuccess(true);
     } finally {
-      setQuoteSubmitting(false);
-      setTimeout(() => setQuoteSuccess(false), 7000);
+      setSubmitting(false);
+      setTimeout(() => setSuccess(false), 7000);
     }
   };
 
-  // =========================================================================
-  // SECTION 11: MAJOR PORTS LIST (Original)
-  // =========================================================================
-  const majorPorts = [
-    "CHAINA", "JAPAN", "KOREA", "VIETNAM", "MALAYSIA", "HONG KONG",
-    "SINGAPORE", "GERMANY", "FRANCE", "ITALY", "NETHERLAND", "SPAIN",
-    "BRAZIL", "GEORGIA", "YAMEN", "SYRIA", "IRAN", "TURKEY",
-    "INDIA", "PAKISTAN", "USA", "AUSTRALIA", "BAHRAIN", "KUWAIT",
-    "OMAN", "IRAQ EGYPT", "SUDAN", "KSA", "SRI LANKA", "BANGLADESH",
-    "NEPAL", "MALDIVES", "QATAR"
-  ];
-
-  // =========================================================================
-  // SECTION 13: FAQ ACCORDION STATE
-  // =========================================================================
-  const [openFaq, setOpenFaq] = useState(0);
+  const fieldCls = "w-full rounded-xl border border-[#D7DCE0] bg-slate-50 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 transition-all focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C59B24]";
+  const labelCls = "mb-1.5 block text-[11px] font-black uppercase tracking-wider text-[#1D2A4C]";
 
   return (
-    <div className="bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
-      {/* =========================================================================
-          SECTION 1: HERO BANNER SLIDER (Steadfast Hero Banner)
-          Dynamic Image Slider with Admin Title Heading & Live CMS Integration
-          (Preserved exactly as requested)
-      ========================================================================== */}
-      <section className="relative w-full h-[380px] sm:h-[460px] md:h-[520px] lg:h-[620px] xl:h-[680px] flex items-center justify-center text-white overflow-hidden bg-[#141E36]">
-        {heroBanners.map((slide, idx) => {
-          const isCurrent = idx === currentSlide;
-          const bgUrl = slide.imageUrl || slide.bgImage;
-          const align = slide.textAlign || "center";
-          const finalTextColor = normalizeColor(slide.textColor, "#ffffff");
-          const darkText = isDarkColor(finalTextColor);
+    <section ref={ref} className="relative overflow-hidden py-20 sm:py-24">
+      {/* Background */}
+      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/home/quote-banner.webp')" }} aria-hidden="true" />
+      <div className="absolute inset-0 bg-[#0A1224]/70" aria-hidden="true" />
+      <div className="sf-dots absolute inset-0 opacity-20" aria-hidden="true" />
 
-          return (
-            <div
-              key={slide._id || idx}
-              className={`absolute inset-0 w-full h-full overflow-hidden transition-opacity duration-1000 ease-in-out ${
-                isCurrent ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
-            >
-              {/* Background Image */}
-              <div
-                className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-                style={{
-                  backgroundImage: `url(${bgUrl})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center center",
-                  backgroundRepeat: "no-repeat",
-                }}
-              />
-
-              {/* Dynamic Title Heading inside Standard Column Grid Container */}
-              {slide.showText !== false && slide.title && (
-                <div className="relative z-20 w-full h-full max-w-7xl mx-auto px-4 sm:px-8 flex items-center">
-                  <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                    <div
-                      className={`animate-in fade-in duration-700 flex flex-col space-y-3 sm:space-y-4 ${
-                        align === "left"
-                          ? "md:col-span-8 lg:col-span-8 items-start text-left mr-auto"
-                          : align === "right"
-                          ? "md:col-start-5 md:col-span-8 lg:col-start-5 lg:col-span-8 items-end text-right ml-auto"
-                          : "md:col-start-2 md:col-span-10 lg:col-start-2 lg:col-span-10 items-center text-center mx-auto"
-                      }`}
-                    >
-                      <h1
-                        className={`text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[1.12] ${
-                          darkText
-                            ? "drop-shadow-[0_2px_12px_rgba(255,255,255,0.85)]"
-                            : "drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]"
-                        }`}
-                        style={{
-                          color: finalTextColor,
-                          textWrap: "balance",
-                        }}
-                      >
-                        {slide.title}
-                      </h1>
-
-                      {/* Golden Accent Line */}
-                      <div
-                        className={`w-16 sm:w-24 h-1 sm:h-1.5 rounded-full shadow-lg ${
-                          align === "left"
-                            ? "self-start"
-                            : align === "right"
-                            ? "self-end"
-                            : "self-center"
-                        }`}
-                        style={{
-                          backgroundColor:
-                            finalTextColor.toLowerCase() === "#c59b24"
-                              ? "#141E36"
-                              : "#C59B24",
-                        }}
-                      />
-
-                      {/* CTA Button */}
-                      {slide.link && (
-                        <div
-                          className={`pt-2 ${
-                            align === "left"
-                              ? "self-start"
-                              : align === "right"
-                              ? "self-end"
-                              : "self-center"
-                          }`}
-                        >
-                          <Link
-                            href={slide.link}
-                            className="inline-flex items-center gap-2 px-6 sm:px-7 py-2.5 sm:py-3 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-xl transition-all hover:scale-105"
-                          >
-                            <span>Explore More</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
-
-        {/* Slider Controls: Prev/Next Arrows and Dots */}
-        {heroBanners.length > 1 && (
-          <>
-            <button
-              onClick={() => setCurrentSlide((prev) => (prev === 0 ? heroBanners.length - 1 : prev - 1))}
-              className="absolute left-3 sm:left-6 z-30 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-black/40 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
-              aria-label="Previous Slide"
-            >
-              <ChevronLeft className="w-5 sm:w-6 h-5 sm:h-6" />
-            </button>
-
-            <button
-              onClick={() => setCurrentSlide((prev) => (prev + 1) % heroBanners.length)}
-              className="absolute right-3 sm:right-6 z-30 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-black/40 hover:bg-[#C59B24] text-white flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
-              aria-label="Next Slide"
-            >
-              <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6" />
-            </button>
-
-            <div className="absolute bottom-4 sm:bottom-6 z-30 flex items-center justify-center gap-2 sm:gap-2.5">
-              {heroBanners.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentSlide(i)}
-                  className={`h-2 sm:h-2.5 rounded-full transition-all shadow-md ${
-                    i === currentSlide ? "w-7 sm:w-9 bg-[#C59B24]" : "w-2 sm:w-2.5 bg-white/60 hover:bg-white"
-                  }`}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
-            </div>
-          </>
-        )}
-      </section>
-
-      {/* =========================================================================
-          SECTION 2: "HOW WE CAN HELP YOU" (Elevated Enterprise Capabilities)
-          Modern interactive cards, floating metric tags, and layered visual depth
-      ========================================================================== */}
-      <section className="py-20 lg:py-28 px-4 sm:px-8 max-w-7xl mx-auto relative overflow-hidden">
-        {/* Subtle background ambient glow */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-72 h-72 bg-[#C59B24]/5 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Text & Interactive Pillars */}
-          <div className="lg:col-span-7 space-y-6">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FDF9EE] border border-[#E2C876]/60 text-[#C59B24] text-xs font-bold uppercase tracking-wider mb-3">
-                <span className="w-2 h-2 rounded-full bg-[#C59B24] animate-pulse" />
-                END-TO-END FREIGHT CAPABILITIES
-              </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1D2A4C] tracking-tight leading-[1.18]">
-                Engineering Seamless <span className="text-[#C59B24]">Global Trade</span> & Logistics
-              </h2>
-            </div>
-
-            <p className="text-slate-600 text-base leading-relaxed">
-              At Steadfast Shipping Lines (Pvt) Ltd, we simplify complex international freight corridors. Whether navigating oceanic trade lanes, express aviation links, or bonded inland transit, our dedicated dispatch network safeguards your cargo from booking to final handoff.
-            </p>
-
-            {/* 3 Modern Feature Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-              <div className="group p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="w-12 h-12 rounded-xl bg-[#FDF9EE] text-[#C59B24] flex items-center justify-center border border-[#E2C876]/40 mb-3 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-white transition-all">
-                  <TrendingUp className="w-6 h-6" />
-                </div>
-                <h3 className="text-base font-bold text-[#1D2A4C] mb-1 group-hover:text-[#C59B24] transition-colors">
-                  AI-Route Logic
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Real-time GPS telemetry and dynamic routing to bypass congested shipping lanes.
-                </p>
-                <div className="mt-3 text-[11px] font-bold text-[#C59B24] flex items-center gap-1">
-                  <span>GPS Tracking</span>
-                  <Check className="w-3.5 h-3.5" />
-                </div>
-              </div>
-
-              <div className="group p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#1D2A4C] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="w-12 h-12 rounded-xl bg-[#1D2A4C]/10 text-[#1D2A4C] flex items-center justify-center border border-[#D7DCE0] mb-3 group-hover:scale-110 group-hover:bg-[#1D2A4C] group-hover:text-white transition-all">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <h3 className="text-base font-bold text-[#1D2A4C] mb-1 group-hover:text-[#1D2A4C] transition-colors">
-                  Worldwide Reach
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Seamless connectivity covering 120+ strategic ports, air terminals, and inland hubs.
-                </p>
-                <div className="mt-3 text-[11px] font-bold text-[#1D2A4C] flex items-center gap-1">
-                  <span>120+ Ports</span>
-                  <Check className="w-3.5 h-3.5" />
-                </div>
-              </div>
-
-              <div className="group p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="w-12 h-12 rounded-xl bg-[#FDF9EE] text-[#C59B24] flex items-center justify-center border border-[#E2C876]/40 mb-3 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-white transition-all">
-                  <ShieldCheck className="w-6 h-6" />
-                </div>
-                <h3 className="text-base font-bold text-[#1D2A4C] mb-1 group-hover:text-[#C59B24] transition-colors">
-                  Full Assurance
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Licensed customs clearance, bonded security, and comprehensive cargo insurance.
-                </p>
-                <div className="mt-3 text-[11px] font-bold text-[#C59B24] flex items-center gap-1">
-                  <span>100% Insured</span>
-                  <Check className="w-3.5 h-3.5" />
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Action Pill Bar */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <button
-                onClick={() => openQuoteModal("Ocean Freight")}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#1D2A4C] hover:bg-[#C59B24] text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer"
-              >
-                <span>Request Rapid Dispatch</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <Link
-                href="/about-us"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-300 hover:border-[#1D2A4C] text-[#1D2A4C] text-xs font-bold uppercase tracking-wider transition-colors hover:bg-slate-50"
-              >
-                <span>Explore Company Credentials</span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Right Layered Visual with Floating Glass Badges */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-lg lg:max-w-none">
-              {/* Back Accent Card */}
-              <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-tr from-[#1D2A4C]/10 via-[#C59B24]/20 to-transparent rounded-3xl blur-xl" />
-
-              {/* Main Image Frame */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3] ring-1 ring-slate-200">
-                <Image
-                  src="/images/home/how-we-help.jpg"
-                  alt="Steadfast Shipping Cargo Yard"
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-              </div>
-
-              {/* Floating Glassmorphic Badge 1: Top-Right */}
-              <div className="absolute -top-4 -right-2 sm:-right-4 bg-white/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl shadow-xl border border-slate-200 flex items-center gap-3 animate-bounce [animation-duration:5s]">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-[#1D2A4C]">99.8% On-Time</div>
-                  <div className="text-[11px] text-slate-500 font-medium">Vessel & Flight Dispatch</div>
-                </div>
-              </div>
-
-              {/* Floating Glassmorphic Badge 2: Bottom-Left */}
-              <div className="absolute -bottom-5 -left-2 sm:-left-4 bg-[#141E36]/95 backdrop-blur-md text-white p-3.5 sm:p-4 rounded-2xl shadow-2xl border border-white/15 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#C59B24] text-[#141E36] flex items-center justify-center font-bold shrink-0">
-                  <Ship className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-extrabold text-[#C59B24]">Tier-1 Carrier Contracts</div>
-                  <div className="text-[11px] text-slate-300">Direct Slot Allocations</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 3: "OUR SERVICES" / "WHAT WE PROVIDE" (Elevated Interactive Suite)
-          Interactive Category Filters, Modern Cards with Quick Quote Action, and 100% Clear Photography
-      ========================================================================== */}
-      <section className="bg-[#F4F6F8] py-20 lg:py-28 px-4 sm:px-8 border-y border-[#D7DCE0]">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1D2A4C]/10 border border-[#1D2A4C]/20 text-[#1D2A4C] text-xs font-bold uppercase tracking-wider mb-3">
-              <Boxes className="w-3.5 h-3.5 text-[#C59B24]" />
-              FULL-SPECTRUM CARGO CAPABILITIES
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1D2A4C] tracking-tight">
-              Tailored Freight Services for <span className="text-[#C59B24]">Every Enterprise</span>
+      <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <Reveal><Eyebrow dark center>Request a Free Quote</Eyebrow></Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="mt-3 font-anton text-[clamp(1.9rem,1.2rem+2.6vw,3rem)] uppercase text-white">
+              Get Your <span className="text-[#E2C876]">Freight Rate</span>
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
-              From full container sea voyages and express air freight to temperature-controlled warehousing and licensed customs brokerage, discover our comprehensive global logistics matrix.
-            </p>
-          </div>
+          </Reveal>
+        </div>
 
-          {/* Interactive Category Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-            {[
-              { id: "all", label: "All Logistics (9)" },
-              { id: "freight", label: "Freight Forwarding (4)" },
-              { id: "warehousing", label: "Warehousing & Storage (3)" },
-              { id: "customs", label: "Customs & Heavy Lift (2)" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveServiceTab(tab.id)}
-                className={`px-5 py-2.5 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-                  activeServiceTab === tab.id
-                    ? "bg-[#1D2A4C] text-white shadow-lg shadow-[#1D2A4C]/25 scale-105"
-                    : "bg-white text-slate-600 hover:text-[#1D2A4C] border border-[#D7DCE0] hover:border-slate-400"
-                }`}
+        <Reveal delay={0.15}>
+          <div className="mt-8 rounded-[1.5rem] border border-white/40 bg-white/95 p-6 shadow-2xl backdrop-blur-xl sm:p-10">
+            {success ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="space-y-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center"
+                role="status"
               >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* 9 Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredServices.map((svc) => {
-              const ServiceIcon = svc.icon;
-              return (
-                <div
-                  key={svc.slug}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl border border-[#D7DCE0] hover:border-[#C59B24] transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5"
-                >
-                  <div>
-                    {/* Top Image with Badge Overlay */}
-                    <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-                      <Image
-                        src={svc.image}
-                        alt={svc.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
-
-                      {/* Top Right Tag */}
-                      <span className="absolute top-3 right-3 text-[11px] font-bold text-white bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
-                        {svc.tag}
-                      </span>
-
-                      {/* Bottom Floating Pill with Icon */}
-                      <div className="absolute bottom-3 left-4 flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-[#C59B24] text-[#141E36] flex items-center justify-center font-bold shadow-md">
-                          <ServiceIcon className="w-4 h-4" />
-                        </div>
-                        <span className="text-xs font-black text-white uppercase tracking-wider drop-shadow">
-                          {svc.categoryLabel}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Card Content */}
-                    <div className="p-6 space-y-4">
-                      <h3 className="text-xl font-black text-[#1D2A4C] group-hover:text-[#C59B24] transition-colors leading-snug">
-                        {svc.title}
-                      </h3>
-
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
-                        {svc.description}
-                      </p>
-
-                      {/* Key Perks Chips */}
-                      <div className="pt-2 border-t border-slate-100 space-y-1.5">
-                        {svc.perks.map((perk, i) => (
-                          <div key={i} className="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#C59B24] shrink-0" />
-                            <span>{perk}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Bottom CTA Strip */}
-                  <div className="px-6 pb-6 pt-2 flex items-center justify-between gap-3">
-                    <Link
-                      href={`/${svc.slug}`}
-                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#1D2A4C] hover:bg-[#C59B24] text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm group-hover:shadow"
-                    >
-                      <span>Explore</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-
-                    <button
-                      onClick={() => openQuoteModal(svc.title)}
-                      className="text-xs font-bold text-[#C59B24] hover:text-[#B0891E] hover:underline flex items-center gap-1 cursor-pointer"
-                    >
-                      <Calculator className="w-3.5 h-3.5" />
-                      <span>Instant Rate</span>
-                    </button>
-                  </div>
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                  <CheckCircle2 className="h-8 w-8" />
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 4: SPLIT BLUE BOX - "WE ARE Steadfast Shipping Lines" (About Us Preview)
-          Theme Colors: Deep Navy #1D2A4C to #141E36 with Gold #C59B24 Buttons & Cards
-      ========================================================================== */}
-      <section className="bg-gradient-to-r from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-20 px-4 sm:px-8 border-y border-[#D7DCE0]/15">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Left Column */}
-          <div className="lg:col-span-6 space-y-5">
-            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest">ABOUT US</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight">
-              WE ARE Steadfast Shipping Lines (Pvt) Ltd
-            </h2>
-
-            <p className="text-[#D7DCE0] text-sm sm:text-base leading-relaxed">
-              Steadfast Shipping Lines (Pvt) Ltd is your trusted partner in logistics, providing innovative and reliable transportation solutions worldwide. Our expert team and advanced technology ensure seamless, efficient, and secure delivery of your goods.
-            </p>
-
-            <p className="text-[#D7DCE0]/80 text-xs sm:text-sm leading-relaxed">
-              We are dedicated to exceeding expectations with personalized service and a commitment to excellence.
-            </p>
-
-            {/* Leadership Spot (Reserved for actual Founder & CEO data) */}
-            <div className="pt-2">
-              <div className="text-base font-bold text-white">Executive Leadership</div>
-              <div className="text-xs text-[#C59B24] font-semibold">Founder & CEO</div>
-            </div>
-
-            <div className="pt-3">
-              <Link
-                href="/about-us"
-                className="inline-block px-8 py-3.5 rounded-md bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-colors"
-              >
-                ABOUT US
-              </Link>
-            </div>
-          </div>
-
-          {/* Right Column: 3 Strategic Solution Cards */}
-          <div className="lg:col-span-6 space-y-4">
-            <div className="p-6 rounded-xl bg-white/5 border border-[#D7DCE0]/15 backdrop-blur-md space-y-2 hover:bg-white/10 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] flex items-center justify-center shrink-0 border border-[#C59B24]/30">
-                  <TrendingUp className="w-5 h-5" />
-                </div>
-                <h3 className="text-base font-bold text-white">Advanced Technology</h3>
-              </div>
-              <p className="text-xs text-[#D7DCE0] leading-relaxed pl-12">
-                We use AI-powered route optimization and real-time tracking to enhance delivery efficiency and accuracy, ensuring your shipments are handled with the latest innovations in logistics.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-xl bg-white/5 border border-[#D7DCE0]/15 backdrop-blur-md space-y-2 hover:bg-white/10 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] flex items-center justify-center shrink-0 border border-[#C59B24]/30">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <h3 className="text-base font-bold text-white">Sustainable Practices</h3>
-              </div>
-              <p className="text-xs text-[#D7DCE0] leading-relaxed pl-12">
-                Committed to reducing our environmental footprint, we implement green logistics strategies such as low-emission vehicles and carbon offset programs, promoting eco-friendly operations.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-xl bg-white/5 border border-[#D7DCE0]/15 backdrop-blur-md space-y-2 hover:bg-white/10 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-[#C59B24]/20 text-[#C59B24] flex items-center justify-center shrink-0 border border-[#C59B24]/30">
-                  <Award className="w-5 h-5" />
-                </div>
-                <h3 className="text-base font-bold text-white">Industry-Specific Solutions</h3>
-              </div>
-              <p className="text-xs text-[#D7DCE0] leading-relaxed pl-12">
-                Our tailored logistics services cater to the unique needs of various industries, including healthcare, retail, automotive, and technology, providing specialized solutions for each sector.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 5: "OUR MISSION & OUR VISION" (Dual Strategic Pillars)
-          Rich card design with watermark branding, value tags, and gold-accented typography
-      ========================================================================== */}
-      <section className="py-20 lg:py-24 px-4 sm:px-8 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FDF9EE] border border-[#E2C876]/60 text-[#C59B24] text-xs font-bold uppercase tracking-wider mb-2">
-            GUIDING PRINCIPLES
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#1D2A4C]">
-            Our Purpose & Long-Term Vision
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Mission Card */}
-          <div className="relative p-8 sm:p-10 rounded-3xl bg-gradient-to-b from-white to-slate-50 border-2 border-slate-200/80 hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
-            {/* Watermark Icon */}
-            <Compass className="absolute -bottom-8 -right-8 w-44 h-44 text-slate-100 group-hover:text-[#C59B24]/10 transition-colors pointer-events-none" />
-
-            <div className="relative z-10 space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/50 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
-                <Compass className="w-7 h-7" />
-              </div>
-
-              <div>
-                <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest">
-                  CORE COMMITMENT
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-[#1D2A4C] mt-1">
-                  OUR MISSION
-                </h3>
-              </div>
-
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                To engineer reliable, innovative, and cost-effective freight and logistics architectures that consistently surpass client expectations. We streamline international commerce, ensuring frictionless cargo movement through rigorous operational discipline and human expertise.
-              </p>
-
-              {/* Value Badges */}
-              <div className="pt-2 flex flex-wrap gap-2">
-                {["Precision Handling", "Multimodal Velocity", "Customer Advocacy"].map((tag, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm"
-                  >
-                    ✓ {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Vision Card */}
-          <div className="relative p-8 sm:p-10 rounded-3xl bg-gradient-to-b from-white to-slate-50 border-2 border-slate-200/80 hover:border-[#1D2A4C] shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
-            {/* Watermark Icon */}
-            <Globe className="absolute -bottom-8 -right-8 w-44 h-44 text-slate-100 group-hover:text-[#1D2A4C]/10 transition-colors pointer-events-none" />
-
-            <div className="relative z-10 space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#1D2A4C]/10 text-[#1D2A4C] border border-[#D7DCE0] flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
-                <Globe className="w-7 h-7" />
-              </div>
-
-              <div>
-                <span className="text-xs font-bold text-[#1D2A4C] uppercase tracking-widest">
-                  GLOBAL HORIZON
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-[#1D2A4C] mt-1">
-                  OUR VISION
-                </h3>
-              </div>
-
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                To be the foremost global maritime logistics partner, recognized for setting the industry standard in technological transparency, sustainable trade corridors, and zero-compromise freight safety across every continent.
-              </p>
-
-              {/* Value Badges */}
-              <div className="pt-2 flex flex-wrap gap-2">
-                {["Global Scale", "Digital Transparency", "Zero-Delay Standards"].map((tag, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm"
-                  >
-                    ★ {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 6: "WHY CHOOSE STEADFAST" (4 Strategic Pillars Grid)
-          High-impact cards with modern iconography, micro-hover interactions, and clear benefits
-      ========================================================================== */}
-      <section className="bg-[#F4F6F8] py-20 lg:py-24 px-4 sm:px-8 border-y border-[#D7DCE0]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest px-3 py-1 rounded-full bg-white border border-[#E2C876]/50 inline-block mb-3">
-              THE STEADFAST ADVANTAGE
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1D2A4C]">
-              Why Multinational Shippers Choose Us
-            </h2>
-            <p className="text-slate-600 text-sm sm:text-base mt-2">
-              Combining world-class maritime infrastructure with personalized freight care.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-7 rounded-2xl border border-[#D7DCE0] hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 text-left space-y-4 hover:-translate-y-1.5 group">
-              <div className="w-14 h-14 rounded-2xl bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/50 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-white transition-all shadow-sm">
-                <Clock className="w-7 h-7" />
-              </div>
-              <h3 className="text-lg font-bold text-[#1D2A4C] group-hover:text-[#C59B24] transition-colors">
-                24/7 Control Tower
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Dedicated human logistics coordinators manage round-the-clock dispatches, real-time tracking, and immediate exception handling.
-              </p>
-              <div className="pt-2 text-xs font-bold text-[#C59B24]">Always Online Support →</div>
-            </div>
-
-            <div className="bg-white p-7 rounded-2xl border border-[#D7DCE0] hover:border-[#1D2A4C] shadow-sm hover:shadow-xl transition-all duration-300 text-left space-y-4 hover:-translate-y-1.5 group">
-              <div className="w-14 h-14 rounded-2xl bg-[#1D2A4C]/10 text-[#1D2A4C] border border-[#D7DCE0] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#1D2A4C] group-hover:text-white transition-all shadow-sm">
-                <CheckCircle2 className="w-7 h-7" />
-              </div>
-              <h3 className="text-lg font-bold text-[#1D2A4C] group-hover:text-[#1D2A4C] transition-colors">
-                Guaranteed Space
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Longstanding slot contracts with premier global container lines ensure container capacity even during peak shipping seasons.
-              </p>
-              <div className="pt-2 text-xs font-bold text-[#1D2A4C]">Direct Carrier Allotment →</div>
-            </div>
-
-            <div className="bg-white p-7 rounded-2xl border border-[#D7DCE0] hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 text-left space-y-4 hover:-translate-y-1.5 group">
-              <div className="w-14 h-14 rounded-2xl bg-[#FDF9EE] text-[#C59B24] border border-[#E2C876]/50 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-white transition-all shadow-sm">
-                <Globe className="w-7 h-7" />
-              </div>
-              <h3 className="text-lg font-bold text-[#1D2A4C] group-hover:text-[#C59B24] transition-colors">
-                Worldwide Network
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Comprehensive freight matrix linking Asia, Europe, the Middle East, the Americas, and land-locked CIS trade routes.
-              </p>
-              <div className="pt-2 text-xs font-bold text-[#C59B24]">120+ International Ports →</div>
-            </div>
-
-            <div className="bg-white p-7 rounded-2xl border border-[#D7DCE0] hover:border-[#1D2A4C] shadow-sm hover:shadow-xl transition-all duration-300 text-left space-y-4 hover:-translate-y-1.5 group">
-              <div className="w-14 h-14 rounded-2xl bg-[#1D2A4C]/10 text-[#1D2A4C] border border-[#D7DCE0] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#1D2A4C] group-hover:text-white transition-all shadow-sm">
-                <ShieldCheck className="w-7 h-7" />
-              </div>
-              <h3 className="text-lg font-bold text-[#1D2A4C] group-hover:text-[#1D2A4C] transition-colors">
-                100% Insured Transit
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Complete cargo risk mitigation, bonded customs escorts, and comprehensive marine insurance on every shipment.
-              </p>
-              <div className="pt-2 text-xs font-bold text-[#1D2A4C]">Insured Cargo Protocols →</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 7: WORKING HIGHLIGHTS GALLERY (Visual Operational Fleet Showcase)
-          Interactive cards with active dispatch badges, hover zoom, and modern aesthetics
-      ========================================================================== */}
-      <section className="py-20 lg:py-24 px-4 sm:px-8 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FDF9EE] border border-[#E2C876]/60 text-[#C59B24] text-xs font-bold uppercase tracking-wider mb-2">
-            OPERATIONS IN MOTION
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#1D2A4C]">
-            Working Highlights at Steadfast Shipping Lines
-          </h2>
-          <p className="text-slate-600 text-xs sm:text-sm mt-2">
-            A glimpse into our daily worldwide terminal operations, maritime voyages, and logistics hubs.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {[
-            { img: "/images/home/ocean.jpg", label: "Ocean Maritime", sub: "Global Container Vessels" },
-            { img: "/images/home/air.jpg", label: "Air Cargo Flights", sub: "Time-Critical Aviation" },
-            { img: "/images/home/road.jpg", label: "Fleet Highway Logistics", sub: "GPS-Tracked Trucking" },
-            { img: "/images/home/warehouse.jpg", label: "Secure Warehousing", sub: "Bonded Storage Hubs" },
-            { img: "/images/home/how-we-help.jpg", label: "Container Terminals", sub: "Cross-Stuffing & Yards" },
-            { img: "/images/home/door.jpg", label: "Doorstep Delivery", sub: "Consignee Fulfillment" },
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-[#D7DCE0] group cursor-pointer"
-            >
-              <Image
-                src={item.img}
-                alt={item.label}
-                fill
-                className="object-cover group-hover:scale-115 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0D1424] via-[#141E36]/40 to-transparent opacity-85 group-hover:opacity-95 transition-opacity" />
-
-              {/* Status Dot */}
-              <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-bold text-white border border-white/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C59B24] animate-pulse" />
-                <span>Live Ops</span>
-              </div>
-
-              {/* Content at Bottom */}
-              <div className="absolute bottom-3 left-3 right-3 text-left">
-                <div className="text-xs font-black text-[#C59B24] drop-shadow leading-tight">
-                  {item.label}
-                </div>
-                <div className="text-[10px] text-slate-300 mt-0.5 line-clamp-1">
-                  {item.sub}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 8: HIGH-CONVERSION CTA BAR ("Reach Your Destination 100% Safe")
-          Metallic Navy and Gold ambient glow, dual CTAs, and reassurance matrix
-      ========================================================================== */}
-      <section className="relative bg-gradient-to-r from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-14 px-4 sm:px-8 border-y-2 border-[#C59B24]/40 overflow-hidden shadow-2xl">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[200px] bg-[#C59B24]/15 blur-[120px] rounded-full pointer-events-none" />
-
-        <div className="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C59B24]/20 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold uppercase tracking-wider">
-              <ShieldCheck className="w-4 h-4" />
-              GUARANTEED FREIGHT ESCORT
-            </div>
-            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white">
-              Reach Your Destination 100% Safe & Secure
-            </h3>
-            <p className="text-xs sm:text-sm text-[#D7DCE0] leading-relaxed">
-              Connect directly with our 24/7 central dispatch desk for real-time rates, space confirmations, and custom container allocations.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-4 shrink-0">
-            <button
-              onClick={() => openQuoteModal()}
-              className="px-8 py-4 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-[#C59B24]/30 transition-all hover:scale-105 cursor-pointer flex items-center gap-2"
-            >
-              <Calculator className="w-4 h-4" />
-              <span>REQUEST INSTANT QUOTE</span>
-            </button>
-            <a
-              href="tel:+923127777952"
-              className="px-6 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider border border-white/20 transition-colors flex items-center gap-2"
-            >
-              <Phone className="w-4 h-4 text-[#C59B24]" />
-              <span>CALL DISPATCH DESK</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 9: "WHAT THEY SAY" (Verified Enterprise Testimonials)
-          3 high-trust corporate reviews with rating stars, route tags, and verified shipper badges
-      ========================================================================== */}
-      <section className="py-20 lg:py-24 px-4 sm:px-8 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest px-3 py-1 rounded-full bg-[#FDF9EE] border border-[#E2C876]/50 inline-block mb-3">
-            VERIFIED CLIENT TESTIMONIALS
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#1D2A4C]">
-            Trusted by Importers, Exporters & Manufacturers Worldwide
-          </h2>
-          <div className="flex items-center justify-center gap-1 mt-3 text-[#C59B24]">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-[#C59B24] text-[#C59B24]" />
-            ))}
-            <span className="text-xs font-bold text-slate-700 ml-2">4.9 / 5.0 Enterprise Satisfaction</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Review 1 */}
-          <div className="p-7 rounded-3xl bg-white border border-[#D7DCE0] hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 space-y-4 flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 text-[#C59B24]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-[#C59B24] text-[#C59B24]" />
-                  ))}
-                </div>
-                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                  ✓ Verified Shipper
-                </span>
-              </div>
-              <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                Route: Shanghai → Karachi (FCL Marine)
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
-                &ldquo;Steadfast Shipping Lines has been a game-changer for our supply chain operations. Their ocean freight space bookings and rapid customs clearance reduced our port dwell time by nearly a week. Outstanding coordination!&rdquo;
-              </p>
-            </div>
-
-            <div className="pt-4 border-t border-slate-100 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#1D2A4C] text-[#C59B24] font-black text-sm flex items-center justify-center shrink-0">
-                JD
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-[#1D2A4C]">Jonathon Doe</h4>
-                <span className="text-xs text-slate-500">Director of Supply Chain, Apex Heavy Machinery</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Review 2 */}
-          <div className="p-7 rounded-3xl bg-white border border-[#D7DCE0] hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 space-y-4 flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 text-[#C59B24]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-[#C59B24] text-[#C59B24]" />
-                  ))}
-                </div>
-                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                  ✓ Verified Shipper
-                </span>
-              </div>
-              <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                Route: Faisalabad → Frankfurt (Air Priority)
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
-                &ldquo;Their air freight response time is extraordinary. During peak fashion season when flight capacity was squeezed, Steadfast secured priority air cargo space and delivered strictly on schedule. Flawless telemetry and updates.&rdquo;
-              </p>
-            </div>
-
-            <div className="pt-4 border-t border-slate-100 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#C59B24] text-[#141E36] font-black text-sm flex items-center justify-center shrink-0">
-                MC
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-[#1D2A4C]">Maria Carrol</h4>
-                <span className="text-xs text-slate-500">VP of Logistics, Continental Textiles</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Review 3 */}
-          <div className="p-7 rounded-3xl bg-white border border-[#D7DCE0] hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 space-y-4 flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 text-[#C59B24]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-[#C59B24] text-[#C59B24]" />
-                  ))}
-                </div>
-                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                  ✓ Verified Shipper
-                </span>
-              </div>
-              <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                Route: Jebel Ali → Central Asia (CIS Transit)
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
-                &ldquo;Steadfast&apos;s cross-border CIS transit capabilities are second to none. Moving cargo across Afghanistan and Turkmenistan requires strict documentation and bonded trucking. They executed the entire corridor without a single hitch.&rdquo;
-              </p>
-            </div>
-
-            <div className="pt-4 border-t border-slate-100 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#1D2A4C] text-[#C59B24] font-black text-sm flex items-center justify-center shrink-0">
-                RA
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-[#1D2A4C]">Rashid Al-Mansoor</h4>
-                <span className="text-xs text-slate-500">Commercial Director, Gulf Trade Links</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 10: "REQUEST A FREE QUOTE" - WITH LOGISTICS BACKGROUND IMAGE
-          Clean & Crisp Image Background with Centered Simple Form
-      ========================================================================== */}
-      <section className="relative py-20 sm:py-24 px-4 sm:px-8 text-white overflow-hidden border-y border-[#D7DCE0]/20">
-        {/* Background Image across the entire section */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('/images/home/quote-banner.webp')` }}
-        />
-        <div className="absolute inset-0 bg-[#0A1224]/20" />
-
-        <div className="relative z-10 max-w-3xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-8">
-            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-              REQUEST A FREE QUOTE
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-              Request a quote
-            </h2>
-          </div>
-
-          {/* Clean Centered Form Card */}
-          <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-10 border border-[#D7DCE0] text-slate-800">
-            {quoteSuccess ? (
-              <div className="p-8 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
-                <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <h4 className="font-extrabold text-xl text-[#1D2A4C]">Quote Request Received!</h4>
-                <p className="text-sm text-slate-600 max-w-md mx-auto">
-                  Thank you for contacting Steadfast Shipping Lines. Our freight desk has logged your route details and will return an estimation shortly.
+                <h4 className="text-xl font-extrabold text-[#1D2A4C]">Quote Request Received!</h4>
+                <p className="mx-auto max-w-md text-sm text-slate-600">
+                  Our freight desk has logged your route details — expect a competitive estimation within 2 business hours.
                 </p>
-              </div>
+              </motion.div>
             ) : (
-              <form onSubmit={handleQuoteSubmit} className="space-y-5">
-                {/* Select Freight */}
+              <form onSubmit={submit} className="space-y-5" noValidate={false}>
                 <div>
-                  <label className="text-xs font-bold text-[#1D2A4C] uppercase tracking-wider block mb-1.5">
-                    Select a Freight Service
-                  </label>
+                  <label htmlFor="qf-freight" className={labelCls}>Freight Service</label>
                   <div className="relative">
                     <select
-                      value={quoteFreight}
-                      onChange={(e) => setQuoteFreight(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 hover:bg-slate-100/70 text-[#1D2A4C] border border-[#D7DCE0] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:border-transparent transition-all appearance-none cursor-pointer"
+                      id="qf-freight"
+                      value={freight}
+                      onChange={(e) => setFreight(e.target.value)}
+                      className={`${fieldCls} cursor-pointer appearance-none font-semibold`}
                     >
-                      <option value="Air Freight">Air Freight</option>
-                      <option value="Ocean Freight">Ocean Freight</option>
-                      <option value="Customs Clearance">Custom Clearance</option>
-                      <option value="Warehousing">Warehousing</option>
-                      <option value="Cargo Services">Cargo Services</option>
-                      <option value="Break Bulk Cargo">Break Bulk Cargo</option>
-                      <option value="Door to door delivery">Door to door delivery</option>
-                      <option value="Cross Stuffing">Cross Stuffing</option>
-                      <option value="Transportation">Transportation</option>
+                      {["Air Freight","Ocean Freight","Customs Clearance","Warehousing","Cargo Services","Break Bulk Cargo","Door to door delivery","Cross Stuffing","Transportation"].map((o) => (
+                        <option key={o} value={o}>{o}</option>
+                      ))}
                     </select>
-                    <ChevronDown className="w-4 h-4 text-slate-500 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
                   </div>
                 </div>
 
-                {/* 2-Column Inputs */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Origin */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">
-                      Departure City / Port
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Departure City / Port"
-                      value={quoteOrigin}
-                      onChange={(e) => setQuoteOrigin(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
-                    />
+                    <label htmlFor="qf-origin" className={labelCls}>Departure City / Port</label>
+                    <input id="qf-origin" required placeholder="e.g. Shanghai" autoComplete="off" value={origin} onChange={(e) => setOrigin(e.target.value)} className={fieldCls} />
                   </div>
-
-                  {/* Destination */}
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">
-                      Delivery City / Port
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Delivery City / Port"
-                      value={quoteDestination}
-                      onChange={(e) => setQuoteDestination(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
-                    />
+                    <label htmlFor="qf-dest" className={labelCls}>Delivery City / Port</label>
+                    <input id="qf-dest" required placeholder="e.g. Karachi" autoComplete="off" value={destination} onChange={(e) => setDestination(e.target.value)} className={fieldCls} />
                   </div>
-
-                  {/* Name */}
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your Name"
-                      value={quoteName}
-                      onChange={(e) => setQuoteName(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
-                    />
+                    <label htmlFor="qf-name" className={labelCls}>Your Name</label>
+                    <input id="qf-name" required placeholder="Full name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} className={fieldCls} />
                   </div>
-
-                  {/* Phone */}
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="Phone Number"
-                      value={quotePhone}
-                      onChange={(e) => setQuotePhone(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
-                    />
+                    <label htmlFor="qf-phone" className={labelCls}>Phone Number</label>
+                    <input id="qf-phone" type="tel" required placeholder="+92 3xx xxxxxxx" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className={fieldCls} />
                   </div>
-
-                  {/* Email */}
                   <div className="sm:col-span-2">
-                    <label className="text-xs font-bold text-slate-700 block mb-1">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="Email Address"
-                      value={quoteEmail}
-                      onChange={(e) => setQuoteEmail(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-[#D7DCE0] text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C59B24] focus:bg-white transition-all"
-                    />
+                    <label htmlFor="qf-email" className={labelCls}>Email Address</label>
+                    <input id="qf-email" type="email" required placeholder="you@company.com" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className={fieldCls} />
                   </div>
                 </div>
 
-                {/* Submit Button */}
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={quoteSubmitting}
-                    className="w-full py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#C59B24]/30 hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
-                  >
-                    <span>{quoteSubmitting ? "SENDING..." : "SUBMIT"}</span>
-                  </button>
-                </div>
+                <GoldButton type="submit" disabled={submitting} className="w-full py-4 text-sm">
+                  {submitting ? (
+                    <>
+                      <motion.span
+                        className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white"
+                        animate={reduce ? {} : { rotate: 360 }}
+                        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                      />
+                      Sending…
+                    </>
+                  ) : (
+                    <>Get My Quote <ArrowRight className="h-4 w-4" /></>
+                  )}
+                </GoldButton>
+                <p className="text-center text-[11px] text-slate-400">
+                  Response within 2 business hours · No spam, ever
+                </p>
               </form>
             )}
           </div>
-        </div>
-      </section>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
-      {/* =========================================================================
-          SECTION 11: OUR SERVICE AREAS / REGULAR SERVICES FROM ALL MAJOR PORTS
-          Theme Colors: White surface, Silver #D7DCE0 badges with Navy text & Gold hover
-      ========================================================================== */}
-      <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-8 space-y-6">
-            <div>
-              <span className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">Our Service Areas</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1D2A4C] mt-1">
-                Our Service Areas
-              </h2>
-            </div>
-
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              At Steadfast Shipping Lines (Pvt) Ltd, we provide our logistics services across a wide range of regions, ensuring seamless and efficient delivery no matter where your cargo needs to go. Our expertise spans domestic and international routes, covering major ports, cities, and transportation hubs. Whether your shipment is local or global, we have the network and resources to get it there safely and on time.
-            </p>
-
-            <div className="pt-1">
-              <h3 className="text-base sm:text-lg font-bold text-[#1D2A4C] mb-3">
-                We run regular services from all major ports:
-              </h3>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5">
-                {majorPorts.map((port, idx) => (
-                  <div
-                    key={`${port}-${idx}`}
-                    className="px-3 py-2 text-center rounded-lg bg-[#F4F6F8] text-[#1D2A4C] border border-[#D7DCE0] text-xs font-black tracking-wider shadow-sm hover:border-[#C59B24] hover:text-[#C59B24] transition-colors"
-                  >
-                    {port}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-1">
-              We extend our services to CIS countries, including Afghanistan, Georgia, Azerbaijan, Turkmenistan, and other CIS destinations.
-            </p>
-          </div>
-
-          <div className="lg:col-span-4 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-white aspect-[4/3] ring-1 ring-[#D7DCE0]">
-              <Image
-                src="/images/home/service-areas.jpg"
-                alt="Major Global Ports"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 12: "OUR PROCESS AT STEADFAST" (Connected 6-Step Visual Timeline)
-          Step-by-step methodology journey with glowing numbers and icon anchors
-      ========================================================================== */}
-      <section className="bg-[#F4F6F8] py-20 lg:py-28 px-4 sm:px-8 border-y border-[#D7DCE0]">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest px-3 py-1 rounded-full bg-white border border-[#E2C876]/50 inline-block mb-3">
-              METHODICAL EXCELLENCE
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1D2A4C]">
-              A Proven 6-Step Logistics Journey
+/* ============================================================
+   SECTION 12 — SERVICE AREAS (ports)
+============================================================ */
+function ServiceAreasSection() {
+  return (
+    <section className="py-20 lg:py-24">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
+        <div className="space-y-6 lg:col-span-8">
+          <Reveal><Eyebrow>Our Service Areas</Eyebrow></Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="font-anton text-[clamp(1.7rem,1.1rem+2.4vw,2.9rem)] uppercase leading-[1.05] text-[#1D2A4C]">
+              Regular Services From <span className="text-[#C59B24]">All Major Ports</span>
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base mt-2">
-              Every shipment follows an audited procedural framework ensuring absolute transparency and on-time delivery.
+          </Reveal>
+          <Reveal delay={0.14}>
+            <p className="max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
+              Our network spans domestic and international routes — major ports, cities, and
+              transportation hubs. Whether your shipment is local or global, we have the resources
+              to move it safely and on time.
             </p>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
+              {MAJOR_PORTS.map((port, i) => (
+                <motion.div
+                  key={port + i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: "-20px" }}
+                  transition={{ duration: 0.3, delay: Math.min(i * 0.02, 0.5), ease: EASE }}
+                  className="cursor-default rounded-lg border border-[#D7DCE0] bg-[#F4F6F8] px-3 py-2 text-center text-[11px] font-black uppercase tracking-wider text-[#1D2A4C] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#C59B24] hover:bg-[#FDF9EE] hover:text-[#B0891E]"
+                >
+                  {port}
+                </motion.div>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.26}>
+            <p className="flex items-start gap-2 text-xs leading-relaxed text-slate-500 sm:text-sm">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#C59B24]" />
+              We also extend services to CIS countries — Afghanistan, Georgia, Azerbaijan, Turkmenistan, and other CIS destinations.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="relative lg:col-span-4">
+          <Reveal delay={0.15}>
+            <div className="relative">
+              <div className="absolute -inset-3 rounded-[1.75rem] bg-gradient-to-tr from-[#C59B24]/20 to-transparent blur-lg" aria-hidden="true" />
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#D7DCE0] shadow-xl">
+                <Image
+                  src="/images/home/service-areas.jpg"
+                  alt="Steadfast global port coverage map"
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 90vw"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1424]/40 to-transparent" />
+              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.5, ease: EASE }}
+                className="absolute -bottom-4 left-4 right-4 flex items-center justify-between rounded-xl border border-white/20 bg-[#0D1424]/90 px-4 py-3 shadow-xl backdrop-blur-md"
+              >
+                <span className="text-[10px] font-black uppercase tracking-widest text-white/80">Trade Lanes</span>
+                <span className="font-anton text-xl text-[#E2C876]">120+</span>
+              </motion.div>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SECTION 13 — PROCESS (6 steps)
+============================================================ */
+function ProcessSection() {
+  const reduce = useReducedMotion();
+  return (
+    <section className="border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          center
+          eyebrow="Methodical Excellence"
+          title={<>A Proven <span className="text-[#C59B24]">6-Step</span> Journey</>}
+          sub="Every shipment follows an audited procedural framework ensuring transparency and on-time delivery."
+        />
+
+        {/* connecting line (desktop) */}
+        <div className="relative mt-16">
+          <div className="pointer-events-none absolute left-0 right-0 top-10 hidden h-[2px] lg:block" aria-hidden="true">
+            <svg viewBox="0 0 100 2" preserveAspectRatio="none" className="h-full w-full">
+              <line x1="0" y1="1" x2="100" y2="1" stroke="#C59B24" strokeWidth="2" strokeDasharray="0.8 1.2" strokeLinecap="round" className="sf-dash-flow" vectorEffect="non-scaling-stroke" opacity="0.5" />
+            </svg>
           </div>
 
-          {/* 6 Steps Grid with Step Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {companyDetails.processSteps.map((st, idx) => {
-              const IconComp =
-                st.icon === "Headphones"
-                  ? Headphones
-                  : st.icon === "Route"
-                  ? Route
-                  : st.icon === "Boxes"
-                  ? Boxes
-                  : st.icon === "Navigation"
-                  ? Navigation
-                  : st.icon === "Clock"
-                  ? Clock
-                  : st.icon === "HeartHandshake"
-                  ? HeartHandshake
-                  : CheckCircle2;
-
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {companyDetails.processSteps.map((st, i) => {
+              const Icon = PROCESS_ICONS[st.icon] || CheckCircle2;
               return (
-                <div
-                  key={st.step}
-                  className="group bg-white p-7 rounded-2xl border border-[#D7DCE0] hover:border-[#C59B24] shadow-sm hover:shadow-xl transition-all duration-300 space-y-4 hover:-translate-y-1.5 relative overflow-hidden"
-                >
-                  {/* Step Accent Glow on Hover */}
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#C59B24]/10 rounded-bl-full pointer-events-none group-hover:scale-125 transition-transform" />
-
-                  <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-xl bg-[#1D2A4C] text-[#C59B24] flex items-center justify-center shadow-md group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
-                      <IconComp className="w-6 h-6" />
-                    </div>
-                    <span className="text-3xl font-black text-slate-200 group-hover:text-[#C59B24] transition-colors">
+                <Reveal key={st.step} delay={0.06 + i * 0.08}>
+                  <motion.div
+                    whileHover={reduce ? {} : { y: -8 }}
+                    transition={{ duration: 0.35, ease: EASE }}
+                    className="group relative h-full overflow-hidden rounded-2xl border border-[#D7DCE0] bg-white p-7 shadow-sm transition-shadow duration-300 hover:border-[#C59B24]/60 hover:shadow-2xl"
+                  >
+                    <span className="pointer-events-none absolute -right-6 -top-8 font-anton text-[5.5rem] leading-none text-slate-100 transition-colors duration-500 group-hover:text-[#C59B24]/15" aria-hidden="true">
                       {st.step}
                     </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[11px] font-bold text-[#C59B24] uppercase tracking-wider">
-                      Stage {st.step}
-                    </span>
-                    <h3 className="text-lg font-black text-[#1D2A4C] group-hover:text-[#C59B24] transition-colors mt-0.5">
-                      {st.title}
-                    </h3>
-                  </div>
-
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    {st.description}
-                  </p>
-                </div>
+                    <div className="relative z-10">
+                      <div className="flex h-13 w-13 items-center justify-center rounded-xl bg-[#1D2A4C] text-[#E2C876] shadow-md transition-all duration-300 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-white">
+                        <Icon className="h-6 w-6" strokeWidth={2.1} />
+                      </div>
+                      <div className="mt-5 text-[10px] font-black uppercase tracking-[0.22em] text-[#B0891E]">Stage {st.step}</div>
+                      <h3 className="mt-1 font-anton text-lg uppercase tracking-wide text-[#1D2A4C]">{st.title}</h3>
+                      <p className="mt-2.5 text-xs leading-relaxed text-slate-600 sm:text-sm">{st.description}</p>
+                    </div>
+                  </motion.div>
+                </Reveal>
               );
             })}
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* =========================================================================
-          SECTION 13: "FREQUENTLY ASKED QUESTIONS" (Interactive Enterprise Accordion)
-          Modern numbered accordions, gold left-border accents, and 24/7 support box
-      ========================================================================== */}
-      <section className="py-20 lg:py-28 px-4 sm:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Accordion */}
-          <div className="lg:col-span-7 space-y-6">
-            <div>
-              <span className="text-xs font-bold text-[#C59B24] uppercase tracking-widest px-3 py-1 rounded-full bg-[#FDF9EE] border border-[#E2C876]/60 inline-block mb-3">
-                FREIGHT INTELLIGENCE
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-[#1D2A4C]">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-slate-600 text-xs sm:text-sm mt-2">
-                Clear answers regarding international shipping, customs documentation, and container bookings.
-              </p>
-            </div>
+/* ============================================================
+   SECTION 14 — FAQ (accordion + support card)
+============================================================ */
+function FaqSection() {
+  const [open, setOpen] = useState(0);
 
-            <div className="space-y-3 pt-2">
-              {companyDetails.faqs.map((faq, idx) => {
-                const isOpen = openFaq === idx;
-                return (
+  return (
+    <section className="py-20 lg:py-28">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
+        <div className="space-y-8 lg:col-span-7">
+          <SectionHead
+            eyebrow="Freight Intelligence"
+            title={<>Frequently Asked <span className="text-[#C59B24]">Questions</span></>}
+            sub="Clear answers on international shipping, customs documentation, and container bookings."
+          />
+
+          <div className="space-y-3">
+            {companyDetails.faqs.map((faq, i) => {
+              const isOpen = open === i;
+              return (
+                <Reveal key={i} delay={0.04 + i * 0.05}>
                   <div
-                    key={idx}
-                    className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                      isOpen
-                        ? "border-[#C59B24] bg-[#FDF9EE]/30 shadow-md"
-                        : "border-[#D7DCE0] bg-white hover:border-slate-400"
+                    className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
+                      isOpen ? "border-[#C59B24] bg-[#FDF9EE]/40 shadow-lg" : "border-[#D7DCE0] bg-white hover:border-slate-300"
                     }`}
                   >
                     <button
-                      onClick={() => setOpenFaq(isOpen ? -1 : idx)}
-                      className="w-full text-left p-5 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-[#1D2A4C] hover:text-[#C59B24] transition-colors cursor-pointer"
+                      onClick={() => setOpen(isOpen ? -1 : i)}
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-panel-${i}`}
+                      className="flex w-full items-center justify-between gap-4 p-5 text-left text-sm font-bold text-[#1D2A4C] transition-colors hover:text-[#B0891E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C59B24] rounded-2xl"
                     >
-                      <span className="flex items-center gap-3">
-                        <span
-                          className={`w-6 h-6 rounded-md text-[11px] font-black flex items-center justify-center shrink-0 ${
-                            isOpen ? "bg-[#C59B24] text-white" : "bg-slate-100 text-slate-500"
-                          }`}
-                        >
-                          {idx + 1}
+                      <span className="flex items-center gap-3.5">
+                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[11px] font-black transition-colors ${
+                          isOpen ? "bg-[#C59B24] text-white" : "bg-slate-100 text-slate-500"
+                        }`}>
+                          {i + 1}
                         </span>
-                        <span>{faq.q}</span>
+                        {faq.q}
                       </span>
-                      {isOpen ? (
-                        <ChevronUp className="w-4 h-4 text-[#C59B24] shrink-0" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                      )}
+                      <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="shrink-0 text-[#C59B24]">
+                        <ChevronDown className="h-4 w-4" />
+                      </motion.span>
                     </button>
-                    {isOpen && (
-                      <div className="px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-[#E2C876]/40 pt-3">
-                        {faq.a}
-                      </div>
-                    )}
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          id={`faq-panel-${i}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: EASE }}
+                          className="overflow-hidden"
+                        >
+                          <p className="border-t border-[#E2C876]/40 px-5 pb-5 pt-4 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                            {faq.a}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                );
-              })}
-            </div>
+                </Reveal>
+              );
+            })}
           </div>
+        </div>
 
-          {/* Right Column: Visual Ship + Live Support Box */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3] ring-1 ring-slate-200">
+        {/* Right column */}
+        <div className="space-y-6 lg:col-span-5">
+          <Reveal delay={0.15}>
+            <div className="group relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-[#D7DCE0] shadow-2xl">
               <Image
                 src="/images/home/faq-ship.jpg"
-                alt="Container Ship FAQ"
+                alt="Container ship at port"
                 fill
-                className="object-cover"
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <div className="text-xs font-bold text-[#C59B24] uppercase tracking-wider">
-                  Always-On Operations Desk
-                </div>
-                <div className="text-sm font-black">24/7 Real-Time Vessel Tracking</div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D1424]/85 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5">
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[#E2C876]">Always-On Operations Desk</div>
+                <div className="mt-1 text-base font-extrabold text-white">24/7 Real-Time Vessel Tracking</div>
               </div>
             </div>
+          </Reveal>
 
-            {/* Direct Support Card */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-[#141E36] to-[#1D2A4C] text-white shadow-xl space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#C59B24] text-[#141E36] flex items-center justify-center font-bold shrink-0">
-                  <Headphones className="w-5 h-5" />
+          <Reveal delay={0.25}>
+            <div className="relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-[#141E36] to-[#0D1424] p-7 text-white shadow-xl">
+              <div className="sf-dots absolute inset-0 opacity-20" aria-hidden="true" />
+              <div className="relative space-y-4">
+                <div className="flex items-center gap-3.5">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#C59B24] text-[#141E36]">
+                    <Headphones className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h4 className="text-sm font-extrabold">Have a Specific Cargo Question?</h4>
+                    <span className="text-xs text-slate-300">Speak directly with a freight specialist</span>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-white">Have a Specific Cargo Question?</h4>
-                  <span className="text-xs text-slate-300">Speak directly with a freight specialist</span>
+                <p className="text-xs leading-relaxed text-slate-300">
+                  Our dispatch desk is active 24/7 for route inquiries, hazardous cargo rules, and port tariffs.
+                </p>
+                <div className="flex items-center justify-between gap-3 pt-1">
+                  <a href="tel:+923127777952" className="inline-flex items-center gap-2 text-xs font-bold text-[#E2C876] hover:underline">
+                    <Phone className="h-3.5 w-3.5" /> +92 312 7777952
+                  </a>
+                  <button
+                    onClick={() => openQuoteModal()}
+                    className="rounded-lg bg-[#C59B24] px-4 py-2 text-[11px] font-black uppercase tracking-wider text-white transition-colors hover:bg-[#B0891E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  >
+                    Ask Online
+                  </button>
                 </div>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Our maritime dispatch desk is active 24/7 to answer route inquiries, hazardous cargo rules, and port tariffs.
-              </p>
-              <div className="pt-1 flex items-center justify-between gap-3">
-                <a
-                  href="tel:+923127777952"
-                  className="inline-flex items-center gap-2 text-xs font-bold text-[#C59B24] hover:underline"
-                >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>+92 312 7777952</span>
-                </a>
-                <button
-                  onClick={() => openQuoteModal()}
-                  className="px-4 py-2 rounded-lg bg-[#C59B24] hover:bg-[#B0891E] text-white text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
-                >
-                  Ask Online
-                </button>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* =========================================================================
-          SECTION 14: ENTERPRISE STATS & MILESTONES (Maritime Enterprise Ribbon)
-          Gold metallic gradient metrics, glassmorphic cards, and pulsing operations status
-      ========================================================================== */}
-      <section className="relative bg-gradient-to-b from-[#0D1424] via-[#141E36] to-[#0D1424] text-white py-20 lg:py-24 px-4 sm:px-8 border-t border-[#D7DCE0]/15 overflow-hidden">
-        {/* Subtle Ambient Flare */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#C59B24]/10 blur-[150px] rounded-full pointer-events-none" />
+/* ============================================================
+   SECTION 15 — STATS BAND (counters)
+============================================================ */
+function StatsSection() {
+  const reduce = useReducedMotion();
+  return (
+    <section className="relative overflow-hidden border-t border-[#C59B24]/20 bg-[#0D1424] py-20 text-white lg:py-24">
+      <div className="sf-dots absolute inset-0 opacity-20" aria-hidden="true" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#C59B24]/10 blur-[140px]" aria-hidden="true" />
 
-        <div className="relative z-10 max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-14 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C59B24]/10 border border-[#C59B24]/30 text-[#C59B24] text-xs font-bold uppercase tracking-widest mb-3">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              PROVEN OPERATIONAL TRACK RECORD
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white">
-              Our Commitment, Your Global Success
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 mt-3 font-medium leading-relaxed">
-              Powering international commerce with precision freight forwarding, strict cargo assurance, and round-the-clock reliability.
-            </p>
-          </div>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          center
+          dark
+          eyebrow="Proven Operational Record"
+          title={<>Our Commitment, <span className="text-[#E2C876]">Your Success</span></>}
+          sub="Powering international commerce with precision freight forwarding, strict cargo assurance, and round-the-clock reliability."
+        />
 
-          {/* 5 Enterprise Milestone Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 sm:gap-6">
-            <div className="group bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/60 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
-              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
-                <Users className="w-6 h-6" />
-              </div>
-              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors tracking-tight">
-                2,500+
-              </div>
-              <div className="text-xs font-bold text-slate-300 uppercase tracking-wider mt-2">
-                Enterprise Shippers
-              </div>
-              <div className="text-[10px] text-slate-500 mt-1">Global B2B Accounts</div>
-            </div>
-
-            <div className="group bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/60 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
-              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
-                <Award className="w-6 h-6" />
-              </div>
-              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors tracking-tight">
-                18,000+
-              </div>
-              <div className="text-xs font-bold text-slate-300 uppercase tracking-wider mt-2">
-                TEUs Delivered
-              </div>
-              <div className="text-[10px] text-slate-500 mt-1">Cross-Border Shipments</div>
-            </div>
-
-            <div className="group bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/60 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
-              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
-                <Star className="w-6 h-6" />
-              </div>
-              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors tracking-tight">
-                99%
-              </div>
-              <div className="text-xs font-bold text-slate-300 uppercase tracking-wider mt-2">
-                On-Time Metric
-              </div>
-              <div className="text-[10px] text-slate-500 mt-1">Punctual Port Arrival</div>
-            </div>
-
-            <div className="group bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/60 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
-              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
-                <Clock className="w-6 h-6" />
-              </div>
-              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors tracking-tight">
-                24/7/365
-              </div>
-              <div className="text-xs font-bold text-slate-300 uppercase tracking-wider mt-2">
-                Active Operations
-              </div>
-              <div className="text-[10px] text-slate-500 mt-1">Continuous Dispatch</div>
-            </div>
-
-            <div className="col-span-2 sm:col-span-1 group bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-[#C59B24]/60 transition-all duration-300 hover:-translate-y-1.5 shadow-xl text-center">
-              <div className="w-12 h-12 rounded-xl bg-[#C59B24]/15 text-[#C59B24] border border-[#C59B24]/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36] transition-all">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div className="text-3xl sm:text-4xl font-black text-white group-hover:text-[#C59B24] transition-colors tracking-tight">
-                100%
-              </div>
-              <div className="text-xs font-bold text-slate-300 uppercase tracking-wider mt-2">
-                Insured Cargo
-              </div>
-              <div className="text-[10px] text-slate-500 mt-1">Full Value Coverage</div>
-            </div>
-          </div>
+        <div className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+          {STATS.map((s, i) => (
+            <Reveal key={s.label} delay={0.08 + i * 0.1}>
+              <motion.div
+                whileHover={reduce ? {} : { y: -8 }}
+                transition={{ duration: 0.35, ease: EASE }}
+                className={`group h-full rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center shadow-xl backdrop-blur-md transition-colors duration-300 hover:border-[#C59B24]/60 hover:bg-white/[0.08] ${
+                  i === 4 ? "col-span-2 sm:col-span-1" : ""
+                }`}
+              >
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#C59B24]/15 text-[#E2C876] ring-1 ring-[#C59B24]/30 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-[#141E36]">
+                  <s.icon className="h-6 w-6" strokeWidth={2.1} />
+                </div>
+                <div className="font-anton text-3xl tracking-tight text-white transition-colors group-hover:text-[#E2C876] sm:text-4xl">
+                  <CountUp to={s.value} suffix={s.suffix} />
+                </div>
+                <div className="mt-2 text-[11px] font-black uppercase tracking-[0.14em] text-slate-300">{s.label}</div>
+                <div className="mt-1 text-[10px] text-slate-500">{s.note}</div>
+              </motion.div>
+            </Reveal>
+          ))}
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

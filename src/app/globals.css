@@ -140,6 +140,43 @@ body {
   }
 }
 
+/* ============================================================
+   STEADFAST HOME 2026 — motion & texture kit
+   ============================================================ */
+
+/* Blueprint dot-grid texture (hero + navy sections) */
+.sf-dots {
+  background-image: radial-gradient(circle, rgba(197, 155, 36, 0.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Flowing dashes along route lines / connectors */
+@keyframes sfDashFlow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+.sf-dash-flow {
+  animation: sfDashFlow 1.4s linear infinite;
+}
+
+/* Gentle float for preloader plane bubble & badges */
+@keyframes sfFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+.sf-float {
+  animation: sfFloat 3.2s ease-in-out infinite;
+}
+
+/* Global reduced-motion guard for home page kit */
+@media (prefers-reduced-motion: reduce) {
+  .sf-dash-flow,
+  .sf-float {
+    animation: none;
+  }
+}
+
 
 
 
