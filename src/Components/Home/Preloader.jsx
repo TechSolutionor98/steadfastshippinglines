@@ -115,11 +115,11 @@ export default function Preloader({ onComplete }) {
             priority
           />
         </div>
-        <div className="font-montserrat text-sm sm:text-base font-black uppercase tracking-[0.45em] text-[#1D2A4C]">
+        <div suppressHydrationWarning className="font-montserrat text-sm sm:text-base font-black uppercase tracking-[0.45em] text-[#1D2A4C]">
           Steadfast
         </div>
-        <div className="mt-1 text-[11px] font-bold uppercase tracking-[0.35em] text-[#C59B24]">
-          Shipping Lines (Pvt) Ltd
+        <div suppressHydrationWarning className="mt-1 text-[11px] font-bold uppercase tracking-[0.35em] text-[#C59B24]">
+          Shipping Lines
         </div>
       </motion.div>
 

@@ -91,17 +91,13 @@ export default function Navbar() {
             : "border-[#D7DCE0]/50 bg-white"
         }`}
       >
-        <div className={`mx-auto flex max-w-7xl items-center justify-between px-4 transition-all duration-300 sm:px-6 lg:px-8 ${scrolled ? "py-2" : "py-3"}`}>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link href="/" className="group flex shrink-0 items-center py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C59B24] rounded-lg" aria-label="Steadfast Shipping Lines — Home">
-            <div className={`relative transition-all duration-300 ${
-              scrolled
-                ? "h-11 w-40 sm:h-12 sm:w-48 md:w-52"
-                : "h-14 w-48 sm:h-16 sm:w-60 md:w-64"
-            } group-hover:scale-[1.02]`}>
+            <div className="relative h-14 w-52 transition-transform duration-300 group-hover:scale-[1.02] sm:h-16 sm:w-64 md:w-72 lg:w-72">
               <Image
                 src="/images/logo-main.png"
-                alt="Steadfast Shipping Lines (Pvt) Ltd"
+                alt="Steadfast Shipping Lines"
                 fill
                 unoptimized
                 className="object-contain object-left"

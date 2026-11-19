@@ -134,7 +134,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="flex flex-col items-center space-y-5 text-center lg:col-span-4 lg:items-start lg:text-left">
             <Link href="/" className="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C59B24] rounded-lg" aria-label="Steadfast Shipping Lines — Home">
-              <div className="relative h-16 w-48 transition-transform duration-300 group-hover:scale-[1.03] sm:h-20 sm:w-60">
+              <div className="relative h-16 w-56 transition-transform duration-300 group-hover:scale-[1.03] sm:h-20 sm:w-72">
                 <Image
                   src="/images/logo-white-main.png"
                   alt="Steadfast Shipping Lines"
