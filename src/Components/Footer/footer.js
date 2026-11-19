@@ -13,10 +13,10 @@ import { openQuoteModal } from "@/Components/Quote/QuoteModal";
 const EASE = [0.22, 1, 0.36, 1];
 
 const SOCIALS = [
-  { name: "Facebook", icon: Facebook },
-  { name: "X (Twitter)", icon: null },
-  { name: "Instagram", icon: Instagram },
-  { name: "LinkedIn", icon: Linkedin },
+  { name: "LinkedIn — Steadfast Shipping Lines", icon: Linkedin, href: "https://www.linkedin.com/company/steadfast-shipping-lines" },
+  { name: "X (Twitter) — Steadfastship", icon: null, href: "https://x.com/Steadfastship" },
+  { name: "Instagram — steadfastshippinglines", icon: Instagram, href: "https://www.instagram.com/steadfastshippinglines" },
+  { name: "Facebook — Steadfast Shipping Lines", icon: Facebook, href: "https://www.facebook.com/share/1Dpo3hCwjB/" },
 ];
 
 const SERVICES_LIST = [
@@ -157,7 +157,9 @@ export default function Footer() {
                 return (
                   <motion.a
                     key={s.name}
-                    href="#"
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={s.name}
                     whileHover={reduce ? {} : { y: -3 }}
                     whileTap={reduce ? {} : { scale: 0.94 }}
