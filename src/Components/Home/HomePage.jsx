@@ -50,6 +50,38 @@ import {
 import { companyDetails, servicesData } from "@/data/steadfastData";
 import { openQuoteModal } from "@/Components/Quote/QuoteModal";
 
+function normalizeColor(val, fallback = "#ffffff") {
+  if (!val || typeof val !== "string") return fallback;
+  let str = val.trim();
+  if (!str.startsWith("#") && /^[0-9a-fA-F]{3,8}$/.test(str)) {
+    str = "#" + str;
+  }
+  if (/^#[0-9a-fA-F]{7}$/.test(str)) {
+    str = str.slice(0, 7);
+  }
+  if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(str)) {
+    return str;
+  }
+  if (/^[a-zA-Z]+$|^rgb|^hsl/.test(str)) {
+    return str;
+  }
+  return fallback;
+}
+
+function isDarkColor(hex) {
+  if (!hex || typeof hex !== "string") return false;
+  let c = hex.replace("#", "");
+  if (c.length === 3) c = c.split("").map((x) => x + x).join("");
+  if (c.length >= 6) {
+    const r = parseInt(c.slice(0, 2), 16) || 0;
+    const g = parseInt(c.slice(2, 4), 16) || 0;
+    const b = parseInt(c.slice(4, 6), 16) || 0;
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq < 140;
+  }
+  return false;
+}
+
 export default function HomePage({ cmsContent }) {
   // =========================================================================
   // DYNAMIC HERO BANNER STATE (Section 1 - Preserved exactly as requested)
@@ -72,9 +104,9 @@ export default function HomePage({ cmsContent }) {
   const [heroBanners, setHeroBanners] = useState(defaultHeroSlides);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Fetch live banners for homepage ONLY
+  // Fetch live banners for homepage ONLY (no-store cache for instant admin updates)
   useEffect(() => {
-    fetch("/api/banners?page=/")
+    fetch(`/api/banners?page=/&t=${Date.now()}`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         if (data.ok && Array.isArray(data.banners)) {
@@ -298,6 +330,8 @@ export default function HomePage({ cmsContent }) {
           const isCurrent = idx === currentSlide;
           const bgUrl = slide.imageUrl || slide.bgImage;
           const align = slide.textAlign || "center";
+          const finalTextColor = normalizeColor(slide.textColor, "#ffffff");
+          const darkText = isDarkColor(finalTextColor);
 
           return (
             <div
@@ -317,19 +351,6 @@ export default function HomePage({ cmsContent }) {
                 }}
               />
 
-              {/* Dynamic Gradient / Vignette Overlay for Readability */}
-              {slide.showText !== false && slide.title && (
-                <div
-                  className={`absolute inset-0 pointer-events-none transition-all duration-700 ${
-                    align === "left"
-                      ? "bg-gradient-to-r from-black/85 via-black/50 to-transparent"
-                      : align === "right"
-                      ? "bg-gradient-to-l from-black/85 via-black/50 to-transparent"
-                      : "bg-black/45"
-                  }`}
-                />
-              )}
-
               {/* Dynamic Title Heading inside Standard Column Grid Container */}
               {slide.showText !== false && slide.title && (
                 <div className="relative z-20 w-full h-full max-w-7xl mx-auto px-4 sm:px-8 flex items-center">
@@ -344,9 +365,13 @@ export default function HomePage({ cmsContent }) {
                       }`}
                     >
                       <h1
-                        className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[1.12] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]"
+                        className={`text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[1.12] ${
+                          darkText
+                            ? "drop-shadow-[0_2px_12px_rgba(255,255,255,0.85)]"
+                            : "drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]"
+                        }`}
                         style={{
-                          color: slide.textColor || "#ffffff",
+                          color: finalTextColor,
                           textWrap: "balance",
                         }}
                       >
@@ -364,8 +389,8 @@ export default function HomePage({ cmsContent }) {
                         }`}
                         style={{
                           backgroundColor:
-                            slide.textColor && slide.textColor.toLowerCase() === "#c59b24"
-                              ? "#ffffff"
+                            finalTextColor.toLowerCase() === "#c59b24"
+                              ? "#141E36"
                               : "#C59B24",
                         }}
                       />

@@ -996,7 +996,7 @@ export default function BannersClient() {
                       <div className="flex items-center gap-2">
                         <input
                           type="color"
-                          value={formData.textColor || '#ffffff'}
+                          value={formData.textColor?.length === 7 ? formData.textColor : '#ffffff'}
                           onChange={(e) => setFormData({ ...formData, textColor: e.target.value })}
                           className="w-8 h-8 p-0.5 rounded border border-gray-300 cursor-pointer bg-white"
                         />
@@ -1007,6 +1007,28 @@ export default function BannersClient() {
                           placeholder="#ffffff"
                           className="w-full px-2.5 py-1 text-xs font-mono bg-white border border-gray-300 rounded-lg text-gray-800"
                         />
+                      </div>
+                      {/* Quick Swatches */}
+                      <div className="flex items-center gap-1.5 pt-1">
+                        {[
+                          { label: 'White', color: '#ffffff' },
+                          { label: 'Navy', color: '#141E36' },
+                          { label: 'Gold', color: '#C59B24' },
+                          { label: 'Black', color: '#000000' },
+                        ].map((sw) => (
+                          <button
+                            key={sw.color}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, textColor: sw.color })}
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
+                              formData.textColor?.toLowerCase() === sw.color.toLowerCase()
+                                ? 'border-[#C59B24] bg-[#FDF9EE] text-[#C59B24]'
+                                : 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            {sw.label}
+                          </button>
+                        ))}
                       </div>
                     </div>
 

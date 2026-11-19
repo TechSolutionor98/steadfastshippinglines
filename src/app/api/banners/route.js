@@ -14,6 +14,24 @@ export async function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
 }
 
+function normalizeColor(val, fallback = '#ffffff') {
+  if (!val || typeof val !== 'string') return fallback;
+  let str = val.trim();
+  if (!str.startsWith('#') && /^[0-9a-fA-F]{3,8}$/.test(str)) {
+    str = '#' + str;
+  }
+  if (/^#[0-9a-fA-F]{7}$/.test(str)) {
+    str = str.slice(0, 7);
+  }
+  if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(str)) {
+    return str;
+  }
+  if (/^[a-zA-Z]+$|^rgb|^hsl/.test(str)) {
+    return str;
+  }
+  return fallback;
+}
+
 // Initial default banners if none exist
 const DEFAULT_BANNERS = [
   {
@@ -144,7 +162,7 @@ export async function POST(request) {
       order: typeof order === 'number' ? order : total + 1,
       active: active !== false,
       showText: typeof showText === 'boolean' ? showText : true,
-      textColor: (textColor || '#ffffff').trim(),
+      textColor: normalizeColor(textColor),
       textAlign: ['left', 'center', 'right'].includes(textAlign) ? textAlign : 'center',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -193,7 +211,7 @@ export async function PATCH(request) {
     if (typeof order !== 'undefined') updateFields.order = Number(order);
     if (typeof active !== 'undefined') updateFields.active = Boolean(active);
     if (typeof showText !== 'undefined') updateFields.showText = Boolean(showText);
-    if (typeof textColor !== 'undefined') updateFields.textColor = textColor.trim();
+    if (typeof textColor !== 'undefined') updateFields.textColor = normalizeColor(textColor);
     if (typeof textAlign !== 'undefined' && ['left', 'center', 'right'].includes(textAlign)) {
       updateFields.textAlign = textAlign;
     }
