@@ -478,16 +478,18 @@ export default function BannersClient() {
                   style={{ backgroundImage: `url(${slide.imageUrl})` }}
                 />
 
-                {/* Dark Vignette Overlay */}
-                <div
-                  className={`absolute inset-0 pointer-events-none ${
-                    slide.textAlign === 'left'
-                      ? 'bg-gradient-to-r from-black/85 via-black/50 to-transparent'
-                      : slide.textAlign === 'right'
-                      ? 'bg-gradient-to-l from-black/85 via-black/50 to-transparent'
-                      : 'bg-black/50'
-                  }`}
-                />
+                {/* Dark Vignette Overlay: only when text overlay is active */}
+                {slide.showText !== false && slide.title && (
+                  <div
+                    className={`absolute inset-0 pointer-events-none ${
+                      slide.textAlign === 'left'
+                        ? 'bg-gradient-to-r from-black/85 via-black/50 to-transparent'
+                        : slide.textAlign === 'right'
+                        ? 'bg-gradient-to-l from-black/85 via-black/50 to-transparent'
+                        : 'bg-black/50'
+                    }`}
+                  />
+                )}
 
                 {/* Heading Text */}
                 {slide.showText !== false && slide.title && (
@@ -892,7 +894,9 @@ export default function BannersClient() {
                   <p className="text-xs font-bold text-gray-800">
                     {uploading ? 'Uploading image...' : 'Click to upload image'}
                   </p>
-                  <p className="text-[11px] text-gray-500">PNG, JPG, or WEBP (Recommended: 1920x800)</p>
+                  <p className="text-[11px] text-gray-500">
+                    PNG, JPG, or WEBP — Recommended Size: <strong>1920 x 600 px</strong> (Inner Pages) / 1920 x 680 px (Home Slider)
+                  </p>
 
                   {uploading && (
                     <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2 overflow-hidden">

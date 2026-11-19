@@ -18,6 +18,7 @@ import {
 import { companyDetails, servicesData } from "@/data/steadfastData";
 import QuoteButton from "@/Components/Quote/QuoteButton";
 import PageHeroBackground from "@/Components/Banner/PageHeroBackground";
+import { getDb } from "@/lib/mongodb";
 
 export const metadata = {
   title: "About Us | Steadfast Shipping Lines",
@@ -27,24 +28,65 @@ export const metadata = {
   },
 };
 
-export default function AboutUsPage() {
+export const revalidate = 60;
+
+export default async function AboutUsPage() {
+  let initialBanners = [];
+  try {
+    const db = await getDb();
+    const docs = await db
+      .collection("hero_banners")
+      .find({
+        $or: [{ page: "/about-us" }, { page: "about-us" }],
+        active: { $ne: false },
+      })
+      .sort({ order: 1, createdAt: 1 })
+      .toArray();
+
+    initialBanners = docs.map((b) => ({
+      _id: b._id.toString(),
+      page: b.page || "/about-us",
+      title: b.title || "",
+      subtitle: b.subtitle || "",
+      imageUrl: b.imageUrl,
+      link: b.link || "",
+      order: typeof b.order === "number" ? b.order : 0,
+      active: b.active !== false,
+      showText: b.showText !== false,
+      textColor: b.textColor || "#ffffff",
+      textAlign: b.textAlign || "center",
+    }));
+  } catch (err) {
+    console.error("Failed to load initial banners for /about-us:", err);
+  }
+
   return (
     <div className="bg-white min-h-screen text-slate-800">
-      {/* Hero Header */}
-      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-24 sm:py-32 md:py-36 min-h-[420px] sm:min-h-[480px] flex items-center justify-center px-4 overflow-hidden border-b border-[#D7DCE0]/15">
-        <PageHeroBackground page="/about-us" />
-        <div className="max-w-7xl mx-auto relative z-10 text-center w-full">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
-            <ShieldCheck className="w-4 h-4 text-[#C59B24]" />
-            <span>Global Transport & Logistics Service Provider</span>
-          </div>
+      {/* Hero Header (Exact 1920 x 600 px Standard Banner Dimensions, Zero Dark Opacity) */}
+      <section className="relative w-full bg-[#141E36] overflow-hidden border-b border-[#D7DCE0]/15 flex items-center justify-center">
+        <div
+          className="relative w-full max-w-[1920px] mx-auto aspect-[1920/600] flex items-center justify-center overflow-hidden"
+          style={{ aspectRatio: "1920 / 600" }}
+        >
+          <PageHeroBackground
+            page="/about-us"
+            initialBanners={initialBanners}
+            darkOverlay={false}
+          >
+            <div className="max-w-7xl mx-auto relative z-10 text-center w-full px-4 py-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
+                <ShieldCheck className="w-4 h-4 text-[#C59B24]" />
+                <span>Global Transport & Logistics Service Provider</span>
+              </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            ABOUT STEADFAST SHIPPING LINES
-          </h1>
-          <p className="text-base sm:text-lg text-[#D7DCE0] max-w-3xl mx-auto mt-4 leading-relaxed">
-            Delivering excellence across borders with innovative multimodal logistics, dedicated customer service, and reliable global operations.
-          </p>
+              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+                ABOUT STEADFAST SHIPPING LINES
+              </h1>
+              <p className="text-base sm:text-lg text-[#D7DCE0] max-w-3xl mx-auto mt-4 leading-relaxed">
+                Delivering excellence across borders with innovative multimodal logistics, dedicated customer service, and reliable global operations.
+              </p>
+            </div>
+          </PageHeroBackground>
         </div>
       </section>
 

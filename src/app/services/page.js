@@ -21,6 +21,7 @@ import {
 import { servicesData, companyDetails } from "@/data/steadfastData";
 import QuoteButton from "@/Components/Quote/QuoteButton";
 import PageHeroBackground from "@/Components/Banner/PageHeroBackground";
+import { getDb } from "@/lib/mongodb";
 
 const iconMap = {
   Ship: Ship,
@@ -42,39 +43,80 @@ export const metadata = {
   },
 };
 
-export default function ServicesPage() {
+export const revalidate = 60;
+
+export default async function ServicesPage() {
+  let initialBanners = [];
+  try {
+    const db = await getDb();
+    const docs = await db
+      .collection("hero_banners")
+      .find({
+        $or: [{ page: "/services" }, { page: "services" }],
+        active: { $ne: false },
+      })
+      .sort({ order: 1, createdAt: 1 })
+      .toArray();
+
+    initialBanners = docs.map((b) => ({
+      _id: b._id.toString(),
+      page: b.page || "/services",
+      title: b.title || "",
+      subtitle: b.subtitle || "",
+      imageUrl: b.imageUrl,
+      link: b.link || "",
+      order: typeof b.order === "number" ? b.order : 0,
+      active: b.active !== false,
+      showText: b.showText !== false,
+      textColor: b.textColor || "#ffffff",
+      textAlign: b.textAlign || "center",
+    }));
+  } catch (err) {
+    console.error("Failed to load initial banners for /services:", err);
+  }
+
   return (
     <div className="bg-white min-h-screen">
-      {/* Hero Header */}
-      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-24 sm:py-32 md:py-36 min-h-[420px] sm:min-h-[480px] flex items-center justify-center px-4 overflow-hidden border-b border-[#D7DCE0]/15">
-        <PageHeroBackground page="/services" />
-        <div className="max-w-7xl mx-auto relative z-10 text-center w-full">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
-            <Globe className="w-4 h-4 text-[#C59B24]" />
-            <span>We Provide Best Logistics Services</span>
-          </div>
+      {/* Hero Header (Exact 1920 x 600 px Standard Banner Dimensions, Zero Dark Opacity) */}
+      <section className="relative w-full bg-[#141E36] overflow-hidden border-b border-[#D7DCE0]/15 flex items-center justify-center">
+        <div
+          className="relative w-full max-w-[1920px] mx-auto aspect-[1920/600] flex items-center justify-center overflow-hidden"
+          style={{ aspectRatio: "1920 / 600" }}
+        >
+          <PageHeroBackground
+            page="/services"
+            initialBanners={initialBanners}
+            darkOverlay={false}
+          >
+            <div className="max-w-7xl mx-auto relative z-10 text-center w-full px-4 py-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
+                <Globe className="w-4 h-4 text-[#C59B24]" />
+                <span>We Provide Best Logistics Services</span>
+              </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            OUR COMPREHENSIVE SERVICES
-          </h1>
-          <p className="text-base sm:text-lg text-[#D7DCE0] max-w-3xl mx-auto mt-4 leading-relaxed">
-            Tailored logistics and worldwide freight solutions designed to streamline your international supply chain with speed, reliability, and precision.
-          </p>
+              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+                OUR COMPREHENSIVE SERVICES
+              </h1>
+              <p className="text-base sm:text-lg text-[#D7DCE0] max-w-3xl mx-auto mt-4 leading-relaxed">
+                Tailored logistics and worldwide freight solutions designed to streamline your international supply chain with speed, reliability, and precision.
+              </p>
 
-          <div className="mt-8 flex justify-center gap-4">
-            <QuoteButton
-              className="px-6 py-3 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-all flex items-center gap-2"
-            >
-              <span>Request a Quote</span>
-              <ArrowRight className="w-4 h-4" />
-            </QuoteButton>
-            <Link
-              href="/contact"
-              className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 transition-all"
-            >
-              Contact Offices
-            </Link>
-          </div>
+              <div className="mt-8 flex justify-center gap-4">
+                <QuoteButton
+                  className="px-6 py-3 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#C59B24]/20 transition-all flex items-center gap-2"
+                >
+                  <span>Request a Quote</span>
+                  <ArrowRight className="w-4 h-4" />
+                </QuoteButton>
+                <Link
+                  href="/contact"
+                  className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 transition-all"
+                >
+                  Contact Offices
+                </Link>
+              </div>
+            </div>
+          </PageHeroBackground>
         </div>
       </section>
 

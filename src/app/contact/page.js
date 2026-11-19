@@ -70,21 +70,27 @@ export default function ContactPage() {
 
   return (
     <div className="bg-white min-h-screen text-slate-800">
-      {/* Hero Header (Navy #1D2A4C with Gold #C59B24 Accents) */}
-      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-24 sm:py-32 md:py-36 min-h-[420px] sm:min-h-[480px] flex items-center justify-center px-4 overflow-hidden border-b border-[#D7DCE0]/15">
-        <PageHeroBackground page="/contact" />
-        <div className="max-w-7xl mx-auto relative z-10 text-center w-full">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
-            <Phone className="w-3.5 h-3.5 text-[#C59B24]" />
-            <span>Keep in Touch With Us for Help</span>
-          </div>
+      {/* Hero Header (Exact 1920 x 600 px Standard Banner Dimensions, Zero Dark Opacity) */}
+      <section className="relative w-full bg-[#141E36] overflow-hidden border-b border-[#D7DCE0]/15 flex items-center justify-center">
+        <div
+          className="relative w-full max-w-[1920px] mx-auto aspect-[1920/600] flex items-center justify-center overflow-hidden"
+          style={{ aspectRatio: "1920 / 600" }}
+        >
+          <PageHeroBackground page="/contact" darkOverlay={false}>
+            <div className="max-w-7xl mx-auto relative z-10 text-center w-full px-4 py-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
+                <Phone className="w-3.5 h-3.5 text-[#C59B24]" />
+                <span>Keep in Touch With Us for Help</span>
+              </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            CONTACT OUR GLOBAL TEAM
-          </h1>
-          <p className="text-base sm:text-lg text-[#D7DCE0] max-w-3xl mx-auto mt-4 leading-relaxed">
-            We are always available to assist you with your logistics needs. Feel free to reach out to our regional desks or submit an online request.
-          </p>
+              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+                CONTACT OUR GLOBAL TEAM
+              </h1>
+              <p className="text-base sm:text-lg text-[#D7DCE0] max-w-3xl mx-auto mt-4 leading-relaxed">
+                We are always available to assist you with your logistics needs. Feel free to reach out to our regional desks or submit an online request.
+              </p>
+            </div>
+          </PageHeroBackground>
         </div>
       </section>
 

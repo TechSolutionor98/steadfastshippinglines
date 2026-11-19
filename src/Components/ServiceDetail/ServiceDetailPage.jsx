@@ -48,46 +48,52 @@ export default function ServiceDetailPage({ service }) {
 
   return (
     <div className="bg-white min-h-screen text-slate-800">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#141E36] via-[#1D2A4C] to-[#141E36] text-white py-24 sm:py-32 md:py-36 min-h-[420px] sm:min-h-[480px] flex items-center px-4 overflow-hidden border-b border-[#D7DCE0]/15">
-        <PageHeroBackground page={`/${service.slug}`} />
-        <div className="max-w-7xl mx-auto relative z-10 w-full">
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#D7DCE0] mb-4 tracking-wider uppercase">
-            <Link href="/" className="hover:text-[#C59B24] transition-colors">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-            <Link href="/services" className="hover:text-[#C59B24] transition-colors">Services</Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-            <span className="text-[#C59B24] font-bold">{service.shortTitle}</span>
-          </div>
+      {/* Hero Section (Exact 1920 x 600 px Standard Banner Dimensions, Zero Dark Opacity) */}
+      <section className="relative w-full bg-[#141E36] overflow-hidden border-b border-[#D7DCE0]/15 flex items-center justify-center">
+        <div
+          className="relative w-full max-w-[1920px] mx-auto aspect-[1920/600] flex items-center overflow-hidden"
+          style={{ aspectRatio: "1920 / 600" }}
+        >
+          <PageHeroBackground page={`/${service.slug}`} darkOverlay={false}>
+            <div className="max-w-7xl mx-auto relative z-10 w-full px-4 sm:px-8 py-8">
+              <div className="flex items-center gap-2 text-xs font-semibold text-[#D7DCE0] mb-3 tracking-wider uppercase">
+                <Link href="/" className="hover:text-[#C59B24] transition-colors">Home</Link>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                <Link href="/services" className="hover:text-[#C59B24] transition-colors">Services</Link>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                <span className="text-[#C59B24] font-bold">{service.shortTitle}</span>
+              </div>
 
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-4 tracking-wider uppercase">
-              <IconComp className="w-4 h-4 text-[#C59B24]" />
-              <span>Steadfast Specialized Freight</span>
+              <div className="max-w-4xl">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C59B24]/15 border border-[#C59B24]/40 text-[#C59B24] text-xs font-bold mb-3 tracking-wider uppercase">
+                  <IconComp className="w-4 h-4 text-[#C59B24]" />
+                  <span>Steadfast Specialized Freight</span>
+                </div>
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-tight uppercase">
+                  {service.title}
+                </h1>
+                <p className="text-sm sm:text-base text-[#D7DCE0] mt-3 max-w-3xl leading-relaxed">
+                  {service.tagline}
+                </p>
+                <div className="mt-6 flex flex-wrap gap-4">
+                  <button
+                    onClick={() => openQuoteModal(service.title)}
+                    className="px-6 py-3 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#C59B24]/20 flex items-center gap-2 transition-all cursor-pointer"
+                  >
+                    <span>Request Instant Rate</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <a
+                    href={`tel:${companyDetails.phone.replace(/[\s+,]/g, "")}`}
+                    className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 flex items-center gap-2 transition-all backdrop-blur-sm"
+                  >
+                    <Phone className="w-4 h-4 text-[#C59B24]" />
+                    <span>Call Operations Desk</span>
+                  </a>
+                </div>
+              </div>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight uppercase">
-              {service.title}
-            </h1>
-            <p className="text-base sm:text-lg text-[#D7DCE0] mt-4 max-w-3xl leading-relaxed">
-              {service.tagline}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <button
-                onClick={() => openQuoteModal(service.title)}
-                className="px-6 py-3.5 rounded-xl bg-[#C59B24] hover:bg-[#B0891E] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#C59B24]/20 flex items-center gap-2 transition-all cursor-pointer"
-              >
-                <span>Request Instant Rate</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <a
-                href={`tel:${companyDetails.phone.replace(/[\s+,]/g, "")}`}
-                className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-[#D7DCE0]/30 flex items-center gap-2 transition-all backdrop-blur-sm"
-              >
-                <Phone className="w-4 h-4 text-[#C59B24]" />
-                <span>Call Operations Desk</span>
-              </a>
-            </div>
-          </div>
+          </PageHeroBackground>
         </div>
       </section>
 
