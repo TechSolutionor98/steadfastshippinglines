@@ -216,11 +216,6 @@ function HeroSection({ ready = true }) {
         </motion.div>
       ))}
 
-      {/* Minimal readability gradient — banner colors stay vivid */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0A1224]/60 via-[#0A1224]/15 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0D1424]/45 via-transparent to-transparent" />
-      <div className="sf-dots absolute inset-0 opacity-[0.12]" aria-hidden="true" />
-
       {/* Content */}
       <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">

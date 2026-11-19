@@ -33,10 +33,6 @@ export default function ServiceDetailPage({ service }) {
       {/* ============ HERO ============ */}
       <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
         <PageHeroBackground page={`/${service.slug}`} darkOverlay={false}>
-          {/* light readability gradients — banner stays vivid */}
-          <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#0A1224]/70 via-[#0A1224]/25 to-transparent" aria-hidden="true" />
-          <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0D1424]/60 via-transparent to-transparent" aria-hidden="true" />
-
           <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             {/* breadcrumbs */}
             <motion.nav
