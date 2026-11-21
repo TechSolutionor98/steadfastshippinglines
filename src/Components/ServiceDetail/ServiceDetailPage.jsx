@@ -31,8 +31,9 @@ export default function ServiceDetailPage({ service }) {
   return (
     <div className="min-h-screen bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
       {/* ============ HERO ============ */}
-      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
-        <PageHeroBackground page={`/${service.slug}`} darkOverlay={false}>
+      <section className="relative w-full overflow-hidden bg-[#FFFFFF]">
+        <div className="relative mx-auto flex min-h-[520px] w-full max-w-[1536px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
+          <PageHeroBackground page={`/${service.slug}`} darkOverlay={false}>
           <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             {/* breadcrumbs */}
             <motion.nav
@@ -95,7 +96,7 @@ export default function ServiceDetailPage({ service }) {
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.55, ease: EASE }}
-                className="mt-5 max-w-2xl text-sm leading-relaxed text-slate-200 sm:text-base"
+                className="mt-5 max-w-2xl text-sm leading-relaxed text-white sm:text-base"
               >
                 {service.tagline}
               </motion.p>
@@ -115,7 +116,8 @@ export default function ServiceDetailPage({ service }) {
               </motion.div>
             </div>
           </div>
-        </PageHeroBackground>
+          </PageHeroBackground>
+        </div>
       </section>
 
       {/* ============ OVERVIEW + HIGHLIGHT STATS ============ */}

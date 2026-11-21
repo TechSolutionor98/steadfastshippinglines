@@ -14,7 +14,7 @@ export default function PageHeroBackground({
   useEffect(() => {
     if (!page) return;
     const cleanPage = page.startsWith("/") ? page : `/${page}`;
-    fetch(`/api/banners?page=${encodeURIComponent(cleanPage)}`, { cache: "no-store" })
+    fetch(`/api/banners?page=${encodeURIComponent(cleanPage)}&t=${Date.now()}`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         if (data.ok && Array.isArray(data.banners)) {
@@ -71,7 +71,7 @@ export default function PageHeroBackground({
         </div>
       )}
 
-      {/* Page content (text) always renders on top — admin only controls the banner image */}
+      {/* Page content (text) always renders on top */}
       {children}
     </>
   );

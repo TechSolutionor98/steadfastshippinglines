@@ -15,7 +15,7 @@ export default function LayoutShell({ children, initialInactiveRoutes = [] }) {
   return (
     <RouteStatusProvider initialInactiveRoutes={initialInactiveRoutes}>
       {!isAdminRoute && <Navbar />}
-      {children}
+      <main className="w-full max-w-full overflow-x-clip">{children}</main>
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <ScrollToTopButton />}
       {!isAdminRoute && <QuoteModal />}

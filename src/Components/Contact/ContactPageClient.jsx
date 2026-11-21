@@ -83,8 +83,9 @@ export default function ContactPageClient({ initialBanners = [] }) {
   return (
     <div className="min-h-screen bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
       {/* ============ HERO ============ */}
-      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
-        <PageHeroBackground page="/contact" initialBanners={initialBanners} darkOverlay={false}>
+      <section className="relative w-full overflow-hidden bg-[#FFFFFF]">
+        <div className="relative mx-auto flex min-h-[520px] w-full max-w-[1536px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
+          <PageHeroBackground page="/contact" initialBanners={initialBanners} darkOverlay={false}>
           <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <motion.div
@@ -120,7 +121,7 @@ export default function ContactPageClient({ initialBanners = [] }) {
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6, ease: EASE }}
-                className="mt-6 max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base"
+                className="mt-6 max-w-xl text-sm leading-relaxed text-white sm:text-base"
               >
                 We are always available to assist you with your logistics needs. Reach out to our
                 regional desks or submit an online request — a freight coordinator responds
@@ -128,7 +129,8 @@ export default function ContactPageClient({ initialBanners = [] }) {
               </motion.p>
             </div>
           </div>
-        </PageHeroBackground>
+          </PageHeroBackground>
+        </div>
       </section>
 
       {/* ============ QUICK CONTACT CARDS (overlap) ============ */}

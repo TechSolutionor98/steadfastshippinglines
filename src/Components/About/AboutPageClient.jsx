@@ -47,8 +47,9 @@ export default function AboutPageClient({ initialBanners = [] }) {
   return (
     <div className="min-h-screen bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
       {/* ============ HERO ============ */}
-      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
-        <PageHeroBackground page="/about-us" initialBanners={initialBanners} darkOverlay={false}>
+      <section className="relative w-full overflow-hidden bg-[#FFFFFF]">
+        <div className="relative mx-auto flex min-h-[520px] w-full max-w-[1536px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
+          <PageHeroBackground page="/about-us" initialBanners={initialBanners} darkOverlay={false}>
           <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <motion.div
@@ -84,7 +85,7 @@ export default function AboutPageClient({ initialBanners = [] }) {
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.7, ease: EASE }}
-                className="mt-6 max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base"
+                className="mt-6 max-w-xl text-sm leading-relaxed text-white sm:text-base"
               >
                 Delivering excellence across borders with innovative multimodal logistics,
                 dedicated customer service, and reliable global operations — from Faisalabad
@@ -106,7 +107,8 @@ export default function AboutPageClient({ initialBanners = [] }) {
               </motion.div>
             </div>
           </div>
-        </PageHeroBackground>
+          </PageHeroBackground>
+        </div>
       </section>
 
       {/* ============ QUICK STATS (overlapping hero) ============ */}

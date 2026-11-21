@@ -124,7 +124,7 @@ export default function HomePage({ cmsContent }) {
   const [introDone, setIntroDone] = useState(false);
 
   return (
-    <div className="bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
+    <div className="w-full max-w-full overflow-x-clip bg-white text-slate-800 selection:bg-[#C59B24] selection:text-white">
       {/* First-visit flight intro — overlays content, content stays SSR-rendered */}
       <AnimatePresence>
         {!introDone && <Preloader key="preloader" onComplete={() => setIntroDone(true)} />}
@@ -135,6 +135,7 @@ export default function HomePage({ cmsContent }) {
         animate={introDone ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0 }}
         transition={{ duration: 0.7, ease: EASE }}
         aria-hidden={!introDone}
+        className="w-full max-w-full overflow-x-clip"
       >
         <HeroSection ready={introDone} />
         <TickerSection />
@@ -196,162 +197,167 @@ function HeroSection({ ready = true }) {
   return (
     <section
       ref={ref}
-      className="relative flex h-[560px] items-center overflow-hidden bg-[#0D1424] sm:h-[620px] lg:h-[720px] xl:h-[780px]"
+      className="relative w-full overflow-hidden bg-[#FFFFFF]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
       aria-label="Featured highlights"
     >
-      {/* Parallax background slides */}
-      {banners.map((b, i) => (
-        <motion.div
-          key={b._id || i}
-          className={`absolute inset-0 ${i === current ? "z-0" : "pointer-events-none z-0"}`}
-          initial={false}
-          animate={{ opacity: i === current ? 1 : 0, scale: i === current ? 1 : 1.06 }}
-          transition={{ duration: 1.1, ease: EASE }}
-          aria-hidden={i !== current}
-        >
-          <motion.div className="absolute inset-0 bg-cover bg-center" style={{ y: bgY, backgroundImage: `url(${b.imageUrl || b.bgImage})` }} />
-        </motion.div>
-      ))}
-
-      {/* Content */}
-      <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
+      <div className="relative mx-auto flex h-[560px] w-full max-w-[1536px] items-center overflow-hidden bg-[#0D1424] sm:h-[620px] lg:h-[720px] xl:h-[780px]">
+        {/* Parallax background slides */}
+        {banners.map((b, i) => (
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={ready ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
-            className="mb-6 inline-flex items-center gap-3 rounded-full border border-[#E2C876]/30 bg-white/5 py-2 pl-2 pr-4 backdrop-blur-md"
+            key={b._id || i}
+            className={`absolute inset-0 ${i === current ? "z-0" : "pointer-events-none z-0"}`}
+            initial={false}
+            animate={{ opacity: i === current ? 1 : 0, scale: i === current ? 1 : 1.04 }}
+            transition={{ duration: 1.1, ease: EASE }}
+            aria-hidden={i !== current}
           >
-            <span className="flex h-6 items-center rounded-full bg-[#C59B24] px-3 text-[10px] font-black uppercase tracking-[0.18em] text-white">
-              Est. Global
-            </span>
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
-              120+ Ports · 5 Modes · One Partner
-            </span>
+            <motion.div className="absolute inset-0 bg-cover bg-center" style={{ y: bgY, backgroundImage: `url(${b.imageUrl || b.bgImage})` }} />
           </motion.div>
+        ))}
 
-          <h1 className="font-anton uppercase leading-[0.98] tracking-tight text-white">
-            {slide.title?.split(" ").map((word, i, arr) => (
-              <span key={i} className="inline-block overflow-hidden pb-1 align-top">
-                <motion.span
-                  className="mr-[0.28em] inline-block text-[clamp(2.4rem,1.4rem+4.4vw,5.2rem)]"
-                  initial={{ y: "110%" }}
-                  animate={ready ? { y: 0 } : {}}
-                  transition={{ duration: 0.7, delay: 0.1 + i * 0.05, ease: EASE }}
-                >
-                  {word}
-                </motion.span>
+        {/* Content */}
+        <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={`max-w-3xl ${slide.textAlign === 'center' ? 'mx-auto text-center' : slide.textAlign === 'right' ? 'ml-auto text-right' : 'text-left'}`}>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={ready ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
+              className="mb-6 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-[#E2C876]/30 bg-white/5 py-1.5 pl-2 pr-3 backdrop-blur-md sm:gap-3 sm:py-2 sm:pr-4"
+            >
+              <span className="flex h-6 shrink-0 items-center rounded-full bg-[#C59B24] px-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-white sm:px-3 sm:tracking-[0.18em]">
+                Est. Global
               </span>
-            ))}
-          </h1>
+              <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-white/90 sm:text-[11px] sm:tracking-[0.2em]">
+                120+ Ports · 5 Modes · One Partner
+              </span>
+            </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={ready ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
-            className="mt-5 max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base"
-          >
-            Ocean, air, and overland freight engineered end-to-end — booked in minutes,
-            tracked in real time, and delivered with a 99% on-time record.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={ready ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.62, ease: EASE }}
-            className="mt-8 flex flex-wrap items-center gap-4"
-          >
-            <GoldButton onClick={() => openQuoteModal()} className="px-8 py-4 text-sm">
-              <Calculator className="h-4 w-4" /> Get Instant Quote
-            </GoldButton>
-            <GhostButton dark href="#services" className="px-8 py-4 text-sm">
-              Explore Services <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </GhostButton>
-          </motion.div>
-
-          {/* mini stats strip */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={ready ? { opacity: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.85, ease: EASE }}
-            className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-white/15 pt-6"
-          >
-            {[
-              ["18K+", "Shipments moved"],
-              ["99%", "On-time delivery"],
-              ["24/7", "Control tower"],
-            ].map(([v, l]) => (
-              <div key={l} className="flex items-baseline gap-2.5">
-                <span className="font-anton text-2xl text-[#E2C876]">{v}</span>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-300">{l}</span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Slide controls */}
-      {banners.length > 1 && (
-        <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
-          <button
-            onClick={() => setCurrent((p) => (p === 0 ? banners.length - 1 : p - 1))}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:border-[#C59B24] hover:bg-[#C59B24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <div className="flex items-center gap-2">
-            {banners.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                aria-current={i === current}
-                className="group relative h-2.5 w-2.5 cursor-pointer rounded-full outline-none"
-              >
-                <span className={`absolute inset-0 rounded-full transition-colors ${i === current ? "bg-[#C59B24]" : "bg-white/40 group-hover:bg-white/70"}`} />
-                {i === current && !reduce && (
+            <h1
+              className="font-anton uppercase leading-[0.98] tracking-tight text-white break-words"
+              style={slide.textColor ? { color: slide.textColor } : undefined}
+            >
+              {slide.title?.split(" ").map((word, i, arr) => (
+                <span key={i} className="inline-block max-w-full overflow-hidden pb-1 align-top">
                   <motion.span
-                    key={`p-${current}`}
-                    className="absolute inset-0 rounded-full ring-2 ring-[#C59B24]/60"
-                    initial={{ scale: 1, opacity: 0.9 }}
-                    animate={{ scale: 2.2, opacity: 0 }}
-                    transition={{ duration: 6, ease: "linear" }}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={() => setCurrent((p) => (p + 1) % banners.length)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:border-[#C59B24] hover:bg-[#C59B24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
-      )}
+                    className="mr-[0.25em] inline-block text-[clamp(1.9rem,1.2rem+4vw,5.2rem)] break-words"
+                    initial={{ y: "110%" }}
+                    animate={ready ? { y: 0 } : {}}
+                    transition={{ duration: 0.7, delay: 0.1 + i * 0.05, ease: EASE }}
+                  >
+                    {word}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
 
-      {/* Scroll cue */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={ready ? { opacity: 1 } : {}}
-        transition={{ delay: 1.3, duration: 0.8 }}
-        className="absolute bottom-8 right-6 z-20 hidden flex-col items-center gap-2 lg:flex"
-        aria-hidden="true"
-      >
-        <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/60 [writing-mode:vertical-lr]">Scroll</span>
-        <div className="h-14 w-[2px] overflow-hidden bg-white/15">
-          <motion.span
-            className="block h-1/2 w-full bg-[#C59B24]"
-            animate={reduce ? {} : { y: ["-100%", "200%"] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-      </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={ready ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+              className="mt-5 max-w-xl text-sm leading-relaxed text-white sm:text-base"
+            >
+              Ocean, air, and overland freight engineered end-to-end — booked in minutes,
+              tracked in real time, and delivered with a 99% on-time record.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={ready ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.62, ease: EASE }}
+              className="mt-8 flex flex-wrap items-center gap-4"
+            >
+              <GoldButton onClick={() => openQuoteModal()} className="px-8 py-4 text-sm text-white">
+                <Calculator className="h-4 w-4 text-white" /> Get Instant Quote
+              </GoldButton>
+              <GhostButton dark href="#services" className="px-8 py-4 text-sm text-white border-white/40 hover:border-white">
+                Explore Services <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
+              </GhostButton>
+            </motion.div>
+
+            {/* mini stats strip */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={ready ? { opacity: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.85, ease: EASE }}
+              className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-white/20 pt-6"
+            >
+              {[
+                ["18K+", "Shipments moved"],
+                ["99%", "On-time delivery"],
+                ["24/7", "Control tower"],
+              ].map(([v, l]) => (
+                <div key={l} className="flex items-baseline gap-2.5">
+                  <span className="font-anton text-2xl text-white">{v}</span>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-white">{l}</span>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Slide controls */}
+        {banners.length > 1 && (
+          <div className="absolute bottom-8 left-1/2 z-20 flex max-w-[calc(100%-2rem)] -translate-x-1/2 items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setCurrent((p) => (p === 0 ? banners.length - 1 : p - 1))}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:border-[#C59B24] hover:bg-[#C59B24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <div className="flex items-center gap-2">
+              {banners.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  aria-current={i === current}
+                  className="group relative h-2.5 w-2.5 cursor-pointer rounded-full outline-none"
+                >
+                  <span className={`absolute inset-0 rounded-full transition-colors ${i === current ? "bg-[#C59B24]" : "bg-white/40 group-hover:bg-white/70"}`} />
+                  {i === current && !reduce && (
+                    <motion.span
+                      key={`p-${current}`}
+                      className="absolute inset-0 rounded-full ring-2 ring-[#C59B24]/60"
+                      initial={{ scale: 1, opacity: 0.9 }}
+                      animate={{ scale: 2.2, opacity: 0 }}
+                      transition={{ duration: 6, ease: "linear" }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setCurrent((p) => (p + 1) % banners.length)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:border-[#C59B24] hover:bg-[#C59B24] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Scroll cue */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={ready ? { opacity: 1 } : {}}
+          transition={{ delay: 1.3, duration: 0.8 }}
+          className="absolute bottom-8 right-6 z-20 hidden flex-col items-center gap-2 lg:flex"
+          aria-hidden="true"
+        >
+          <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/60 [writing-mode:vertical-lr]">Scroll</span>
+          <div className="h-14 w-[2px] overflow-hidden bg-white/15">
+            <motion.span
+              className="block h-1/2 w-full bg-[#C59B24]"
+              animate={reduce ? {} : { y: ["-100%", "200%"] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }
@@ -363,7 +369,7 @@ function TickerSection() {
   const reduce = useReducedMotion();
   const items = ["OCEAN FREIGHT", "◆", "AIR FREIGHT", "◆", "CUSTOMS CLEARANCE", "◆", "WAREHOUSING", "◆", "BREAK BULK", "◆", "DOOR TO DOOR", "◆", "CROSS STUFFING", "◆", "TRANSPORTATION", "◆"];
   return (
-    <div className="relative overflow-hidden border-y border-[#E2C876]/40 bg-[#0D1424] py-4" aria-hidden="true">
+    <div className="relative w-full max-w-full overflow-hidden border-y border-[#E2C876]/40 bg-[#0D1424] py-4" aria-hidden="true">
       <div className={`flex w-max items-center gap-8 ${reduce ? "" : "animate-brand-scroll"}`}>
         {[...items, ...items].map((t, i) => (
           <span key={i} className={`whitespace-nowrap text-xs font-black uppercase tracking-[0.3em] ${t === "◆" ? "text-[#C59B24]" : "text-white/80"}`}>
@@ -392,7 +398,7 @@ function CapabilitiesSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden py-20 lg:py-28">
+    <section className="relative w-full max-w-full overflow-hidden py-20 lg:py-28">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
         {/* Left copy + cards */}
         <div className="space-y-8 lg:col-span-7">
@@ -468,7 +474,7 @@ function CapabilitiesSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
                 animate={reduce ? {} : { y: [0, -8, 0] }}
-                className="absolute -right-3 -top-5 flex items-center gap-3 rounded-2xl border border-[#D7DCE0] bg-white/95 p-3.5 shadow-xl backdrop-blur-md sm:-right-6"
+                className="absolute right-0 -top-4 flex items-center gap-3 rounded-2xl border border-[#D7DCE0] bg-white/95 p-3 shadow-xl backdrop-blur-md sm:-right-6 sm:-top-5 sm:p-3.5"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
                   <CheckCircle2 className="h-5 w-5" />
@@ -486,7 +492,7 @@ function CapabilitiesSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.65, ease: EASE }}
                 animate={reduce ? {} : { y: [0, 8, 0] }}
-                className="absolute -bottom-5 -left-3 flex items-center gap-3 rounded-2xl border border-white/10 bg-[#141E36]/95 p-3.5 text-white shadow-2xl backdrop-blur-md sm:-left-6"
+                className="absolute left-0 -bottom-4 flex items-center gap-3 rounded-2xl border border-white/10 bg-[#141E36]/95 p-3 text-white shadow-2xl backdrop-blur-md sm:-left-6 sm:-bottom-5 sm:p-3.5"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#C59B24] text-[#141E36]">
                   <Ship className="h-5 w-5" />
@@ -515,7 +521,7 @@ function ServicesSection() {
   );
 
   return (
-    <section id="services" className="relative border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
+    <section id="services" className="relative w-full max-w-full overflow-hidden border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHead
           center
@@ -644,7 +650,7 @@ function AboutSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-[#0D1424] py-20 text-white lg:py-28">
+    <section className="relative w-full max-w-full overflow-hidden bg-[#0D1424] py-20 text-white lg:py-28">
       {/* ambient */}
       <div className="sf-dots absolute inset-0 opacity-20" aria-hidden="true" />
       <div className="pointer-events-none absolute -right-40 top-0 h-96 w-96 rounded-full bg-[#C59B24]/10 blur-[130px]" aria-hidden="true" />
@@ -721,7 +727,7 @@ function MissionVisionSection() {
   ];
 
   return (
-    <section className="py-20 lg:py-28">
+    <section className="relative w-full max-w-full overflow-hidden py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHead
           center
@@ -792,7 +798,7 @@ function WhySection() {
   ];
 
   return (
-    <section className="border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
+    <section className="relative w-full max-w-full overflow-hidden border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHead
           center
@@ -813,7 +819,7 @@ function WhySection() {
                 <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-[#B0891E] to-[#E2C876] transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
                 <span className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#C59B24]/[0.07] transition-transform duration-500 group-hover:scale-[2.2]" aria-hidden="true" />
 
-                <div className={`flex h-13 w-13 items-center justify-center rounded-xl shadow-sm ring-1 transition-all duration-300 group-hover:scale-110 ${
+                <div className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl shadow-sm ring-1 transition-all duration-300 group-hover:scale-110 ${
                   i % 2 === 0
                     ? "bg-[#FDF9EE] text-[#C59B24] ring-[#E2C876]/60 group-hover:bg-[#C59B24] group-hover:text-white"
                     : "bg-[#1D2A4C]/[0.06] text-[#1D2A4C] ring-[#D7DCE0] group-hover:bg-[#1D2A4C] group-hover:text-[#E2C876]"
@@ -840,7 +846,7 @@ function WhySection() {
 function GallerySection() {
   const reduce = useReducedMotion();
   return (
-    <section className="py-20 lg:py-28">
+    <section className="relative w-full max-w-full overflow-hidden py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHead
           center
@@ -886,7 +892,7 @@ function GallerySection() {
 ============================================================ */
 function CtaBand() {
   return (
-    <section className="relative overflow-hidden border-y border-[#C59B24]/30 bg-[#0D1424] py-16 text-white lg:py-20">
+    <section className="relative w-full max-w-full overflow-hidden border-y border-[#C59B24]/30 bg-[#0D1424] py-16 text-white lg:py-20">
       <div className="sf-dots absolute inset-0 opacity-25" aria-hidden="true" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-56 w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#C59B24]/15 blur-[120px]" aria-hidden="true" />
 
@@ -930,7 +936,7 @@ function CtaBand() {
 function TestimonialsSection() {
   const reduce = useReducedMotion();
   return (
-    <section className="py-20 lg:py-28">
+    <section className="relative w-full max-w-full overflow-hidden py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHead
           center
@@ -1039,7 +1045,7 @@ function QuoteSection() {
   const labelCls = "mb-1.5 block text-[11px] font-black uppercase tracking-wider text-[#1D2A4C]";
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 sm:py-24">
+    <section ref={ref} className="relative w-full max-w-full overflow-hidden py-20 sm:py-24">
       {/* Background */}
       <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/home/quote-banner.webp')" }} aria-hidden="true" />
       <div className="absolute inset-0 bg-[#0A1224]/70" aria-hidden="true" />
@@ -1145,7 +1151,7 @@ function QuoteSection() {
 ============================================================ */
 function ServiceAreasSection() {
   return (
-    <section className="py-20 lg:py-24">
+    <section className="relative w-full max-w-full overflow-hidden py-20 lg:py-24">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
         <div className="space-y-6 lg:col-span-8">
           <Reveal><Eyebrow>Our Service Areas</Eyebrow></Reveal>
@@ -1163,7 +1169,7 @@ function ServiceAreasSection() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
+            <div className="grid grid-cols-2 min-[440px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
               {MAJOR_PORTS.map((port, i) => (
                 <motion.div
                   key={port + i}
@@ -1171,7 +1177,8 @@ function ServiceAreasSection() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true, margin: "-20px" }}
                   transition={{ duration: 0.3, delay: Math.min(i * 0.02, 0.5), ease: EASE }}
-                  className="cursor-default rounded-lg border border-[#D7DCE0] bg-[#F4F6F8] px-3 py-2 text-center text-[11px] font-black uppercase tracking-wider text-[#1D2A4C] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#C59B24] hover:bg-[#FDF9EE] hover:text-[#B0891E]"
+                  className="cursor-default truncate rounded-lg border border-[#D7DCE0] bg-[#F4F6F8] px-2.5 py-2 text-center text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[#1D2A4C] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#C59B24] hover:bg-[#FDF9EE] hover:text-[#B0891E]"
+                  title={port}
                 >
                   {port}
                 </motion.div>
@@ -1225,7 +1232,7 @@ function ServiceAreasSection() {
 function ProcessSection() {
   const reduce = useReducedMotion();
   return (
-    <section className="border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
+    <section className="relative w-full max-w-full overflow-hidden border-y border-[#D7DCE0]/60 bg-[#F4F6F8] py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHead
           center
@@ -1256,7 +1263,7 @@ function ProcessSection() {
                       {st.step}
                     </span>
                     <div className="relative z-10">
-                      <div className="flex h-13 w-13 items-center justify-center rounded-xl bg-[#1D2A4C] text-[#E2C876] shadow-md transition-all duration-300 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-white">
+                      <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-[#1D2A4C] text-[#E2C876] shadow-md transition-all duration-300 group-hover:scale-110 group-hover:bg-[#C59B24] group-hover:text-white">
                         <Icon className="h-6 w-6" strokeWidth={2.1} />
                       </div>
                       <div className="mt-5 text-[10px] font-black uppercase tracking-[0.22em] text-[#B0891E]">Stage {st.step}</div>
@@ -1281,7 +1288,7 @@ function FaqSection() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section className="py-20 lg:py-28">
+    <section className="relative w-full max-w-full overflow-hidden py-20 lg:py-28">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
         <div className="space-y-8 lg:col-span-7">
           <SectionHead
@@ -1402,7 +1409,7 @@ function FaqSection() {
 function StatsSection() {
   const reduce = useReducedMotion();
   return (
-    <section className="relative overflow-hidden border-t border-[#C59B24]/20 bg-[#0D1424] py-20 text-white lg:py-24">
+    <section className="relative w-full max-w-full overflow-hidden border-t border-[#C59B24]/20 bg-[#0D1424] py-20 text-white lg:py-24">
       <div className="sf-dots absolute inset-0 opacity-20" aria-hidden="true" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#C59B24]/10 blur-[140px]" aria-hidden="true" />
 

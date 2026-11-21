@@ -90,7 +90,7 @@ export default async function RootLayout({ children }) {
       <body
         suppressHydrationWarning
         style={{ backgroundColor: "white" }}
-        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${mulish.variable} ${anton.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${mulish.variable} ${anton.variable} antialiased w-full max-w-full overflow-x-clip`}
       >
         {/* Google Tag Manager (noscript) */}
         {settings?.googleTagManagerId && (

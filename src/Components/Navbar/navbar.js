@@ -94,7 +94,7 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link href="/" className="group flex shrink-0 items-center py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C59B24] rounded-lg" aria-label="Steadfast Shipping Lines — Home">
-            <div className="relative h-14 w-52 transition-transform duration-300 group-hover:scale-[1.02] sm:h-16 sm:w-64 md:w-72 lg:w-72">
+            <div className="relative h-12 w-44 transition-transform duration-300 group-hover:scale-[1.02] sm:h-14 sm:w-52 md:w-56 lg:h-14 lg:w-60 xl:h-16 xl:w-72">
               <Image
                 src="/images/logo-main.png"
                 alt="Steadfast Shipping Lines"
@@ -107,7 +107,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop links */}
-          <div className="hidden items-center gap-7 lg:flex xl:gap-9">
+          <div className="hidden items-center gap-4 lg:flex xl:gap-8">
             <Link href="/" className={linkCls(isActive("/"))}>
               Home
               {isActive("/") && (
@@ -227,7 +227,7 @@ export default function Navbar() {
             <motion.button
               onClick={() => openQuoteModal()}
               whileTap={reduce ? {} : { scale: 0.97 }}
-              className="group relative inline-flex cursor-pointer items-center gap-2 bg-[#C59B24] px-6 py-3 text-[12px] font-black uppercase tracking-[0.14em] text-white transition-all duration-300 hover:bg-[#1D2A4C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D2A4C] focus-visible:ring-offset-2"
+              className="group relative inline-flex cursor-pointer items-center gap-2 bg-[#C59B24] px-4 py-2.5 text-[11px] font-black uppercase tracking-[0.14em] text-white transition-all duration-300 hover:bg-[#1D2A4C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D2A4C] focus-visible:ring-offset-2 xl:px-6 xl:py-3 xl:text-[12px]"
             >
               {/* left gold edge stays on navy hover */}
               <span className="absolute inset-y-0 left-0 w-[3px] bg-[#E2C876]" aria-hidden="true" />

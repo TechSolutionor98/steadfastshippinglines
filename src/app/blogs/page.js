@@ -33,22 +33,24 @@ export default async function ClientBlogsPage() {
   return (
     <main className="min-h-screen bg-[#FFFFFF] text-gray-800">
       {/* Hero Header — same height/pattern as other pages; admin banner acts as background behind code text */}
-      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
-        <PageHeroBackground page="/blogs" darkOverlay={false}>
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-            <div className="max-w-3xl space-y-5">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#E2C876]/30 bg-white/5 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-md">
-                Industry Insights
-              </span>
-              <h1 className="font-anton uppercase leading-[0.98] tracking-tight text-white text-[clamp(2.2rem,1.3rem+4.2vw,4.4rem)]">
-                Steadfast Logistics <span className="text-[#E2C876]">Insights & News</span>
-              </h1>
-              <p className="max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base">
-                Expert analysis, shipping industry updates, and global freight forwarding guides.
-              </p>
+      <section className="relative w-full overflow-hidden bg-[#FFFFFF]">
+        <div className="relative mx-auto flex min-h-[520px] w-full max-w-[1536px] items-center overflow-hidden bg-[#0D1424] lg:min-h-[560px]">
+          <PageHeroBackground page="/blogs" darkOverlay={false}>
+            <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+              <div className="max-w-3xl space-y-5">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#E2C876]/30 bg-white/5 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-md">
+                  Industry Insights
+                </span>
+                <h1 className="font-anton uppercase leading-[0.98] tracking-tight text-white text-[clamp(2.2rem,1.3rem+4.2vw,4.4rem)]">
+                  Steadfast Logistics <span className="text-[#E2C876]">Insights & News</span>
+                </h1>
+                <p className="max-w-xl text-sm leading-relaxed text-white sm:text-base">
+                  Expert analysis, shipping industry updates, and global freight forwarding guides.
+                </p>
+              </div>
             </div>
-          </div>
-        </PageHeroBackground>
+          </PageHeroBackground>
+        </div>
       </section>
 
       {/* Real-time Client-side Blog Listing & Sidebar Widgets */}
